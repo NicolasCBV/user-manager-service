@@ -12,8 +12,8 @@ import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
   imports: [
     ConfigModule.forRoot(),
     ThrottlerModule.forRoot({
-      limit: 20,
-      ttl: 30
+      limit: 6,
+      ttl: 2
     }),
     DatabaseCacheModule,
     DatabaseModule,
