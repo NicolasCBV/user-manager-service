@@ -50,7 +50,7 @@ services:
       - FORGOT_TOKEN_EXPIRES=120000
       - OTP_TIME=120000
       - 'FIREBASE={}'
-      - 'FIREBASE_TEMPLATE_IMAGE_LINK='
+      - 'FIREBASE_TEMPLATE_IMAGE_LINK=https://firebasestorage.googleapis.com/v0/b/<project name>.appspot.com/o'
       - 'FIREBASE_BUCKET='
       - HOST_SENDER=
       - HOST_PORT_SENDER=
