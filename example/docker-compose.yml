@@ -59,7 +59,6 @@ services:
 
     restart: always
     volumes:
-      - ../user-service:/usr/app/
       - '/usr/app/node_modules'
     ports:
       - "3030:3030"
