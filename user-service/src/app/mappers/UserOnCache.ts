@@ -42,23 +42,23 @@ export class UserOnCache {
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
       cachedAt: user.cachedAt,
-    }
+    };
   }
 
   static fromJsonToClass(user: IUserInJson): UserInCache {
     return new UserInCache({
-        id: user.id,
-        name: new Name(user.name),
-        email: new Email(user.email),
-        description:
-          typeof user.description === 'string'
-            ? new Description(user.description)
-            : user.description,
-        password: new Password(user.password),
-        imageUrl: user.imageUrl,
-        createdAt: new Date(user.createdAt),
-        updatedAt: new Date(user.updatedAt),
-        cachedAt: new Date(user.cachedAt),
+      id: user.id,
+      name: new Name(user.name),
+      email: new Email(user.email),
+      description:
+        typeof user.description === 'string'
+          ? new Description(user.description)
+          : user.description,
+      password: new Password(user.password),
+      imageUrl: user.imageUrl,
+      createdAt: new Date(user.createdAt),
+      updatedAt: new Date(user.updatedAt),
+      cachedAt: new Date(user.cachedAt),
     });
   }
 

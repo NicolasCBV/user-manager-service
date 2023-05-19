@@ -32,7 +32,7 @@ services:
   app:
     build:
       context: ./user-service
-      dockerfile: Dockerfile
+      dockerfile: app.Dockerfile
     hostname: app
     restart: always
     volumes:

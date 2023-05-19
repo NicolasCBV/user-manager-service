@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Password } from '@src/app/entities/user/password';
 import { UserInCache } from '@src/app/entities/userInCache/userInCache';
-import { MiscellaneousHandlerContract } from '@src/intra/storages/cache/contract/miscellaneousHandler';
-import { TokenHandlerContract } from '@src/intra/storages/cache/contract/tokenHandler';
-import { UserHandlerContract } from '@src/intra/storages/cache/contract/userHandler';
-import { SearchUserManager } from '@src/intra/storages/search/searchUserManager.service';
+import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
+import { TokenHandlerContract } from '@infra/storages/cache/contract/tokenHandler';
+import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
+import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { CryptAdapter } from '../../adapters/crypt';
 import { UsersRepositories } from '../../repositories/users';
 
@@ -19,19 +19,14 @@ export class FinishForgotPasswordService {
     private readonly crypt: CryptAdapter,
   ) {}
 
-  async exec(
-    sub: string, 
-    email: string, 
-    password: string
-  ): Promise<void> {
+  async exec(sub: string, email: string, password: string): Promise<void> {
     const oldUser = await this.searchForUser.exec(email);
     const token = await this.tokenHandler.exist(
-      sub, 
+      sub,
       this.tokenHandler.tokenTypes.forgotToken,
     );
 
-    if (!oldUser || !token) 
-      throw new Error("The entitie doesn't exist.");
+    if (!oldUser || !token) throw new Error("The entitie doesn't exist.");
 
     const passwordHashed = await this.crypt.hash(password);
 

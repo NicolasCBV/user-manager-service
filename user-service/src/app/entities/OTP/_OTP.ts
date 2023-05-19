@@ -1,4 +1,4 @@
-import { Replace } from '@src/intra/helpers/replace';
+import { Replace } from '@infra/helpers/replace';
 
 export interface IPropsOTP {
   userIdentificator: string;

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserInCache } from '@src/app/entities/userInCache/userInCache';
-import { ImageContract } from '@src/intra/api/contracts/imageContract';
-import { UserHandlerContract } from '@src/intra/storages/cache/contract/userHandler';
+import { ImageContract } from '@infra/api/contracts/imageContract';
+import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
 import { UsersRepositories } from '../../repositories/users';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class UploadImageService {
     }
 
     const encodedFilename = encodeURIComponent(file.filename);
-    const url = `${process.env.FIREBASE_TEMPLATE_IMAGE_LINK}/${encodedFilename}?alt=media`
+    const url = `${process.env.FIREBASE_TEMPLATE_IMAGE_LINK}/${encodedFilename}?alt=media`;
 
     await this.userRepo.uploadImage(id, url);
 

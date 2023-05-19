@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { DatabaseCacheModule } from '@src/intra/storages/cache/cache.module';
-import { DatabaseModule } from '@src/intra/storages/db/database.module';
-import { SearchUserManager } from '@src/intra/storages/search/searchUserManager.service';
+import { DatabaseCacheModule } from '@infra/storages/cache/cache.module';
+import { DatabaseModule } from '@infra/storages/db/database.module';
+import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { AdaptersModule } from '../adapters/adapters.module';
 import { AuthService } from '../service/notAuthenticated/auth.service';
 import { CheckFingerprintService } from '../service/notAuthenticated/checkFingerprint.service';

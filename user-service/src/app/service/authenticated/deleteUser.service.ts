@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UsersRepositories } from '../../repositories/users';
-import { ImageContract } from '@intra/api/contracts/imageContract';
-import { MiscellaneousHandlerContract } from '@src/intra/storages/cache/contract/miscellaneousHandler';
-import { UserHandlerContract } from '@src/intra/storages/cache/contract/userHandler';
+import { ImageContract } from '@infra/api/contracts/imageContract';
+import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
+import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
 import { UserInCache } from '@src/app/entities/userInCache/userInCache';
 import { User } from '@src/app/entities/user/_user';
 

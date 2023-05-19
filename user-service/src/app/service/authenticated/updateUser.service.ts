@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Description } from '@src/app/entities/user/description';
 import { Name } from '@src/app/entities/user/name';
 import { UserInCache } from '@src/app/entities/userInCache/userInCache';
-import { UserHandlerContract } from '@src/intra/storages/cache/contract/userHandler';
+import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
 import { length } from 'class-validator';
 import { UsersRepositories } from '../../repositories/users';
 

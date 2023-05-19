@@ -4,9 +4,9 @@ import { UserOnCache } from '../../mappers/UserOnCache';
 import { UserOnObjects } from '../../mappers/userInObjects';
 import { UsersRepositories } from '../../repositories/users';
 import { randomUUID } from 'crypto';
-import { UserHandlerContract } from '@src/intra/storages/cache/contract/userHandler';
-import { OTPHandlerContract } from '@src/intra/storages/cache/contract/OTPHandler';
-import { MiscellaneousHandlerContract } from '@src/intra/storages/cache/contract/miscellaneousHandler';
+import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
+import { OTPHandlerContract } from '@infra/storages/cache/contract/OTPHandler';
+import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
 import { GenTokensService } from './genTokens.service';
 import { UserInCache } from '@src/app/entities/userInCache/userInCache';
 
@@ -72,7 +72,7 @@ export class ValidateAccountService {
       sub,
       access_token,
       refresh_token,
-      new UserInCache(user)
+      new UserInCache(user),
     );
 
     return { access_token, refresh_token };

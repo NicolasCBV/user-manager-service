@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { Replace } from '@intra/helpers/replace';
+import { Replace } from '@infra/helpers/replace';
 import { Description } from './description';
 import { Email } from './email';
 import { Name } from './name';

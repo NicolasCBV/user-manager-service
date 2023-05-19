@@ -2,7 +2,7 @@
   "name": "user-manager-boilerplate",
   "version": "1.0.0",
   "author": "Nícolas Basilio",
-  "description": "This is a server of dropshipping called dropneos",
+  "description": "This is a user manager service",
   "license": "MIT",
   "scripts": {
     "up": "docker compose run --rm -p 3030:3030 app sh ./init.sh",
@@ -22,8 +22,8 @@
     "test:e2e": "dotenv -e .env.test -- jest --config ./test/jest-e2e.json"
   },
   "prisma": {
-    "schema": "./src/intra/storages/db/prisma/schema.prisma",
-    "seed": "ts-node --transpile-only ./src/intra/storages/db/prisma/seed.ts"
+    "schema": "./src/infra/storages/db/prisma/schema.prisma",
+    "seed": "ts-node --transpile-only ./src/infra/storages/db/prisma/seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "^9.3.9",

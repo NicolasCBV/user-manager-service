@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { EmailAdapter } from '@src/app/adapters/email';
 import { OTP } from '@src/app/entities/OTP/_OTP';
 import { UserOnObjects } from '@src/app/mappers/userInObjects';
-import { generateRandomCharacters } from '@src/intra/helpers/generateRandomCharacters';
+import { generateRandomCharacters } from '@infra/helpers/generateRandomCharacters';
 import { GenTokensService } from './genTokens.service';
-import { MiscellaneousHandlerContract } from '@src/intra/storages/cache/contract/miscellaneousHandler';
-import { OTPHandlerContract } from '@src/intra/storages/cache/contract/OTPHandler';
-import { TokenHandlerContract } from '@src/intra/storages/cache/contract/tokenHandler';
-import { UserHandlerContract } from '@src/intra/storages/cache/contract/userHandler';
-import { SearchUserManager } from '@src/intra/storages/search/searchUserManager.service';
+import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
+import { OTPHandlerContract } from '@infra/storages/cache/contract/OTPHandler';
+import { TokenHandlerContract } from '@infra/storages/cache/contract/tokenHandler';
+import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
+import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { TFATemplate } from '@templates/TFA';
 import { CryptAdapter } from '../../adapters/crypt';
 
@@ -26,14 +26,13 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, password: string): Promise<'OK' | null> {
-    const user = await this.searchForUser
-      .exec(email)
-      .catch((err) => {
-        if (err.message === "This user doesn't exist") 
-          return null;
-      });
+    const user = await this.searchForUser.exec(email).catch((err) => {
+      if (err.message === "This user doesn't exist") return null;
+    });
 
-    const result = await this.crypt.compare(password, user!.password.value);
+    if (!user) return null;
+
+    const result = await this.crypt.compare(password, user.password.value);
 
     if (result) {
       const code = generateRandomCharacters();
@@ -55,7 +54,7 @@ export class AuthService {
         } - Verificação de duas etapas`,
         body: TFATemplate({
           code,
-          name: user!.name.value,
+          name: user.name.value,
         }),
       });
 
@@ -81,36 +80,24 @@ export class AuthService {
     const result = await this.crypt.compare(code, otp.code);
     if (!result) throw new Error('Unathorized');
 
-    const deviceIdHashed = deviceId 
-      ? await this.crypt.hash(deviceId) 
-      : null;
+    const deviceIdHashed = deviceId ? await this.crypt.hash(deviceId) : null;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { 
-      password, 
-      id, 
-      email, 
-      ...rest 
-    } = UserOnObjects.toObject(user);
+    const { password, id, email, ...rest } = UserOnObjects.toObject(user);
 
-    const { 
-      refresh_token, 
-      access_token 
-    } = this.genTokens.exec({
+    const { refresh_token, access_token } = this.genTokens.exec({
       userId: user.id,
       deviceId: deviceIdHashed,
       email: user.email.value,
       userData: rest,
     });
 
-    await this.miscHandler.del(
-      `${this.otpHandler.otpKW}:${user.email.value}`
-    );
+    await this.miscHandler.del(`${this.otpHandler.otpKW}:${user.email.value}`);
 
     await this.tokenHandler.throwMainAuthTokens(
-      id, 
-      access_token, 
-      refresh_token
+      id,
+      access_token,
+      refresh_token,
     );
 
     return {

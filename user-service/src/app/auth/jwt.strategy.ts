@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
 import { CheckFingerprintService } from '../service/notAuthenticated/checkFingerprint.service';
-import { TokenHandlerContract } from '@src/intra/storages/cache/contract/tokenHandler';
+import { TokenHandlerContract } from '@infra/storages/cache/contract/tokenHandler';
 import { IJwtTokenUser, validateToken } from './jwt.core';
 
 @Injectable()

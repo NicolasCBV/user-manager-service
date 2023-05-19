@@ -1,4 +1,4 @@
-import { Replace } from '@src/intra/helpers/replace';
+import { Replace } from '@infra/helpers/replace';
 import { Description } from '../entities/user/description';
 import { Email } from '../entities/user/email';
 import { Name } from '../entities/user/name';
@@ -15,7 +15,7 @@ export interface UserJSONObject {
     imageUrl?: string | null;
     createdAt: string;
     updatedAt: string;
-  }
+  };
 }
 
 export interface UserObject {
@@ -70,7 +70,7 @@ export class UserOnObjects {
         email: new Email(user.props.email.email),
         description:
           user.props.description && typeof user.props.description === 'object'
-            ? new Description(user.props.description!.description)
+            ? new Description(user.props.description.description)
             : user.props.description,
         password: new Password(user.props.password.password),
         imageUrl: user.props.imageUrl,

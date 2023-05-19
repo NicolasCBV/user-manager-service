@@ -2,10 +2,10 @@ import { JwtService } from '@nestjs/jwt';
 import { BcryptAdapter } from '@src/app/adapters/bcrypt/bcryptAdapter';
 import { User } from '@src/app/entities/user/_user';
 import { UserInCache } from '@src/app/entities/userInCache/userInCache';
-import { MiscellaneousHandler } from '@src/intra/storages/cache/redis/handlers/misc/miscellaneousHandler';
-import { OTPHandler } from '@src/intra/storages/cache/redis/handlers/OTP/OTPHandler';
-import { UserHandler } from '@src/intra/storages/cache/redis/handlers/user/userHandler';
-import { redisClient } from '@src/intra/storages/cache/redis/redisClient';
+import { MiscellaneousHandler } from '@infra/storages/cache/redis/handlers/misc/miscellaneousHandler';
+import { OTPHandler } from '@infra/storages/cache/redis/handlers/OTP/OTPHandler';
+import { UserHandler } from '@infra/storages/cache/redis/handlers/user/userHandler';
+import { redisClient } from '@infra/storages/cache/redis/redisClient';
 import { OTPFactory } from '@test/fatories/OTP';
 import { userFactory } from '@test/fatories/user';
 import { InMemmoryUser } from '@test/inMemmoryDatabases/user';
@@ -43,7 +43,7 @@ describe('Validate account test', () => {
     await otpHandler.sendOTP(otp, user.email.value);
 
     const validateAccountService = new ValidateAccountService(
-      genTokens, 
+      genTokens,
       userRepo,
       bcrypt,
       userHandler,
@@ -72,7 +72,7 @@ describe('Validate account test', () => {
     const fakeUser = userFactory();
 
     const validateAccountService = new ValidateAccountService(
-      genTokens, 
+      genTokens,
       userRepo,
       bcrypt,
       userHandler,
@@ -101,7 +101,7 @@ describe('Validate account test', () => {
       .mockImplementation(async () => false);
 
     const validateAccountService = new ValidateAccountService(
-      genTokens, 
+      genTokens,
       userRepo,
       bcrypt,
       userHandler,
