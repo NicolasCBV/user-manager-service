@@ -1,0 +1,59 @@
+version: "3"
+
+services:
+  db:
+    image: mysql:latest
+    hostname: mysql_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: "db"
+      MYSQL_ROOT_PASSWORD: "password"
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    networks:
+      - internal_network     
+    volumes:
+      - db:/var/lib/mysql
+  
+  redis_db:
+    image: redis:7.0.5-bullseye
+    restart: always
+    hostname: redis
+    ports:
+      - "6379:6379"
+    command: redis-server --loglevel warning --requirepass password 
+    networks:
+      - internal_network 
+    volumes:
+      - cache:/data
+
+  app:
+    build:
+      context: ./user-service
+      dockerfile: app.Dockerfile
+    hostname: app
+    restart: always
+    volumes:
+      - ./user-service:/usr/app/
+      - '/usr/app/node_modules'
+    ports:
+      - "3030:3030"
+    networks:
+      - internal_network
+      - external_network
+    depends_on:
+      - db
+      - redis_db
+
+volumes:
+  db:
+    driver: local
+  cache:
+    driver: local
+
+networks:
+  external_network:
+  internal_network:
+    internal: true

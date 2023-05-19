@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html
+  style="padding: 0; margin: 0; width: 100%; height: 100%; color: rgb(39 39 42)"
+>
+  <head style="padding: 0; margin: 0">
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+      style="padding: 0; margin: 0"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+      style="padding: 0; margin: 0"
+    />
+  </head>
+  <div
+    id="body"
+    style="
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      color: rgb(39 39 42);
+    "
+  >
+    <div
+      id="container"
+      style="
+        padding: clamp(8px, 20%, 32px);
+        width: clamp(50px, 80%, 550px);
+        font-family: Roboto, sans-serif;
+        font-weight: 400;
+      "
+    >
+      <h1
+        id="title"
+        style="
+          padding: 0;
+          margin-bottom: 16px;
+          font-family: Poppins, sans-serif;
+          font-weight: 600;
+          font-size: x-large;
+        "
+      >
+        Seja bem-vindo {{name}}
+      </h1>
+      <p style="padding: 0; margin-bottom: 18px">
+        Aproveite os inúmeros produtos da loja Dropneos com os descontos
+        entregues para aqueles que recém começaram no site. Mas, antes de
+        começar, é muito importante garantir a sua segurança. Portanto, confirme
+        a sua identidade inserindo o código abaixo no campo requisitado do site.
+      </p>
+      <p id="warn" style="padding: 0; margin-bottom: 16px; color: rgb(234, 40, 40)">
+        AVISO: não compartilhe este código com ninguém.
+      </p>
+      <p
+        id="code"
+        style="
+          width: clamp(80px, 20%, 144px);
+          padding: 4px 16px;
+          margin: 0 30%;
+          border: solid 1px rgb(39 39 42);
+          border-radius: 16px;
+          font-family: Roboto, sans-serif;
+          font-weight: 500;
+          font-size: 18px;
+        "
+      >
+        {{code}}
+      </p>
+      <p style="padding: 0; margin-top: 16px">
+        Não foi você quem se cadastrou? Não se preocupe, apenas ignore este
+        e-mail.
+      </p>
+    </div>
+  </div>
+</html>
