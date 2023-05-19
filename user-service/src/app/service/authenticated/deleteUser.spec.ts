@@ -1,15 +1,13 @@
-import { FirebaseAPI } from '@src/intra/api/firebase';
-import { MiscellaneousHandler } from '@src/intra/storages/cache/redis/handlers/misc/miscellaneousHandler';
-import { TokenHandler } from '@src/intra/storages/cache/redis/handlers/token/tokenHandler';
-import { UserHandler } from '@src/intra/storages/cache/redis/handlers/user/userHandler';
-import { redisClient } from '@src/intra/storages/cache/redis/redisClient';
+import { FirebaseAPI } from '@infra/api/firebase';
+import { MiscellaneousHandler } from '@infra/storages/cache/redis/handlers/misc/miscellaneousHandler';
+import { TokenHandler } from '@infra/storages/cache/redis/handlers/token/tokenHandler';
+import { UserHandler } from '@infra/storages/cache/redis/handlers/user/userHandler';
+import { redisClient } from '@infra/storages/cache/redis/redisClient';
 import { userFactory } from '@test/fatories/user';
 import { InMemmoryUser } from '@test/inMemmoryDatabases/user';
 import { DeleteUserService } from './deleteUser.service';
 
-jest
-  .spyOn(FirebaseAPI.prototype, 'send')
-  .mockImplementation(async () => {});
+jest.spyOn(FirebaseAPI.prototype, 'send').mockImplementation();
 
 const firebase = new FirebaseAPI();
 const userHandler = new UserHandler();

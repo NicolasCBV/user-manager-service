@@ -2,13 +2,13 @@ import { userFactory } from '@test/fatories/user';
 import { InMemmoryUser } from '@test/inMemmoryDatabases/user';
 import { BcryptAdapter } from '../../adapters/bcrypt/bcryptAdapter';
 import { CreateUserService } from './createUser.service';
-import { redisClient } from '@src/intra/storages/cache/redis/redisClient';
-import { UserHandler } from '@src/intra/storages/cache/redis/handlers/user/userHandler';
-import { OTPHandler } from '@src/intra/storages/cache/redis/handlers/OTP/OTPHandler';
+import { redisClient } from '@infra/storages/cache/redis/redisClient';
+import { UserHandler } from '@infra/storages/cache/redis/handlers/user/userHandler';
+import { OTPHandler } from '@infra/storages/cache/redis/handlers/OTP/OTPHandler';
 import { NodemailerAdapter } from '@src/app/adapters/nodemailer/nodemailerAdapter';
 import { UserInCache } from '@src/app/entities/userInCache/userInCache';
 import { OTP } from '@src/app/entities/OTP/_OTP';
-import { MiscellaneousHandler } from '@src/intra/storages/cache/redis/handlers/misc/miscellaneousHandler';
+import { MiscellaneousHandler } from '@infra/storages/cache/redis/handlers/misc/miscellaneousHandler';
 
 jest
   .spyOn(BcryptAdapter.prototype, 'hash')
@@ -52,7 +52,9 @@ describe('Create user tests', () => {
     const nonexistentUser = await userRepo.find({ email: user.email.value });
     const existentUser = await userHandler.getUser(user.email.value);
     const existentOTP = await otpHandler.getOTP(user.email.value);
-    const existentCancelKeyOTP = await otpHandler.getCancelKeyOTP(user.email.value);
+    const existentCancelKeyOTP = await otpHandler.getCancelKeyOTP(
+      user.email.value,
+    );
 
     expect(typeof res).toEqual('string');
     expect(nonexistentUser).toBeNull();

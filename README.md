@@ -1,6 +1,6 @@
 # USER SERVICE BOILERPLATE
 ## ABOUT
-This system is a user manager service, dedicated to handle with some core operations of user management. If you wish to turn your development more fast, this system is a good option if your system is more simply, like a monolith, and you want to handle with manual login.
+This system is a user manager service, dedicated to handle with some core operations of user management. If you wish to turn your development more fast, this system is a good option if your system is more simple and requires only one instance to handle with logins, mora than this, for now is unsupported.
 
 ## TECHNOLOGIES
 Nestjs: as a backend framework

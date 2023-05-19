@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { TokenHandlerContract } from '@src/intra/storages/cache/contract/tokenHandler';
-import { SearchUserManager } from '@src/intra/storages/search/searchUserManager.service';
+import { TokenHandlerContract } from '@infra/storages/cache/contract/tokenHandler';
+import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { forgotPasswordTemplate } from '@templates/forgotPassword';
 import { CryptAdapter } from '../../adapters/crypt';
 import { EmailAdapter } from '../../adapters/email';
@@ -20,22 +20,18 @@ export class ForgotPasswordService {
     const user = await this.searchForUser.exec(email);
 
     const { ['id']: sub } = user;
-    const deviceIdHashed = deviceId 
-      ? await this.crypt.hash(deviceId) 
-      : null;
+    const deviceIdHashed = deviceId ? await this.crypt.hash(deviceId) : null;
 
     const token = this.jwtService.sign(
-      { 
-        sub, 
-        email, 
-        type: this.tokenHandler.tokenTypes.forgotToken, 
-        deviceId: deviceIdHashed 
+      {
+        sub,
+        email,
+        type: this.tokenHandler.tokenTypes.forgotToken,
+        deviceId: deviceIdHashed,
       },
       {
         secret: process.env.FORGOT_TOKEN_KEY as string,
-        expiresIn: parseInt(
-          process.env.FORGOT_TOKEN_EXPIRES ?? '120000'
-        ),
+        expiresIn: parseInt(process.env.FORGOT_TOKEN_EXPIRES ?? '120000'),
       },
     );
 
@@ -43,9 +39,7 @@ export class ForgotPasswordService {
       id: sub,
       type: this.tokenHandler.tokenTypes.forgotToken,
       content: token,
-      expiresIn: parseInt(
-        process.env.FORGOT_TOKEN_EXPIRES ?? '120000'
-      ),
+      expiresIn: parseInt(process.env.FORGOT_TOKEN_EXPIRES ?? '120000'),
     });
 
     const url = `${process.env.CLIENT_URL}/forgot?token=${token}`;

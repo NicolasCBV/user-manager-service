@@ -1,11 +1,11 @@
 import { JwtService } from '@nestjs/jwt';
 import { NodemailerAdapter } from '@src/app/adapters/nodemailer/nodemailerAdapter';
-import { MiscellaneousHandler } from '@src/intra/storages/cache/redis/handlers/misc/miscellaneousHandler';
-import { OTPHandler } from '@src/intra/storages/cache/redis/handlers/OTP/OTPHandler';
-import { TokenHandler } from '@src/intra/storages/cache/redis/handlers/token/tokenHandler';
-import { UserHandler } from '@src/intra/storages/cache/redis/handlers/user/userHandler';
-import { redisClient } from '@src/intra/storages/cache/redis/redisClient';
-import { SearchUserManager } from '@src/intra/storages/search/searchUserManager.service';
+import { MiscellaneousHandler } from '@infra/storages/cache/redis/handlers/misc/miscellaneousHandler';
+import { OTPHandler } from '@infra/storages/cache/redis/handlers/OTP/OTPHandler';
+import { TokenHandler } from '@infra/storages/cache/redis/handlers/token/tokenHandler';
+import { UserHandler } from '@infra/storages/cache/redis/handlers/user/userHandler';
+import { redisClient } from '@infra/storages/cache/redis/redisClient';
+import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { userFactory } from '@test/fatories/user';
 import { InMemmoryUser } from '@test/inMemmoryDatabases/user';
 import { BcryptAdapter } from '../../adapters/bcrypt/bcryptAdapter';

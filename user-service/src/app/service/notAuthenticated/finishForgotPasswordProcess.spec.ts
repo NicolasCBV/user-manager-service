@@ -1,9 +1,9 @@
 import { BcryptAdapter } from '@src/app/adapters/bcrypt/bcryptAdapter';
-import { MiscellaneousHandler } from '@src/intra/storages/cache/redis/handlers/misc/miscellaneousHandler';
-import { TokenHandler } from '@src/intra/storages/cache/redis/handlers/token/tokenHandler';
-import { UserHandler } from '@src/intra/storages/cache/redis/handlers/user/userHandler';
-import { redisClient } from '@src/intra/storages/cache/redis/redisClient';
-import { SearchUserManager } from '@src/intra/storages/search/searchUserManager.service';
+import { MiscellaneousHandler } from '@infra/storages/cache/redis/handlers/misc/miscellaneousHandler';
+import { TokenHandler } from '@infra/storages/cache/redis/handlers/token/tokenHandler';
+import { UserHandler } from '@infra/storages/cache/redis/handlers/user/userHandler';
+import { redisClient } from '@infra/storages/cache/redis/redisClient';
+import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { userFactory } from '@test/fatories/user';
 import { InMemmoryUser } from '@test/inMemmoryDatabases/user';
 import { FinishForgotPasswordService } from './finishForgotPasswordProcess.service';

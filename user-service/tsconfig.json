@@ -28,7 +28,7 @@
     "paths": {
       "@src/*": ["src/*"],
       "@app/*": ["src/app/*"],
-      "@intra/*": ["src/intra/*"],
+      "@infra/*": ["src/infra/*"],
       "@helpers/*": ["src/helpers/*"],
       "@test/*": ["test/*"],
       "@templates/*": ["templates/*"]

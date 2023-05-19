@@ -2,10 +2,10 @@ import { BcryptAdapter } from '@src/app/adapters/bcrypt/bcryptAdapter';
 import { NodemailerAdapter } from '@src/app/adapters/nodemailer/nodemailerAdapter';
 import { OTP } from '@src/app/entities/OTP/_OTP';
 import { Email } from '@src/app/entities/user/email';
-import { OTPHandler } from '@src/intra/storages/cache/redis/handlers/OTP/OTPHandler';
-import { UserHandler } from '@src/intra/storages/cache/redis/handlers/user/userHandler';
-import { redisClient } from '@src/intra/storages/cache/redis/redisClient';
-import { SearchUserManager } from '@src/intra/storages/search/searchUserManager.service';
+import { OTPHandler } from '@infra/storages/cache/redis/handlers/OTP/OTPHandler';
+import { UserHandler } from '@infra/storages/cache/redis/handlers/user/userHandler';
+import { redisClient } from '@infra/storages/cache/redis/redisClient';
+import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { OTPFactory } from '@test/fatories/OTP';
 import { userInCacheFactory } from '@test/fatories/userInCache';
 import { InMemmoryUser } from '@test/inMemmoryDatabases/user';
@@ -19,10 +19,7 @@ const mailtrap = new NodemailerAdapter();
 const userHandler = new UserHandler();
 const otpHandler = new OTPHandler();
 
-const searchUser = new SearchUserManager(
- userHandler,
- userRepo
-);
+const searchUser = new SearchUserManager(userHandler, userRepo);
 
 describe('Launch OTP test', () => {
   afterEach(async () => {

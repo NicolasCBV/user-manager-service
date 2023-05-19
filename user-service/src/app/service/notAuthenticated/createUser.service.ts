@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { generateRandomCharacters } from '@intra/helpers/generateRandomCharacters';
+import { generateRandomCharacters } from '@infra/helpers/generateRandomCharacters';
 import { CryptAdapter } from '../../adapters/crypt';
 import { EmailAdapter } from '../../adapters/email';
 import { OTP } from '../../entities/OTP/_OTP';
 import { UserInCache } from '../../entities/userInCache/userInCache';
 import { UserOnObjects } from '../../mappers/userInObjects';
 import { UsersRepositories } from '../../repositories/users';
-import { UserHandlerContract } from '@src/intra/storages/cache/contract/userHandler';
+import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
 import { createUserTemplate } from '@templates/createAccount';
-import { MiscellaneousHandlerContract } from '@src/intra/storages/cache/contract/miscellaneousHandler';
+import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
 import { randomUUID } from 'node:crypto';
 
 interface ICreateUser {
@@ -31,17 +31,16 @@ export class CreateUserService {
       data.email,
       data.name,
     );
-    
+
     if (!userOnDatabase)
       userOnDatabase = Boolean(
-        await this.userRepo.exist({ 
-          email: data.email, 
-          name: data.name 
+        await this.userRepo.exist({
+          email: data.email,
+          name: data.name,
         }),
       );
 
-    if (userOnDatabase) 
-      throw new Error('The entitie already exist.');
+    if (userOnDatabase) throw new Error('The entitie already exist.');
 
     // create user
     const password = await this.crypt.hash(data.password);
@@ -66,11 +65,7 @@ export class CreateUserService {
     });
 
     // start sigin stage
-    await this.miscHandler.startUserSigin(
-      userOnCache,
-      otp,
-      cancelKeyOTP,
-    );
+    await this.miscHandler.startUserSigin(userOnCache, otp, cancelKeyOTP);
 
     await this.email.send({
       from: `${process.env.NAME_SENDER as string}

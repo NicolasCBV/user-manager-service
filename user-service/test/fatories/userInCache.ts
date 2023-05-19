@@ -1,7 +1,7 @@
 import { Email } from '@app/entities/user/email';
 import { Name } from '@app/entities/user/name';
 import { Password } from '@app/entities/user/password';
-import { UserInCache } from '@src/app/entities/userInCache/userInCache';
+import { UserInCache } from '@app/entities/userInCache/userInCache';
 
 type IOverride = Partial<UserInCache>;
 

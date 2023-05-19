@@ -2,11 +2,12 @@ version: "3"
 
 services:
   db:
-    build:
-      context: ./mysql
-      dockerfile: Dockerfile
+    image: mysql:latest
     hostname: mysql_db
-    restart: always 
+    restart: always
+    environment:
+      MYSQL_DATABASE: "db"
+      MYSQL_ROOT_PASSWORD: "password"
     ports:
       - "3306:3306"
     expose:
@@ -31,7 +32,7 @@ services:
   app:
     build:
       context: ./user-service
-      dockerfile: Dockerfile
+      dockerfile: app.Dockerfile
     hostname: app
     restart: always
     volumes:
@@ -45,22 +46,6 @@ services:
     depends_on:
       - db
       - redis_db
-
-  nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    container_name: nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx:/etc/nginx
-    networks:
-      - external_network
-    depends_on:
-      - app
-      - redis_db
-      - db
 
 volumes:
   db:

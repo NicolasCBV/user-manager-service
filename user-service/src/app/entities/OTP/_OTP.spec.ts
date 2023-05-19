@@ -1,4 +1,4 @@
-import { generateRandomCharacters } from '@src/intra/helpers/generateRandomCharacters';
+import { generateRandomCharacters } from '@infra/helpers/generateRandomCharacters';
 import { randomUUID } from 'crypto';
 import { OTP } from './_OTP';
 

@@ -1,5 +1,5 @@
-import { UserHandler } from '@src/intra/storages/cache/redis/handlers/user/userHandler';
-import { redisClient } from '@src/intra/storages/cache/redis/redisClient';
+import { UserHandler } from '@infra/storages/cache/redis/handlers/user/userHandler';
+import { redisClient } from '@infra/storages/cache/redis/redisClient';
 import { userFactory } from '@test/fatories/user';
 import { InMemmoryUser } from '@test/inMemmoryDatabases/user';
 import { UpdateUserService } from './updateUser.service';

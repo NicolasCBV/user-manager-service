@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CryptAdapter } from '@src/app/adapters/crypt';
-import { User } from '@src/app/entities/user/_user';
-import { UserInCache } from '@src/app/entities/userInCache/userInCache';
 import { UsersRepositories } from '@src/app/repositories/users';
-import { MiscellaneousHandlerContract } from '@src/intra/storages/cache/contract/miscellaneousHandler';
-import { OTPHandlerContract } from '@src/intra/storages/cache/contract/OTPHandler';
-import { UserHandlerContract } from '@src/intra/storages/cache/contract/userHandler';
+import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
+import { OTPHandlerContract } from '@infra/storages/cache/contract/OTPHandler';
+import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
 
 @Injectable()
 export class CancelCreationService {
@@ -19,8 +17,7 @@ export class CancelCreationService {
 
   async exec(email: string, cancelKey: string): Promise<void> {
     const cancelKeyOTP = await this.otpHandler.getCancelKeyOTP(email);
-    if (!cancelKeyOTP)
-      throw new Error('Cancel key invalid');
+    if (!cancelKeyOTP) throw new Error('Cancel key invalid');
 
     const userOnDatabase = await this.userRepo.exist({ email });
     const userOnCacheMemmory = await this.userHandler.getUser(email);
