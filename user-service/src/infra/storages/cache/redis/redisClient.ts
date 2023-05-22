@@ -6,16 +6,14 @@ dotenv.config();
 
 const url = `redis://:${process.env.CACHE_PASSWORD}@${process.env.CACHE_HOSTNAME}:6379`;
 
-function getRedisClient() {
-  let redisClient;
-
-  if (process.env.NODE_ENV !== 'test') {
-    redisClient = new Redis(url);
+function getRedisClient(): Redis {
+  if (process.env.NODE_ENV === 'test') {
+    const redisClient = new RedisMock(url);
 
     return redisClient;
   }
 
-  redisClient = new RedisMock(url);
+  const redisClient = new Redis(url);
   return redisClient;
 }
 
