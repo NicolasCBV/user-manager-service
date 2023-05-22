@@ -39,6 +39,7 @@ import { CancelCreationController } from './controllers/users/notAuthenticated/c
 
 import { CreateUserBody } from './dto/createUserBody';
 import { LoginUserBody } from './dto/loginUser';
+import { LifeController } from './controllers/life.controller';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { LoginUserBody } from './dto/loginUser';
     ApiModule,
   ],
   controllers: [
+    LifeController,
     CreateUserController,
     DeleteUserController,
     GetUserController,

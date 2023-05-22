@@ -32,7 +32,7 @@ services:
       - cache:/data
   
   app:
-    image: nicolascbv/user-manager-service
+    image: nicolascbv/user-manager-service:latest 
     hostname: app
     environment:
       - PROJECT_NAME=User-service
@@ -53,14 +53,10 @@ services:
       - 'FIREBASE_TEMPLATE_IMAGE_LINK=https://firebasestorage.googleapis.com/v0/b/<project name>.appspot.com/o'
       - 'FIREBASE_BUCKET='
       - HOST_SENDER=
-      - HOST_PORT_SENDER= 
+      - HOST_PORT_SENDER=
       - EMAIL_SENDER=
       - PASS_SENDER=
-
     restart: always
-    volumes:
-      - ../user-service:/usr/app/
-      - '/usr/app/node_modules'
     ports:
       - "3030:3030"
     networks:
