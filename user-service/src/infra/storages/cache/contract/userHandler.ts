@@ -30,7 +30,8 @@ export abstract class UserHandlerContract extends DefaultHandlerParams {
     cancelKeyOTP: OTP,
   ): Promise<void>;
   abstract resendOTPForUser(
-    user: UserInCache,
+    email: string,
+    name: string,
     TTL: number,
     newOTP: OTP,
     cancelKeyOTP: OTP,
