@@ -5,7 +5,6 @@ import { Email } from '@src/app/entities/user/email';
 import { OTPHandler } from '@infra/storages/cache/redis/handlers/OTP/OTPHandler';
 import { UserHandler } from '@infra/storages/cache/redis/handlers/user/userHandler';
 import { redisClient } from '@infra/storages/cache/redis/redisClient';
-import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { OTPFactory } from '@test/fatories/OTP';
 import { userInCacheFactory } from '@test/fatories/userInCache';
 import { InMemmoryUser } from '@test/inMemmoryDatabases/user';
@@ -18,8 +17,6 @@ const bcryptAdapter = new BcryptAdapter();
 const mailtrap = new NodemailerAdapter();
 const userHandler = new UserHandler();
 const otpHandler = new OTPHandler();
-
-const searchUser = new SearchUserManager(userHandler, userRepo);
 
 describe('Launch OTP test', () => {
   afterEach(async () => {
@@ -43,7 +40,6 @@ describe('Launch OTP test', () => {
 
     const launchOTPService = new LaunchOTPService(
       userRepo,
-      searchUser,
       bcryptAdapter,
       mailtrap,
       userHandler,
@@ -66,7 +62,6 @@ describe('Launch OTP test', () => {
 
     const launchOTPService = new LaunchOTPService(
       userRepo,
-      searchUser,
       bcryptAdapter,
       mailtrap,
       userHandler,
@@ -87,7 +82,6 @@ describe('Launch OTP test', () => {
 
     const launchOTPService = new LaunchOTPService(
       userRepo,
-      searchUser,
       bcryptAdapter,
       mailtrap,
       userHandler,
