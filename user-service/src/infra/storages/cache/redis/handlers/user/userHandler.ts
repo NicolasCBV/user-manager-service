@@ -152,14 +152,15 @@ export class UserHandler
   }
 
   async resendOTPForUser(
-    user: UserInCache,
+    email: string,
+    name: string,
     TTL: number,
     newOTP: OTP,
     cancelKeyOTP: OTP,
   ): Promise<void> {
-    const userKey = `${this.userKW}:${user.email.value}`;
-    const reservedNameKey = `${this.userKW}:reservedName[${user.name.value}]`;
-    const OTPKey = `${this.otpKW}:${user.email.value}`;
+    const userKey = `${this.userKW}:${email}`;
+    const reservedNameKey = `${this.userKW}:reservedName[${name}]`;
+    const OTPKey = `${this.otpKW}:${email}`;
 
     const ttl = process.env.OTP_TIME as unknown as number;
 
@@ -177,7 +178,7 @@ export class UserHandler
       .expire(reservedNameKey, TTL, 'XX')
       .set(OTPKey, JSON.stringify(newOTP), 'PX', ttl, 'XX')
       .set(
-        `${this.otpKW}:${user.email.value}.cancelKey`,
+        `${this.otpKW}:${email}.cancelKey`,
         JSON.stringify(cancelKeyOTP),
         'PX',
         ttl,
