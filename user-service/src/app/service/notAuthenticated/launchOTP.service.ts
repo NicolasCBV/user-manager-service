@@ -7,15 +7,14 @@ import { UsersRepositories } from '../../repositories/users';
 import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
 import { createUserTemplate } from '@templates/createAccount';
 import { UserInCache } from '@src/app/entities/userInCache/userInCache';
-import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { OTPHandlerContract } from '@infra/storages/cache/contract/OTPHandler';
 import { randomUUID } from 'node:crypto';
+import { User } from '@src/app/entities/user/_user';
 
 @Injectable()
 export class LaunchOTPService {
   constructor(
     private readonly userRepo: UsersRepositories,
-    private readonly searchUser: SearchUserManager,
     private readonly crypt: CryptAdapter,
     private readonly email: EmailAdapter,
     private readonly userHandler: UserHandlerContract,
@@ -26,23 +25,29 @@ export class LaunchOTPService {
     const userOnDatabase = await this.userRepo.exist({ email });
     if (userOnDatabase) throw new Error('The entitie already exist');
 
-    const userOnCacheMemmory = await this.userHandler.getUser(email);
-    if (!userOnCacheMemmory) throw new Error('This user was not triggered');
+    const userOnCacheMemory = await this.userHandler.getUser(email);
+    if (!userOnCacheMemory) throw new Error('This user was not triggered');
 
-    return userOnCacheMemmory;
+    return userOnCacheMemory;
+  }
+
+  private async isLoging(email: string): Promise<User> {
+    const userOnDatabase = await this.userRepo.find({ email });
+    if (!userOnDatabase) throw new Error('This user should not launch OTP');
+
+    return userOnDatabase;
   }
 
   async exec(email: string, isLoging = false): Promise<string> {
     // Check data
-    let userOnCacheMemmory: UserInCache;
-
-    if (!isLoging) userOnCacheMemmory = await this.isSigining(email);
-    else userOnCacheMemmory = await this.searchUser.exec(email);
+    const user: User | UserInCache = isLoging
+      ? await this.isLoging(email)
+      : await this.isSigining(email);
 
     const otp = await this.otpHandler.getOTP(email);
     if (!otp) throw new Error("This user doesn't requested one OTP");
 
-    // Validate if OTP
+    // Validate OTP time
     const timeToExpire = parseInt(process.env.OTP_TIME ?? '120000');
 
     const minTimeToLaunch = otp.createdAt.getTime() + 1000 * 30; // 30 secs
@@ -72,7 +77,8 @@ export class LaunchOTPService {
       ? Math.floor(parseInt(process.env.OTP_TIME ?? '120000') / 1000)
       : 1000 * 60 * 60 * 24;
     await this.userHandler.resendOTPForUser(
-      userOnCacheMemmory,
+      user.email.value,
+      user.name.value,
       TTL,
       newOTP,
       cancelKeyOTP,
@@ -88,7 +94,7 @@ export class LaunchOTPService {
       } - Verificação de duas etapas`,
       body: createUserTemplate({
         code,
-        name: userOnCacheMemmory.name.value,
+        name: user.name.value,
       }),
     });
 

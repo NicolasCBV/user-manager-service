@@ -13,7 +13,10 @@ COPY . .
 
 RUN yarn gen
 RUN yarn build
-RUN yarn install --production --offline
+RUN yarn install --production=true \
+				 --ignore-scripts \
+				 --prefer-offline \
+				 --link-duplicates 
 
 #------- release stage -----------
 FROM base AS release
