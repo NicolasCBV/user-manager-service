@@ -1,15 +1,24 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from './prisma/prisma.service';
 import { UsersRepositories } from '../../../app/repositories/users';
-import { PrismaUserRepository } from './prisma/repositories/user';
+import { entitiesProviders } from './typeorm/entities/entities.provider';
+import { UserService } from './typeorm/entities/user/user.service';
+import { databaseProviders } from './typeorm/database.provider';
 
 @Module({
   providers: [
-    PrismaService,
+    /* switch for this to use prisma, dont forget to import this contents:
+    * PrismaService,
+    * {
+    *   provide: UsersRepositories,
+    *   useClass: PrismaUserRepository,
+    * },
+    */
+    ...databaseProviders,
+    ...entitiesProviders,
     {
       provide: UsersRepositories,
-      useClass: PrismaUserRepository,
-    },
+      useClass: UserService
+    }
   ],
   exports: [UsersRepositories],
 })

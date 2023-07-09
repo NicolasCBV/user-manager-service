@@ -9,7 +9,7 @@ import { OTPHandlerContract } from '@infra/storages/cache/contract/OTPHandler';
 import { TokenHandlerContract } from '@infra/storages/cache/contract/tokenHandler';
 import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
 import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
-import { TFATemplate } from '@templates/TFA';
+import { TFARecommendedTitle, TFATemplate } from '@templates/TFA';
 import { CryptAdapter } from '../../adapters/crypt';
 
 @Injectable()
@@ -51,7 +51,7 @@ export class AuthService {
         to: email,
         subject: `${
           (process.env.PROJECT_NAME as string) ?? ''
-        } - Verificação de duas etapas`,
+        } - ${TFARecommendedTitle}`,
         body: TFATemplate({
           code,
           name: user.name.value,
