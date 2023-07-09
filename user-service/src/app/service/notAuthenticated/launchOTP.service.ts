@@ -5,7 +5,7 @@ import { EmailAdapter } from '../../adapters/email';
 import { OTP } from '../../entities/OTP/_OTP';
 import { UsersRepositories } from '../../repositories/users';
 import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
-import { createUserTemplate } from '@templates/createAccount';
+import { createAccountRecommendedTitle, createUserTemplate } from '@templates/createAccount';
 import { UserInCache } from '@src/app/entities/userInCache/userInCache';
 import { OTPHandlerContract } from '@infra/storages/cache/contract/OTPHandler';
 import { randomUUID } from 'node:crypto';
@@ -91,7 +91,7 @@ export class LaunchOTPService {
       to: email,
       subject: `${
         (process.env.PROJECT_NAME as string) ?? ''
-      } - Verificação de duas etapas`,
+      } - ${createAccountRecommendedTitle}`,
       body: createUserTemplate({
         code,
         name: user.name.value,

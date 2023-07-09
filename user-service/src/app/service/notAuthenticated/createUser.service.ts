@@ -7,7 +7,7 @@ import { UserInCache } from '../../entities/userInCache/userInCache';
 import { UserOnObjects } from '../../mappers/userInObjects';
 import { UsersRepositories } from '../../repositories/users';
 import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
-import { createUserTemplate } from '@templates/createAccount';
+import { createAccountRecommendedTitle, createUserTemplate } from '@templates/createAccount';
 import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
 import { randomUUID } from 'node:crypto';
 
@@ -73,7 +73,7 @@ export class CreateUserService {
       to: data.email,
       subject: `${
         (process.env.PROJECT_NAME as string) ?? ''
-      } - Verificação de duas etapas`,
+      } - ${createAccountRecommendedTitle}`,
       body: createUserTemplate({
         code,
         name: data.name,

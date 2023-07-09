@@ -13,6 +13,6 @@ export function userFactory(override: IOverride = {}) {
       password: new Password('123456'),
       ...override,
     },
-    'default id',
+    override.id ?? 'default id',
   );
 }

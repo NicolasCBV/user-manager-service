@@ -13,7 +13,7 @@ export class UploadImageService {
   ) {}
 
   async exec(id: string, file: Express.Multer.File): Promise<string> {
-    file.filename = `user:${id}/${file.originalname}`.replaceAll(' ', '_');
+    file.filename = `user:${id}/profilePicture.${file.mimetype.split('/')[1]}`.replaceAll(' ', '_');
 
     const oldUser = await this.userRepo.find({ id });
 

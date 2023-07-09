@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TokenHandlerContract } from '@infra/storages/cache/contract/tokenHandler';
 import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
-import { forgotPasswordTemplate } from '@templates/forgotPassword';
+import { forgotPasswordRecommendedTitle, forgotPasswordTemplate } from '@templates/forgotPassword';
 import { CryptAdapter } from '../../adapters/crypt';
 import { EmailAdapter } from '../../adapters/email';
 
@@ -50,7 +50,7 @@ export class ForgotPasswordService {
       to: email,
       subject: `${
         (process.env.PROJECT_NAME as string) ?? ''
-      } - Verificação de duas etapas`,
+      } - ${forgotPasswordRecommendedTitle}`,
       body: forgotPasswordTemplate({
         name: user.name.value,
         link: url,
