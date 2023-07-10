@@ -7,18 +7,18 @@ import { databaseProviders } from './typeorm/database.provider';
 @Module({
   providers: [
     /* switch for this to use prisma, dont forget to import this contents:
-    * PrismaService,
-    * {
-    *   provide: UsersRepositories,
-    *   useClass: PrismaUserRepository,
-    * },
-    */
+     * PrismaService,
+     * {
+     *   provide: UsersRepositories,
+     *   useClass: PrismaUserRepository,
+     * },
+     */
     ...databaseProviders,
     ...entitiesProviders,
     {
       provide: UsersRepositories,
-      useClass: UserService
-    }
+      useClass: UserService,
+    },
   ],
   exports: [UsersRepositories],
 })

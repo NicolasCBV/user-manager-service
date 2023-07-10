@@ -1,9 +1,8 @@
-import { MigrationInterface, QueryRunner } from "typeorm"
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreateUserTable1688789695814 implements MigrationInterface {
-
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        queryRunner.query(`
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    queryRunner.query(`
             CREATE TABLE IF NOT EXISTS db.users (
                 id VARCHAR(191) NOT NULL,
                 name VARCHAR(64) NOT NULL,
@@ -19,10 +18,9 @@ export class CreateUserTable1688789695814 implements MigrationInterface {
                 PRIMARY KEY (id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
         `);
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        queryRunner.query('DROP TABLE db.users');
-    }
-
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    queryRunner.query('DROP TABLE db.users');
+  }
 }

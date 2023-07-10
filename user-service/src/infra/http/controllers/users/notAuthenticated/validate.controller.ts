@@ -30,7 +30,7 @@ export class ValidateUserController {
           err.message === 'Unauthorized' ||
           err.message === 'The entitie already exist.'
         )
-          throw new HttpException(err.message, HttpStatus.UNAUTHORIZED);
+          throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
 
         throw err;
       });

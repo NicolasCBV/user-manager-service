@@ -15,21 +15,25 @@ export class TypeORMUserMapper {
       imageUrl: user.imageUrl ?? undefined,
       description: user?.description?.value ?? undefined,
       createdAt: user.createdAt,
-      updatedAt: user.updatedAt
-    }
+      updatedAt: user.updatedAt,
+    };
   }
 
   static toUserEntitie(user: TypeORMUser): User {
-    return new User({
-      name: new Name(user.name),
-      email: new Email(user.email),
-      description: typeof user.description === 'string'
-        ? new Description(user.description)
-        : null,
-      password: new Password(user.password),
-      imageUrl: user.imageUrl,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt
-    }, user.id);
+    return new User(
+      {
+        name: new Name(user.name),
+        email: new Email(user.email),
+        description:
+          typeof user.description === 'string'
+            ? new Description(user.description)
+            : null,
+        password: new Password(user.password),
+        imageUrl: user.imageUrl,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+      user.id,
+    );
   }
 }

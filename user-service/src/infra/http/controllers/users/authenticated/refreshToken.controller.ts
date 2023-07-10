@@ -11,10 +11,31 @@ import { RefreshTokenService } from '@app/service/authenticated/refreshToken.ser
 import { Request, Response } from 'express';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { name } from '..';
+import { DefaultController } from '../../defaultController';
 
 @Controller(name)
-export class RefreshTokenController {
-  constructor(private readonly refreshTokenService: RefreshTokenService) {}
+export class RefreshTokenController extends DefaultController {
+  constructor(private readonly refreshTokenService: RefreshTokenService) {
+    super({
+      possibleErrors: [
+        {
+          name: "The device id doesn't match",
+          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+        },
+        {
+          name: 'Wrong token',
+          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+        },
+        {
+          name: "This user doesn't exist",
+          exception: new HttpException(
+            "This user doesn't exist",
+            HttpStatus.NOT_FOUND,
+          ),
+        },
+      ],
+    });
+  }
 
   @Post('refresh-token')
   @HttpCode(200)
@@ -31,17 +52,10 @@ export class RefreshTokenController {
     const { access_token, refresh_token } = await this.refreshTokenService
       .exec(refreshToken, req.body?.deviceId)
       .catch((err) => {
-        if (
-          err instanceof JsonWebTokenError ||
-          err.message === "The device id doesn't match" ||
-          err.message === 'Wrong token'
-        ) {
+        if (err instanceof JsonWebTokenError)
           throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
-        }
 
-        if (err.message === "This user doesn't exist")
-          throw new HttpException(err.message, HttpStatus.CONFLICT);
-        throw err;
+        return this.interpretErrors(err);
       });
 
     const expiresDate = new Date(

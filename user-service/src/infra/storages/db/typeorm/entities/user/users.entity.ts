@@ -1,9 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index, Unique } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Index,
+  Unique,
+} from 'typeorm';
 
 @Entity('users')
-@Index([ 'name', 'email' ])
-@Unique([ 'name' ])
-@Unique([ 'email' ])
+@Index(['name', 'email'])
+@Unique(['name'])
+@Unique(['email'])
 export class TypeORMUser {
   @PrimaryGeneratedColumn('uuid')
   id: string;

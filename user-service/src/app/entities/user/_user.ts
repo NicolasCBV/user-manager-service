@@ -33,15 +33,17 @@ export class User {
     };
   }
 
-  public isEqual(user: User): Boolean {
-    return user._id === this._id &&
+  public isEqual(user: User): boolean {
+    return (
+      user._id === this._id &&
       user.name.value === this.props.name.value &&
       user.email.value === this.props.email.value &&
       user?.description?.value === this.props?.description?.value &&
       user.imageUrl === this.props.imageUrl &&
       user.password === this.props.password &&
       user.updatedAt === this.props.updatedAt &&
-      user.createdAt === this.props.createdAt;
+      user.createdAt === this.props.createdAt
+    );
   }
 
   // id property

@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TokenHandlerContract } from '@infra/storages/cache/contract/tokenHandler';
 import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
-import { forgotPasswordRecommendedTitle, forgotPasswordTemplate } from '@templates/forgotPassword';
+import {
+  forgotPasswordRecommendedTitle,
+  forgotPasswordTemplate,
+} from '@templates/forgotPassword';
 import { CryptAdapter } from '../../adapters/crypt';
 import { EmailAdapter } from '../../adapters/email';
 

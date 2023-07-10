@@ -11,10 +11,23 @@ import { IJwtTokenUser } from '@app/auth/jwt.core';
 import { DeleteUserService } from '@app/service/authenticated/deleteUser.service';
 import { Request } from 'express';
 import { name } from '..';
+import { DefaultController } from '../../defaultController';
 
 @Controller(name)
-export class DeleteUserController {
-  constructor(private readonly deleteUserService: DeleteUserService) {}
+export class DeleteUserController extends DefaultController {
+  constructor(private readonly deleteUserService: DeleteUserService) {
+    super({
+      possibleErrors: [
+        {
+          name: "This user doesn't exist",
+          exception: new HttpException(
+            "This user doesn't exist",
+            HttpStatus.NOT_FOUND,
+          ),
+        },
+      ],
+    });
+  }
 
   @UseGuards(JwtAuthGuard)
   @Delete('delete')
@@ -22,10 +35,7 @@ export class DeleteUserController {
     const user = req.user as IJwtTokenUser;
 
     await this.deleteUserService.exec(user.sub, user.email).catch((err) => {
-      if (err.message === "This user doesn't exist")
-        throw new HttpException(err.message, HttpStatus.CONFLICT);
-
-      throw err;
+      this.interpretErrors(err);
     });
   }
 }

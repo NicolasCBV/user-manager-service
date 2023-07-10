@@ -11,11 +11,25 @@ import { Response } from 'express';
 import { name } from '..';
 import { LoginUserBody } from '../../../dto/loginUser';
 import { Throttle } from '@nestjs/throttler';
+import { DefaultController } from '../../defaultController';
 
 @Throttle(3, 60)
 @Controller(name)
-export class LoginController {
-  constructor(private readonly authService: AuthService) {}
+export class LoginController extends DefaultController {
+  constructor(private readonly authService: AuthService) {
+    super({
+      possibleErrors: [
+        {
+          name: "This user doesn't exist",
+          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+        },
+        {
+          name: 'Unathorized',
+          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+        },
+      ],
+    });
+  }
 
   @Post('login')
   async loginUser(
@@ -27,19 +41,7 @@ export class LoginController {
 
     const data = await this.authService
       .login(email, code, deviceId)
-      .catch((err) => {
-        if (
-          err.message === "This user doesn't exist" ||
-          err.message === 'Unathorized'
-        )
-          throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
-      });
-
-    if (!data)
-      throw new HttpException(
-        'Unknown return',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      .catch((err) => this.interpretErrors(err));
 
     const expiresDate = new Date(
       Date.now() + Number(process.env.REFRESH_TOKEN_EXPIRES),

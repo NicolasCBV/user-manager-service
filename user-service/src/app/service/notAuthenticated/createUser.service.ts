@@ -7,7 +7,10 @@ import { UserInCache } from '../../entities/userInCache/userInCache';
 import { UserOnObjects } from '../../mappers/userInObjects';
 import { UsersRepositories } from '../../repositories/users';
 import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
-import { createAccountRecommendedTitle, createUserTemplate } from '@templates/createAccount';
+import {
+  createAccountRecommendedTitle,
+  createUserTemplate,
+} from '@templates/createAccount';
 import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
 import { randomUUID } from 'node:crypto';
 

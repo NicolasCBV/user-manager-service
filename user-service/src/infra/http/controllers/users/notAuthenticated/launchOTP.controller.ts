@@ -24,7 +24,7 @@ export class LaunchOTPController {
         err.message === 'The entitie already exist' ||
         err.message === 'This user was not triggered'
       )
-        throw new HttpException(err.message, HttpStatus.UNAUTHORIZED);
+        throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
 
       throw err;
     });
@@ -42,7 +42,7 @@ export class LaunchOTPController {
           err.message === 'This user should not launch OTP' ||
           err.message === "This user doesn't exist"
         )
-          throw new HttpException(err.message, HttpStatus.UNAUTHORIZED);
+          throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
 
         throw err;
       });

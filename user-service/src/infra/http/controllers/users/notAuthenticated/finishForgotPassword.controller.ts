@@ -14,12 +14,22 @@ import { FinishForgotPasswordService } from '@app/service/notAuthenticated/finis
 import { Request } from 'express';
 import { name } from '..';
 import { FinishForgotPassworBody } from '../../../dto/finishForgotPasswordBody';
+import { DefaultController } from '../../defaultController';
 
 @Controller(name)
-export class FinishForgotPasswordController {
+export class FinishForgotPasswordController extends DefaultController {
   constructor(
     private readonly finishForgotPasswordService: FinishForgotPasswordService,
-  ) {}
+  ) {
+    super({
+      possibleErrors: [
+        {
+          name: "The entitie doesn't exist.",
+          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+        },
+      ],
+    });
+  }
 
   @UseGuards(JwtForgotGuard)
   @Patch('finish-forgot-password')
@@ -32,11 +42,6 @@ export class FinishForgotPasswordController {
 
     await this.finishForgotPasswordService
       .exec(user.sub, user.email, password)
-      .catch((err) => {
-        if (err.message === "The entitie doesn't exist.")
-          throw new HttpException(err.message, HttpStatus.CONFLICT);
-
-        throw err;
-      });
+      .catch((err) => this.interpretErrors(err));
   }
 }

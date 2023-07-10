@@ -9,8 +9,8 @@ export const databaseProviders = [
     provide: typeORMConsts.databaseProvider,
     useFactory: async () => {
       return dataSource.initialize();
-    }
-  }
+    },
+  },
 ];
 
 export default dataSource;

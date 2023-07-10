@@ -10,11 +10,25 @@ import { ForgotPasswordService } from '@app/service/notAuthenticated/forgotPassw
 import { name } from '..';
 import { ForgotPasswordBody } from '../../../dto/forgotPassword';
 import { Throttle } from '@nestjs/throttler';
+import { DefaultController } from '../../defaultController';
 
 @Throttle(1, 30)
 @Controller(name)
-export class ForgotPasswordController {
-  constructor(private readonly forgotPasswordService: ForgotPasswordService) {}
+export class ForgotPasswordController extends DefaultController {
+  constructor(private readonly forgotPasswordService: ForgotPasswordService) {
+    super({
+      possibleErrors: [
+        {
+          name: 'The entitie already exist.',
+          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+        },
+        {
+          name: "This user doesn't exist",
+          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+        },
+      ],
+    });
+  }
 
   @Post('forgot-password')
   @HttpCode(200)
@@ -23,13 +37,7 @@ export class ForgotPasswordController {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
 
     await this.forgotPasswordService.exec(email, deviceId).catch((err) => {
-      if (err.message === 'The entitie already exist.')
-        throw new HttpException(err.message, HttpStatus.UNAUTHORIZED);
-
-      if (err.message === "This user doesn't exist")
-        throw new HttpException(err.message, HttpStatus.CONFLICT);
-
-      throw err;
+      this.interpretErrors(err);
     });
   }
 }

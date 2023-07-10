@@ -5,7 +5,10 @@ import { EmailAdapter } from '../../adapters/email';
 import { OTP } from '../../entities/OTP/_OTP';
 import { UsersRepositories } from '../../repositories/users';
 import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
-import { createAccountRecommendedTitle, createUserTemplate } from '@templates/createAccount';
+import {
+  createAccountRecommendedTitle,
+  createUserTemplate,
+} from '@templates/createAccount';
 import { UserInCache } from '@src/app/entities/userInCache/userInCache';
 import { OTPHandlerContract } from '@infra/storages/cache/contract/OTPHandler';
 import { randomUUID } from 'node:crypto';

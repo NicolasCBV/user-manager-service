@@ -17,10 +17,23 @@ import { IJwtTokenUser } from '@app/auth/jwt.core';
 import { UploadImageService } from '@app/service/authenticated/uploadImage.service';
 import { Request } from 'express';
 import { name } from '..';
+import { DefaultController } from '../../defaultController';
 
 @Controller(name)
-export class UpdateUserImageController {
-  constructor(private readonly uploadImageService: UploadImageService) {}
+export class UpdateUserImageController extends DefaultController {
+  constructor(private readonly uploadImageService: UploadImageService) {
+    super({
+      possibleErrors: [
+        {
+          name: "This user doesn't exist",
+          exception: new HttpException(
+            "This user doesn't exist",
+            HttpStatus.NOT_FOUND,
+          ),
+        },
+      ],
+    });
+  }
 
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
@@ -43,12 +56,7 @@ export class UpdateUserImageController {
 
     const url = await this.uploadImageService
       .exec(user.sub, file)
-      .catch((err) => {
-        if (err.message === "This user doesn't exist")
-          throw new HttpException(err.message, HttpStatus.CONFLICT);
-
-        throw new HttpException('Error on update image', HttpStatus.CONFLICT);
-      });
+      .catch((err) => this.interpretErrors(err));
 
     return { url };
   }

@@ -13,10 +13,23 @@ import { UpdateUserService } from '@app/service/authenticated/updateUser.service
 import { UpdateUserBody } from '../../../dto/updateUserBody';
 import { Request } from 'express';
 import { name } from '..';
+import { DefaultController } from '../../defaultController';
 
 @Controller(name)
-export class UpdateUserContentController {
-  constructor(private readonly updateUserService: UpdateUserService) {}
+export class UpdateUserContentController extends DefaultController {
+  constructor(private readonly updateUserService: UpdateUserService) {
+    super({
+      possibleErrors: [
+        {
+          name: "This user doesn't exist",
+          exception: new HttpException(
+            "This user doesn't exist",
+            HttpStatus.NOT_FOUND,
+          ),
+        },
+      ],
+    });
+  }
 
   @UseGuards(JwtAuthGuard)
   @Patch('update')
@@ -29,11 +42,6 @@ export class UpdateUserContentController {
         name: data.name,
         description: data.description,
       })
-      .catch((err) => {
-        if (err.message === "This user doesn't exist")
-          throw new HttpException(err.message, HttpStatus.CONFLICT);
-
-        throw err;
-      });
+      .catch((err) => this.interpretErrors(err));
   }
 }

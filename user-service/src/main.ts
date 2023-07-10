@@ -17,7 +17,7 @@ async function bootstrap() {
   });
   app.use(cookieParser(process.env.COOKIE_SECRET));
 
-  const server = await app.listen(3030);
+  const server = await app.listen(process.env.PORT ?? 3030);
   server.setTimeout(1000 * 60);
 }
 bootstrap();
