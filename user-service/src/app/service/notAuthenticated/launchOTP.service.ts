@@ -30,8 +30,8 @@ export class LaunchOTPService extends DefaultService<IErrors> {
   ) {
     super({
       previsibleErrors: {
-        indisponible: new Error('This feature is indisponible.')
-      }
+        indisponible: new Error('This feature is indisponible.'),
+      },
     });
   }
 

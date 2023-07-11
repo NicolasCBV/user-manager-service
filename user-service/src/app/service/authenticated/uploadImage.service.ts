@@ -18,9 +18,9 @@ export class UploadImageService extends DefaultService<IErrors> {
   ) {
     super({
       previsibleErrors: {
-        notFound: new Error("This user doesn't exist")
-      }
-    }); 
+        notFound: new Error("This user doesn't exist"),
+      },
+    });
   }
 
   async exec(id: string, file: Express.Multer.File): Promise<string> {

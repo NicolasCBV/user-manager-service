@@ -11,8 +11,8 @@ export class CheckFingerprintService extends DefaultService<ICheckFingerprintSer
   constructor(private readonly crypt: CryptAdapter) {
     super({
       previsibleErrors: {
-        notMatch: new Error("The device id doesn't match")
-      }
+        notMatch: new Error("The device id doesn't match"),
+      },
     });
   }
 

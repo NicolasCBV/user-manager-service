@@ -20,14 +20,11 @@ export class DeleteUserController extends DefaultController {
 
     const { notFound } = this.deleteUserService.previsibileErrors;
     this.makeErrorsBasedOnMessage([
-        {
-          from: notFound.message,
-          to: new HttpException(
-            notFound.message,
-            HttpStatus.NOT_FOUND,
-          ),
-        },
-      ]);
+      {
+        from: notFound.message,
+        to: new HttpException(notFound.message, HttpStatus.NOT_FOUND),
+      },
+    ]);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -36,9 +36,9 @@ export class ValidateAccountService extends DefaultService<IErrors> {
     super({
       previsibleErrors: {
         alreadyExist: new Error('The entitie already exist.'),
-        unauthorized:  new Error('Unauthorized'),
-        indisponible: new Error('This user is not in validation step')
-      }
+        unauthorized: new Error('Unauthorized'),
+        indisponible: new Error('This user is not in validation step'),
+      },
     });
   }
 

@@ -1,6 +1,6 @@
 interface IProps<T> {
   previsibleErrors: T;
-};
+}
 
 export class DefaultService<T> {
   protected readonly props: IProps<T>;

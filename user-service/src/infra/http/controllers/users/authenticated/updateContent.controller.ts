@@ -20,26 +20,17 @@ export class UpdateUserContentController extends DefaultController {
   constructor(private readonly updateUserService: UpdateUserService) {
     super();
 
-    const {
-      notFound,
-      indisponible
-    } = this.updateUserService.previsibileErrors;
+    const { notFound, indisponible } = this.updateUserService.previsibileErrors;
     this.makeErrorsBasedOnMessage([
-        {
-          from: notFound.message,
-          to: new HttpException(
-            notFound.message,
-            HttpStatus.NOT_FOUND,
-          ),
-        },
-        {
-          from: indisponible.message,
-          to: new HttpException(
-            indisponible.message,
-            HttpStatus.BAD_REQUEST
-          )
-        }
-      ]);
+      {
+        from: notFound.message,
+        to: new HttpException(notFound.message, HttpStatus.NOT_FOUND),
+      },
+      {
+        from: indisponible.message,
+        to: new HttpException(indisponible.message, HttpStatus.BAD_REQUEST),
+      },
+    ]);
   }
 
   @UseGuards(JwtAuthGuard)

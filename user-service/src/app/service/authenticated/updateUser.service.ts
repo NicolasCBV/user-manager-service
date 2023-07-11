@@ -27,9 +27,9 @@ export class UpdateUserService extends DefaultService<IErrors> {
     super({
       previsibleErrors: {
         indisponible: new Error('This feature is indisponible.'),
-        notFound: new Error("This user doesn't exist")
-      }
-    })
+        notFound: new Error("This user doesn't exist"),
+      },
+    });
   }
 
   async exec({ id, name, description }: IUpdateUserBody): Promise<void> {

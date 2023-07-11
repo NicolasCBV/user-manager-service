@@ -21,12 +21,12 @@ export class ForgotPasswordService {
   ) {}
 
   getExposedErrors() {
-    const { previsibileErrors } = this.searchForUser
+    const { previsibileErrors } = this.searchForUser;
     return {
       entitieNotExist: this.tokenHandler.entitieNotExistError,
       entitieExist: this.tokenHandler.entitieError,
-      searchForUserErrors: previsibileErrors
-    }
+      searchForUserErrors: previsibileErrors,
+    };
   }
 
   async exec(email: string, deviceId?: string) {

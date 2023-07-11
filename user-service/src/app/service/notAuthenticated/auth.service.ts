@@ -31,15 +31,15 @@ export class AuthService extends DefaultService<IErrors> {
   ) {
     super({
       previsibleErrors: {
-        unauthorized: new Error('Unathorized')
-      }
+        unauthorized: new Error('Unathorized'),
+      },
     });
   }
 
   getExposedErrors() {
     const { previsibileErrors } = this.searchForUser;
     return {
-      searchForUserErrors: previsibileErrors
+      searchForUserErrors: previsibileErrors,
     };
   }
 
@@ -88,7 +88,7 @@ export class AuthService extends DefaultService<IErrors> {
     access_token: string;
     refresh_token: string;
   }> {
-    const user = await this.searchForUser.exec(userEmail)
+    const user = await this.searchForUser.exec(userEmail);
 
     const otp = await this.otpHandler.getOTP(userEmail);
     if (!otp) throw this.previsibileErrors.unauthorized;

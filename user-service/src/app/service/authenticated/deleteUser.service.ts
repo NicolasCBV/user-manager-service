@@ -21,8 +21,8 @@ export class DeleteUserService extends DefaultService<IErrors> {
   ) {
     super({
       previsibleErrors: {
-        notFound: new Error("This user doesn't exist")
-      }
+        notFound: new Error("This user doesn't exist"),
+      },
     });
   }
 

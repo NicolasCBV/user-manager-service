@@ -5,7 +5,7 @@ import { UsersRepositories } from '@src/app/repositories/users';
 import { UserHandlerContract } from '../cache/contract/userHandler';
 
 export interface ISearchUserManagerErrors {
-  unauthorized: Error
+  unauthorized: Error;
 }
 
 @Injectable()
@@ -16,8 +16,8 @@ export class SearchUserManager extends DefaultService<ISearchUserManagerErrors> 
   ) {
     super({
       previsibleErrors: {
-        unauthorized: new Error('Unauthorized')
-      }
+        unauthorized: new Error('Unauthorized'),
+      },
     });
   }
 

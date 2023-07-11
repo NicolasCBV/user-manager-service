@@ -19,27 +19,22 @@ export class RefreshTokenController extends DefaultController {
     super();
 
     const { wrongToken } = this.refreshTokenService.previsibileErrors;
-    const {
-      searchForUserErrors,
-      checkFingerprintErrors
-    } = this.refreshTokenService.getExposedErrors();
+    const { searchForUserErrors, checkFingerprintErrors } =
+      this.refreshTokenService.getExposedErrors();
     this.makeErrorsBasedOnMessage([
-        {
-          from: wrongToken.message,
-          to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
-        },
-        {
-          from: checkFingerprintErrors.notMatch.message,
-          to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
-        },
-        {
-          from: searchForUserErrors.unauthorized.message,
-          to: new HttpException(
-            "This user doesn't exist",
-            HttpStatus.NOT_FOUND,
-          ),
-        },
-      ]);
+      {
+        from: wrongToken.message,
+        to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+      },
+      {
+        from: checkFingerprintErrors.notMatch.message,
+        to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+      },
+      {
+        from: searchForUserErrors.unauthorized.message,
+        to: new HttpException("This user doesn't exist", HttpStatus.NOT_FOUND),
+      },
+    ]);
   }
 
   @Post('refresh-token')

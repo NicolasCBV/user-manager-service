@@ -17,10 +17,12 @@ export class LaunchOTPController extends DefaultController {
     super();
 
     const { indisponible } = this.launchOTPService.previsibileErrors;
-    this.makeErrorsBasedOnMessage([{
-      from: indisponible.message,
-      to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED)
-    }]);
+    this.makeErrorsBasedOnMessage([
+      {
+        from: indisponible.message,
+        to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+      },
+    ]);
   }
 
   @Post('launch-otp')

@@ -25,15 +25,15 @@ export class FinishForgotPasswordService extends DefaultService<IErrors> {
   ) {
     super({
       previsibleErrors: {
-        unauthorized: new Error('Unauthorized')
-      }
+        unauthorized: new Error('Unauthorized'),
+      },
     });
   }
 
   getExposedErrors() {
     const { previsibileErrors } = this.searchForUser;
     return {
-      searchForUserErrors: previsibileErrors
+      searchForUserErrors: previsibileErrors,
     };
   }
 

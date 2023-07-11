@@ -5,7 +5,7 @@ import { logger } from '@root/src/config/logger';
 export class LifeController {
   @Get()
   exec() {
-    if(process.env.NODE_ENV === 'development')
+    if (process.env.NODE_ENV === 'development')
       logger.info('Everything is OK!');
   }
 }

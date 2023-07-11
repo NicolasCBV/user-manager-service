@@ -19,13 +19,12 @@ export class CreateUserController extends DefaultController {
     super();
 
     const { userAlreadyExist } = this.createUserService.previsibileErrors;
-    this.makeErrorsBasedOnMessage([{
+    this.makeErrorsBasedOnMessage([
+      {
         from: userAlreadyExist.message,
-        to: new HttpException(
-          'Unathorized',
-          HttpStatus.UNAUTHORIZED,
-        ),
-      }]);
+        to: new HttpException('Unathorized', HttpStatus.UNAUTHORIZED),
+      },
+    ]);
   }
 
   @Post('create')

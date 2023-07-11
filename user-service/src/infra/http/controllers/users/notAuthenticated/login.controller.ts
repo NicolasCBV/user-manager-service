@@ -22,15 +22,15 @@ export class LoginController extends DefaultController {
     const { searchForUserErrors } = this.authService.getExposedErrors();
     const { unauthorized } = this.authService.previsibileErrors;
     this.makeErrorsBasedOnMessage([
-        {
-          from: searchForUserErrors.unauthorized.message,
-          to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED)
-        },
-        {
-          from: unauthorized.message,
-          to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
-        }
-      ]);
+      {
+        from: searchForUserErrors.unauthorized.message,
+        to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+      },
+      {
+        from: unauthorized.message,
+        to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+      },
+    ]);
   }
 
   @Post('login')

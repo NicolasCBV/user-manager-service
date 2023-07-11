@@ -18,11 +18,8 @@ export class ForgotPasswordController extends DefaultController {
   constructor(private readonly forgotPasswordService: ForgotPasswordService) {
     super();
 
-    const {
-      entitieExist,
-      entitieNotExist,
-      searchForUserErrors
-    } = this.forgotPasswordService.getExposedErrors();
+    const { entitieExist, entitieNotExist, searchForUserErrors } =
+      this.forgotPasswordService.getExposedErrors();
 
     this.makeErrorsBasedOnMessage([
       {
@@ -36,7 +33,7 @@ export class ForgotPasswordController extends DefaultController {
       {
         from: searchForUserErrors.unauthorized.message,
         to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
-      }
+      },
     ]);
   }
 

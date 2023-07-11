@@ -21,8 +21,8 @@ export class CancelCreationService extends DefaultService<IErrors> {
   ) {
     super({
       previsibleErrors: {
-        unauthorized: new Error('Unauthorized')
-      }
+        unauthorized: new Error('Unauthorized'),
+      },
     });
   }
 

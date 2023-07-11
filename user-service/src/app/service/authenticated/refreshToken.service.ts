@@ -23,16 +23,16 @@ export class RefreshTokenService extends DefaultService<IErrors> {
   ) {
     super({
       previsibleErrors: {
-        wrongToken: new Error('Wrong token')
-      }
-    })
+        wrongToken: new Error('Wrong token'),
+      },
+    });
   }
 
   getExposedErrors() {
     return {
       checkFingerprintErrors: this.checkFingerprintService.previsibileErrors,
-      searchForUserErrors: this.searchForUser.previsibileErrors
-    }
+      searchForUserErrors: this.searchForUser.previsibileErrors,
+    };
   }
 
   async exec(refreshToken: string, deviceId?: string) {

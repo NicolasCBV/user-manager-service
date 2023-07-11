@@ -36,8 +36,8 @@ export class CreateUserService extends DefaultService<IErrors> {
   ) {
     super({
       previsibleErrors: {
-        userAlreadyExist: new Error('The entitie already exist.')
-      }
+        userAlreadyExist: new Error('The entitie already exist.'),
+      },
     });
   }
   async exec(data: ICreateUser): Promise<string> {

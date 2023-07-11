@@ -23,7 +23,8 @@ export class FinishForgotPasswordController extends DefaultController {
   ) {
     super();
 
-    const { searchForUserErrors } = this.finishForgotPasswordService.getExposedErrors();
+    const { searchForUserErrors } =
+      this.finishForgotPasswordService.getExposedErrors();
     const { unauthorized } = this.finishForgotPasswordService.previsibileErrors;
     this.makeErrorsBasedOnMessage([
       {
@@ -34,9 +35,9 @@ export class FinishForgotPasswordController extends DefaultController {
         from: searchForUserErrors.unauthorized.message,
         to: new HttpException(
           searchForUserErrors.unauthorized.message,
-          HttpStatus.UNAUTHORIZED
-        )
-      }
+          HttpStatus.UNAUTHORIZED,
+        ),
+      },
     ]);
   }
 

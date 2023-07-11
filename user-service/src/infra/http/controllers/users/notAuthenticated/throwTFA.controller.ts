@@ -20,11 +20,11 @@ export class ThrowTFAController extends DefaultController {
 
     const { searchForUserErrors } = this.authService.getExposedErrors();
     this.makeErrorsBasedOnMessage([
-        {
-          from: searchForUserErrors.unauthorized.message,
-          to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
-        }
-      ]);
+      {
+        from: searchForUserErrors.unauthorized.message,
+        to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+      },
+    ]);
   }
 
   @Post('throwTFA')

@@ -26,14 +26,11 @@ export class UpdateUserImageController extends DefaultController {
 
     const { notFound } = this.uploadImageService.previsibileErrors;
     this.makeErrorsBasedOnMessage([
-        {
-          from: notFound.message,
-          to: new HttpException(
-            notFound.message,
-            HttpStatus.NOT_FOUND,
-          ),
-        },
-      ]);
+      {
+        from: notFound.message,
+        to: new HttpException(notFound.message, HttpStatus.NOT_FOUND),
+      },
+    ]);
   }
 
   @UseGuards(JwtAuthGuard)
