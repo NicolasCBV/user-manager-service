@@ -16,21 +16,15 @@ import { DefaultController } from '../../defaultController';
 @Controller(name)
 export class ThrowTFAController extends DefaultController {
   constructor(private readonly authService: AuthService) {
-    super({
-      possibleErrors: [
+    super();
+
+    const { searchForUserErrors } = this.authService.getExposedErrors();
+    this.makeErrorsBasedOnMessage([
         {
-          name: "This user doesn't exist",
-          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
-        },
-        {
-          name: 'This user should not launch OTP',
-          exception: new HttpException(
-            'This user should not launch OTP',
-            HttpStatus.UNAUTHORIZED,
-          ),
-        },
-      ],
-    });
+          from: searchForUserErrors.unauthorized.message,
+          to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+        }
+      ]);
   }
 
   @Post('throwTFA')

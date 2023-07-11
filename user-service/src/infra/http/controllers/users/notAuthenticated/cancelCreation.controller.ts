@@ -15,25 +15,13 @@ import { DefaultController } from '../../defaultController';
 @Controller(name)
 export class CancelCreationController extends DefaultController {
   constructor(private readonly cancelCreation: CancelCreationService) {
-    super({
-      possibleErrors: [
-        {
-          name: 'Unauthorized',
-          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
-        },
-        {
-          name: 'This user was not triggered',
-          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
-        },
-        {
-          name: 'Cancel key invalid',
-          exception: new HttpException(
-            'Cancel key invalid',
-            HttpStatus.BAD_REQUEST,
-          ),
-        },
-      ],
-    });
+    super();
+
+    const { unauthorized } = this.cancelCreation.previsibileErrors;
+    this.makeErrorsBasedOnMessage([{
+      from: unauthorized.message,
+      to: new HttpException(unauthorized.message, HttpStatus.UNAUTHORIZED),
+    }]); 
   }
 
   @Delete('cancel')

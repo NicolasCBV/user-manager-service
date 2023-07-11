@@ -13,30 +13,41 @@ import { UserInCache } from '@src/app/entities/userInCache/userInCache';
 import { OTPHandlerContract } from '@infra/storages/cache/contract/OTPHandler';
 import { randomUUID } from 'node:crypto';
 import { User } from '@src/app/entities/user/_user';
+import { DefaultService } from '../defaultService';
+
+interface IErrors {
+  indisponible: Error;
+}
 
 @Injectable()
-export class LaunchOTPService {
+export class LaunchOTPService extends DefaultService<IErrors> {
   constructor(
     private readonly userRepo: UsersRepositories,
     private readonly crypt: CryptAdapter,
     private readonly email: EmailAdapter,
     private readonly userHandler: UserHandlerContract,
     private readonly otpHandler: OTPHandlerContract,
-  ) {}
+  ) {
+    super({
+      previsibleErrors: {
+        indisponible: new Error('This feature is indisponible.')
+      }
+    });
+  }
 
   private async isSigining(email: string): Promise<UserInCache> {
     const userOnDatabase = await this.userRepo.exist({ email });
-    if (userOnDatabase) throw new Error('The entitie already exist');
+    if (userOnDatabase) throw this.previsibileErrors.indisponible;
 
     const userOnCacheMemory = await this.userHandler.getUser(email);
-    if (!userOnCacheMemory) throw new Error('This user was not triggered');
+    if (!userOnCacheMemory) throw this.previsibileErrors.indisponible;
 
     return userOnCacheMemory;
   }
 
   private async isLoging(email: string): Promise<User> {
     const userOnDatabase = await this.userRepo.find({ email });
-    if (!userOnDatabase) throw new Error('This user should not launch OTP');
+    if (!userOnDatabase) throw this.previsibileErrors.indisponible;
 
     return userOnDatabase;
   }
@@ -48,7 +59,7 @@ export class LaunchOTPService {
       : await this.isSigining(email);
 
     const otp = await this.otpHandler.getOTP(email);
-    if (!otp) throw new Error("This user doesn't requested one OTP");
+    if (!otp) throw this.previsibileErrors.indisponible;
 
     // Validate OTP time
     const timeToExpire = parseInt(process.env.OTP_TIME ?? '120000');
@@ -57,7 +68,7 @@ export class LaunchOTPService {
     const maxTimeToLauch = otp.createdAt.getTime() + timeToExpire;
 
     if (Date.now() < minTimeToLaunch || Date.now() > maxTimeToLauch)
-      throw new Error('This user should not launch OTP');
+      throw this.previsibileErrors.indisponible;
 
     // Create OTP
     const code = generateRandomCharacters();

@@ -13,6 +13,11 @@ import {
 } from '@templates/createAccount';
 import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
 import { randomUUID } from 'node:crypto';
+import { DefaultService } from '../defaultService';
+
+interface IErrors {
+  userAlreadyExist: Error;
+}
 
 interface ICreateUser {
   name: string;
@@ -21,14 +26,20 @@ interface ICreateUser {
 }
 
 @Injectable()
-export class CreateUserService {
+export class CreateUserService extends DefaultService<IErrors> {
   constructor(
     private readonly userRepo: UsersRepositories,
     private readonly crypt: CryptAdapter,
     private readonly email: EmailAdapter,
     private readonly userHandler: UserHandlerContract,
     private readonly miscHandler: MiscellaneousHandlerContract,
-  ) {}
+  ) {
+    super({
+      previsibleErrors: {
+        userAlreadyExist: new Error('The entitie already exist.')
+      }
+    });
+  }
   async exec(data: ICreateUser): Promise<string> {
     let userOnDatabase = await this.userHandler.existUser(
       data.email,
@@ -43,7 +54,7 @@ export class CreateUserService {
         }),
       );
 
-    if (userOnDatabase) throw new Error('The entitie already exist.');
+    if (userOnDatabase) throw this.previsibileErrors.userAlreadyExist;
 
     // create user
     const password = await this.crypt.hash(data.password);

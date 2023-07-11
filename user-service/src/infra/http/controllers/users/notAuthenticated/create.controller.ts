@@ -16,17 +16,16 @@ import { DefaultController } from '../../defaultController';
 @Controller(name)
 export class CreateUserController extends DefaultController {
   constructor(private readonly createUserService: CreateUserService) {
-    super({
-      possibleErrors: [
-        {
-          name: 'The entitie already exist.',
-          exception: new HttpException(
-            'The entitie already exist.',
-            HttpStatus.UNAUTHORIZED,
-          ),
-        },
-      ],
-    });
+    super();
+
+    const { userAlreadyExist } = this.createUserService.previsibileErrors;
+    this.makeErrorsBasedOnMessage([{
+        from: userAlreadyExist.message,
+        to: new HttpException(
+          'Unathorized',
+          HttpStatus.UNAUTHORIZED,
+        ),
+      }]);
   }
 
   @Post('create')

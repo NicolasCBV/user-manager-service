@@ -9,6 +9,13 @@ import { OTPHandlerContract } from '@infra/storages/cache/contract/OTPHandler';
 import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
 import { GenTokensService } from './genTokens.service';
 import { UserInCache } from '@src/app/entities/userInCache/userInCache';
+import { DefaultService } from '../defaultService';
+
+interface IErrors {
+  indisponible: Error;
+  unauthorized: Error;
+  alreadyExist: Error;
+}
 
 interface IValidateAccountProps {
   OTP: string;
@@ -17,7 +24,7 @@ interface IValidateAccountProps {
 }
 
 @Injectable()
-export class ValidateAccountService {
+export class ValidateAccountService extends DefaultService<IErrors> {
   constructor(
     private readonly genTokens: GenTokensService,
     private readonly userRepo: UsersRepositories,
@@ -25,17 +32,25 @@ export class ValidateAccountService {
     private readonly userHandler: UserHandlerContract,
     private readonly OTPHandler: OTPHandlerContract,
     private readonly miscHandler: MiscellaneousHandlerContract,
-  ) {}
+  ) {
+    super({
+      previsibleErrors: {
+        alreadyExist: new Error('The entitie already exist.'),
+        unauthorized:  new Error('Unauthorized'),
+        indisponible: new Error('This user is not in validation step')
+      }
+    });
+  }
 
   async exec(data: IValidateAccountProps) {
     const userOnCache = await this.userHandler.getUser(data.email);
-    if (!userOnCache) throw new Error('This user is not in validation step');
+    if (!userOnCache) throw this.previsibileErrors.indisponible;
 
     const otp = await this.OTPHandler.getOTP(data.email);
-    if (!otp) throw new Error('This user is not in validation step');
+    if (!otp) throw this.previsibileErrors.indisponible;
 
     const result = await this.crypt.compare(data.OTP, otp.code);
-    if (!result) throw new Error('Unauthorized');
+    if (!result) throw this.previsibileErrors.unauthorized;
 
     const user = UserOnCache.toUserEntitie(userOnCache, randomUUID());
     await this.userRepo.create(user).catch((err) => {
@@ -44,7 +59,7 @@ export class ValidateAccountService {
           'Unique constraint failed on the constraint: `users_name_email_key`',
         )
       )
-        throw new Error('The entitie already exist.');
+        throw this.previsibileErrors.alreadyExist;
 
       throw err;
     });

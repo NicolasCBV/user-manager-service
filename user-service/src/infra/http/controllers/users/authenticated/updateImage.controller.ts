@@ -22,17 +22,18 @@ import { DefaultController } from '../../defaultController';
 @Controller(name)
 export class UpdateUserImageController extends DefaultController {
   constructor(private readonly uploadImageService: UploadImageService) {
-    super({
-      possibleErrors: [
+    super();
+
+    const { notFound } = this.uploadImageService.previsibileErrors;
+    this.makeErrorsBasedOnMessage([
         {
-          name: "This user doesn't exist",
-          exception: new HttpException(
-            "This user doesn't exist",
+          from: notFound.message,
+          to: new HttpException(
+            notFound.message,
             HttpStatus.NOT_FOUND,
           ),
         },
-      ],
-    });
+      ]);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -19,6 +19,15 @@ export class ForgotPasswordService {
     private readonly email: EmailAdapter,
   ) {}
 
+  getExposedErrors() {
+    const { previsibileErrors } = this.searchForUser
+    return {
+      entitieNotExist: this.tokenHandler.entitieNotExistError,
+      entitieExist: this.tokenHandler.entitieError,
+      searchForUserErrors: previsibileErrors
+    }
+  }
+
   async exec(email: string, deviceId?: string) {
     const user = await this.searchForUser.exec(email);
 

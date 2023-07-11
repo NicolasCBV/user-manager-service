@@ -7,9 +7,14 @@ import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler'
 import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { CryptAdapter } from '../../adapters/crypt';
 import { UsersRepositories } from '../../repositories/users';
+import { DefaultService } from '../defaultService';
+
+interface IErrors {
+  unauthorized: Error;
+}
 
 @Injectable()
-export class FinishForgotPasswordService {
+export class FinishForgotPasswordService extends DefaultService<IErrors> {
   constructor(
     private readonly userRepo: UsersRepositories,
     private readonly userHandler: UserHandlerContract,
@@ -17,7 +22,20 @@ export class FinishForgotPasswordService {
     private readonly tokenHandler: TokenHandlerContract,
     private readonly miscHandler: MiscellaneousHandlerContract,
     private readonly crypt: CryptAdapter,
-  ) {}
+  ) {
+    super({
+      previsibleErrors: {
+        unauthorized: new Error('Unauthorized')
+      }
+    });
+  }
+
+  getExposedErrors() {
+    const { previsibileErrors } = this.searchForUser;
+    return {
+      searchForUserErrors: previsibileErrors
+    };
+  }
 
   async exec(sub: string, email: string, password: string): Promise<void> {
     const oldUser = await this.searchForUser.exec(email);
@@ -26,7 +44,7 @@ export class FinishForgotPasswordService {
       this.tokenHandler.tokenTypes.forgotToken,
     );
 
-    if (!oldUser || !token) throw new Error("The entitie doesn't exist.");
+    if (!oldUser || !token) throw this.previsibileErrors.unauthorized;
 
     const passwordHashed = await this.crypt.hash(password);
 

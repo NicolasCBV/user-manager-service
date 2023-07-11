@@ -17,18 +17,20 @@ import { DefaultController } from '../../defaultController';
 @Controller(name)
 export class LoginController extends DefaultController {
   constructor(private readonly authService: AuthService) {
-    super({
-      possibleErrors: [
+    super();
+
+    const { searchForUserErrors } = this.authService.getExposedErrors();
+    const { unauthorized } = this.authService.previsibileErrors;
+    this.makeErrorsBasedOnMessage([
         {
-          name: "This user doesn't exist",
-          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+          from: searchForUserErrors.unauthorized.message,
+          to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED)
         },
         {
-          name: 'Unathorized',
-          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
-        },
-      ],
-    });
+          from: unauthorized.message,
+          to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+        }
+      ]);
   }
 
   @Post('login')

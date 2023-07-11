@@ -3,14 +3,25 @@ import { UserInCache } from '@src/app/entities/userInCache/userInCache';
 import { ImageContract } from '@infra/api/contracts/imageContract';
 import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
 import { UsersRepositories } from '../../repositories/users';
+import { DefaultService } from '../defaultService';
+
+interface IErrors {
+  notFound: Error;
+}
 
 @Injectable()
-export class UploadImageService {
+export class UploadImageService extends DefaultService<IErrors> {
   constructor(
     private userRepo: UsersRepositories,
     private userHandler: UserHandlerContract,
     private imageContract: ImageContract,
-  ) {}
+  ) {
+    super({
+      previsibleErrors: {
+        notFound: new Error("This user doesn't exist")
+      }
+    }); 
+  }
 
   async exec(id: string, file: Express.Multer.File): Promise<string> {
     file.filename = `user:${id}/profilePicture.${
@@ -19,7 +30,7 @@ export class UploadImageService {
 
     const oldUser = await this.userRepo.find({ id });
 
-    if (!oldUser) throw new Error("This user doesn't exist");
+    if (!oldUser) throw this.previsibileErrors.notFound;
 
     if (oldUser?.imageUrl) {
       await this.imageContract.delete(oldUser.imageUrl);

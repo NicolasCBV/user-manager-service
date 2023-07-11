@@ -6,19 +6,36 @@ import { IDefaultPropsJwt } from '../../auth/jwt.core';
 import { UserOnObjects } from '../../mappers/userInObjects';
 import { CheckFingerprintService } from '../notAuthenticated/checkFingerprint.service';
 import { GenTokensService } from '../notAuthenticated/genTokens.service';
+import { DefaultService } from '../defaultService';
+
+interface IErrors {
+  wrongToken: Error;
+}
 
 @Injectable()
-export class RefreshTokenService {
+export class RefreshTokenService extends DefaultService<IErrors> {
   constructor(
     private readonly genTokens: GenTokensService,
     private readonly tokenHandler: TokenHandlerContract,
     private readonly searchForUser: SearchUserManager,
     private readonly jwtService: JwtService,
     private readonly checkFingerprintService: CheckFingerprintService,
-  ) {}
+  ) {
+    super({
+      previsibleErrors: {
+        wrongToken: new Error('Wrong token')
+      }
+    })
+  }
+
+  getExposedErrors() {
+    return {
+      checkFingerprintErrors: this.checkFingerprintService.previsibileErrors,
+      searchForUserErrors: this.searchForUser.previsibileErrors
+    }
+  }
 
   async exec(refreshToken: string, deviceId?: string) {
-    // Validate token
     const tokenData = (await this.jwtService.verify(refreshToken, {
       secret: process.env.REFRESH_TOKEN_KEY as string,
     })) as IDefaultPropsJwt;
@@ -28,14 +45,12 @@ export class RefreshTokenService {
       this.tokenHandler.tokenTypes.refreshToken,
     );
     if (!existentToken || existentToken !== refreshToken)
-      throw new Error('Wrong token');
+      throw this.previsibileErrors.wrongToken;
 
     await this.checkFingerprintService.exec(deviceId, tokenData.deviceId);
-    //
 
     const user = await this.searchForUser.exec(tokenData.email);
 
-    // Create and send new tokens
     const {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       password,

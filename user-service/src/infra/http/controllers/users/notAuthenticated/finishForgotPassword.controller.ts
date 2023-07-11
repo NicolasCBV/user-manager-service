@@ -21,14 +21,23 @@ export class FinishForgotPasswordController extends DefaultController {
   constructor(
     private readonly finishForgotPasswordService: FinishForgotPasswordService,
   ) {
-    super({
-      possibleErrors: [
-        {
-          name: "The entitie doesn't exist.",
-          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
-        },
-      ],
-    });
+    super();
+
+    const { searchForUserErrors } = this.finishForgotPasswordService.getExposedErrors();
+    const { unauthorized } = this.finishForgotPasswordService.previsibileErrors;
+    this.makeErrorsBasedOnMessage([
+      {
+        from: unauthorized.message,
+        to: new HttpException(unauthorized.message, HttpStatus.UNAUTHORIZED),
+      },
+      {
+        from: searchForUserErrors.unauthorized.message,
+        to: new HttpException(
+          searchForUserErrors.unauthorized.message,
+          HttpStatus.UNAUTHORIZED
+        )
+      }
+    ]);
   }
 
   @UseGuards(JwtForgotGuard)

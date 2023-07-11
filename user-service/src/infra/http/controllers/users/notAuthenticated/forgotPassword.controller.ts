@@ -16,18 +16,28 @@ import { DefaultController } from '../../defaultController';
 @Controller(name)
 export class ForgotPasswordController extends DefaultController {
   constructor(private readonly forgotPasswordService: ForgotPasswordService) {
-    super({
-      possibleErrors: [
-        {
-          name: 'The entitie already exist.',
-          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
-        },
-        {
-          name: "This user doesn't exist",
-          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
-        },
-      ],
-    });
+    super();
+
+    const {
+      entitieExist,
+      entitieNotExist,
+      searchForUserErrors
+    } = this.forgotPasswordService.getExposedErrors();
+
+    this.makeErrorsBasedOnMessage([
+      {
+        from: entitieExist.message,
+        to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+      },
+      {
+        from: entitieNotExist.message,
+        to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+      },
+      {
+        from: searchForUserErrors.unauthorized.message,
+        to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+      }
+    ]);
   }
 
   @Post('forgot-password')

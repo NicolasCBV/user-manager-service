@@ -16,25 +16,30 @@ import { DefaultController } from '../../defaultController';
 @Controller(name)
 export class RefreshTokenController extends DefaultController {
   constructor(private readonly refreshTokenService: RefreshTokenService) {
-    super({
-      possibleErrors: [
+    super();
+
+    const { wrongToken } = this.refreshTokenService.previsibileErrors;
+    const {
+      searchForUserErrors,
+      checkFingerprintErrors
+    } = this.refreshTokenService.getExposedErrors();
+    this.makeErrorsBasedOnMessage([
         {
-          name: "The device id doesn't match",
-          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+          from: wrongToken.message,
+          to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
         },
         {
-          name: 'Wrong token',
-          exception: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+          from: checkFingerprintErrors.notMatch.message,
+          to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
         },
         {
-          name: "This user doesn't exist",
-          exception: new HttpException(
+          from: searchForUserErrors.unauthorized.message,
+          to: new HttpException(
             "This user doesn't exist",
             HttpStatus.NOT_FOUND,
           ),
         },
-      ],
-    });
+      ]);
   }
 
   @Post('refresh-token')

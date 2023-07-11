@@ -16,17 +16,18 @@ import { DefaultController } from '../../defaultController';
 @Controller(name)
 export class DeleteUserController extends DefaultController {
   constructor(private readonly deleteUserService: DeleteUserService) {
-    super({
-      possibleErrors: [
+    super();
+
+    const { notFound } = this.deleteUserService.previsibileErrors;
+    this.makeErrorsBasedOnMessage([
         {
-          name: "This user doesn't exist",
-          exception: new HttpException(
-            "This user doesn't exist",
+          from: notFound.message,
+          to: new HttpException(
+            notFound.message,
             HttpStatus.NOT_FOUND,
           ),
         },
-      ],
-    });
+      ]);
   }
 
   @UseGuards(JwtAuthGuard)

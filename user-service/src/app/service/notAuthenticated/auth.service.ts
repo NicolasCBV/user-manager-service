@@ -11,9 +11,14 @@ import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler'
 import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { TFARecommendedTitle, TFATemplate } from '@templates/TFA';
 import { CryptAdapter } from '../../adapters/crypt';
+import { DefaultService } from '../defaultService';
+
+interface IErrors {
+  unauthorized: Error;
+}
 
 @Injectable()
-export class AuthService {
+export class AuthService extends DefaultService<IErrors> {
   constructor(
     private readonly genTokens: GenTokensService,
     private readonly crypt: CryptAdapter,
@@ -23,12 +28,23 @@ export class AuthService {
     private readonly otpHandler: OTPHandlerContract,
     private readonly miscHandler: MiscellaneousHandlerContract,
     private readonly emailAdapter: EmailAdapter,
-  ) {}
+  ) {
+    super({
+      previsibleErrors: {
+        unauthorized: new Error('Unathorized')
+      }
+    });
+  }
+
+  getExposedErrors() {
+    const { previsibileErrors } = this.searchForUser;
+    return {
+      searchForUserErrors: previsibileErrors
+    };
+  }
 
   async validateUser(email: string, password: string): Promise<'OK' | null> {
-    const user = await this.searchForUser.exec(email).catch((err) => {
-      if (err.message === "This user doesn't exist") return null;
-    });
+    const user = await this.searchForUser.exec(email);
 
     if (!user) return null;
 
@@ -72,13 +88,13 @@ export class AuthService {
     access_token: string;
     refresh_token: string;
   }> {
-    const user = await this.searchForUser.exec(userEmail);
+    const user = await this.searchForUser.exec(userEmail)
 
     const otp = await this.otpHandler.getOTP(userEmail);
-    if (!otp) throw new Error('Unathorized');
+    if (!otp) throw this.previsibileErrors.unauthorized;
 
     const result = await this.crypt.compare(code, otp.code);
-    if (!result) throw new Error('Unathorized');
+    if (!result) throw this.previsibileErrors.unauthorized;
 
     const deviceIdHashed = deviceId ? await this.crypt.hash(deviceId) : null;
 

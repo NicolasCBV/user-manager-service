@@ -1,27 +1,19 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
-export type TMessageErrors = Array<{
-  name: string;
-  exception: HttpException;
+export type TMessageErrorsAssimilation = Array<{
+  from: string;
+  to: HttpException;
 }>;
 
-interface IProps {
-  possibleErrors: TMessageErrors;
-}
-
 export class DefaultController {
-  private _messageErrors: TMessageErrors;
-
-  constructor(input: IProps) {
-    this._messageErrors = input.possibleErrors;
-  }
+  protected _messageErrors: TMessageErrorsAssimilation = [];
 
   interpretErrors = (inputErr: any) => {
-    const err = this.messageErrors.find(
-      (message) => message.name === inputErr?.message,
+    const err = this._messageErrors.find(
+      (message) => message.from === inputErr?.message,
     );
 
-    if (err) throw err.exception;
+    if (err) throw err.to;
 
     throw new HttpException(
       'Internal Server Error',
@@ -29,7 +21,11 @@ export class DefaultController {
     );
   };
 
-  get messageErrors(): TMessageErrors {
+  protected makeErrorsBasedOnMessage(input: TMessageErrorsAssimilation) {
+    this._messageErrors = input;
+  }
+
+  get messageErrors(): TMessageErrorsAssimilation {
     return this._messageErrors;
   }
 }

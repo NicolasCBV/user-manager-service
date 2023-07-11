@@ -18,17 +18,28 @@ import { DefaultController } from '../../defaultController';
 @Controller(name)
 export class UpdateUserContentController extends DefaultController {
   constructor(private readonly updateUserService: UpdateUserService) {
-    super({
-      possibleErrors: [
+    super();
+
+    const {
+      notFound,
+      indisponible
+    } = this.updateUserService.previsibileErrors;
+    this.makeErrorsBasedOnMessage([
         {
-          name: "This user doesn't exist",
-          exception: new HttpException(
-            "This user doesn't exist",
+          from: notFound.message,
+          to: new HttpException(
+            notFound.message,
             HttpStatus.NOT_FOUND,
           ),
         },
-      ],
-    });
+        {
+          from: indisponible.message,
+          to: new HttpException(
+            indisponible.message,
+            HttpStatus.BAD_REQUEST
+          )
+        }
+      ]);
   }
 
   @UseGuards(JwtAuthGuard)

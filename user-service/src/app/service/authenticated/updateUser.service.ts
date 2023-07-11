@@ -5,6 +5,12 @@ import { UserInCache } from '@src/app/entities/userInCache/userInCache';
 import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
 import { length } from 'class-validator';
 import { UsersRepositories } from '../../repositories/users';
+import { DefaultService } from '../defaultService';
+
+interface IErrors {
+  indisponible: Error;
+  notFound: Error;
+}
 
 interface IUpdateUserBody {
   id: string;
@@ -13,19 +19,26 @@ interface IUpdateUserBody {
 }
 
 @Injectable()
-export class UpdateUserService {
+export class UpdateUserService extends DefaultService<IErrors> {
   constructor(
     private readonly userRepo: UsersRepositories,
     private readonly userHandler: UserHandlerContract,
-  ) {}
+  ) {
+    super({
+      previsibleErrors: {
+        indisponible: new Error('This feature is indisponible.'),
+        notFound: new Error("This user doesn't exist")
+      }
+    })
+  }
 
   async exec({ id, name, description }: IUpdateUserBody): Promise<void> {
     if (!name || !length(name, 2, 64))
-      throw new Error('This operation is not possible to use on: user update');
+      throw this.previsibileErrors.indisponible;
 
     const oldUser = await this.userRepo.find({ id });
 
-    if (!oldUser) throw new Error("This user doesn't exist");
+    if (!oldUser) throw this.previsibileErrors.notFound;
 
     await this.userRepo.update({
       id,
