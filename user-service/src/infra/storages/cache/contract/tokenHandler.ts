@@ -9,7 +9,7 @@ export abstract class TokenHandlerContract extends DefaultHandlerParams {
   ): Promise<void>;
   abstract sendToken(token: TokenInCache): Promise<void>;
   abstract getToken(
-    userId: string,
+    sub: string,
     type: 'refresh_token' | 'access_token' | 'forgot_token',
   ): Promise<string | null>;
   abstract refreshAllUsersToken(

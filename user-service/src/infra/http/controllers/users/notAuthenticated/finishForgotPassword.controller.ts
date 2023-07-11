@@ -8,13 +8,13 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { JwtForgotGuard } from '@app/auth/jwt-auth.guard';
 import { IDefaultPropsJwt } from '@app/auth/jwt.core';
 import { FinishForgotPasswordService } from '@app/service/notAuthenticated/finishForgotPasswordProcess.service';
 import { Request } from 'express';
 import { name } from '..';
 import { FinishForgotPassworBody } from '../../../dto/finishForgotPasswordBody';
 import { DefaultController } from '../../defaultController';
+import { ForgotTokenGuard } from '@root/src/app/auth/forgot-token.guard';
 
 @Controller(name)
 export class FinishForgotPasswordController extends DefaultController {
@@ -40,7 +40,7 @@ export class FinishForgotPasswordController extends DefaultController {
     ]);
   }
 
-  @UseGuards(JwtForgotGuard)
+  @UseGuards(ForgotTokenGuard)
   @Patch('finish-forgot-password')
   @HttpCode(200)
   async exec(

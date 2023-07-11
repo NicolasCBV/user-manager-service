@@ -8,7 +8,7 @@ import { AdaptersModule } from '../adapters/adapters.module';
 import { AuthService } from '../service/notAuthenticated/auth.service';
 import { CheckFingerprintService } from '../service/notAuthenticated/checkFingerprint.service';
 import { GenTokensService } from '../service/notAuthenticated/genTokens.service';
-import { JwtForgotStrategy } from './jwt-forgot.strategy';
+import { ForgotTokenGuard } from './forgot-token.guard';
 import { JwtStrategy } from './jwt.strategy';
 
 @Module({
@@ -26,7 +26,7 @@ import { JwtStrategy } from './jwt.strategy';
     AuthService,
     CheckFingerprintService,
     JwtStrategy,
-    JwtForgotStrategy,
+    ForgotTokenGuard,
     SearchUserManager,
   ],
   exports: [AuthService],

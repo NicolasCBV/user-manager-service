@@ -8,6 +8,7 @@ import {
 } from '@templates/forgotPassword';
 import { CryptAdapter } from '../../adapters/crypt';
 import { EmailAdapter } from '../../adapters/email';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class ForgotPasswordService {
@@ -31,7 +32,7 @@ export class ForgotPasswordService {
   async exec(email: string, deviceId?: string) {
     const user = await this.searchForUser.exec(email);
 
-    const { ['id']: sub } = user;
+    const sub = randomUUID();
     const deviceIdHashed = deviceId ? await this.crypt.hash(deviceId) : null;
 
     const token = this.jwtService.sign(
@@ -54,7 +55,7 @@ export class ForgotPasswordService {
       expiresIn: parseInt(process.env.FORGOT_TOKEN_EXPIRES ?? '120000'),
     });
 
-    const url = `${process.env.CLIENT_URL}/forgot?token=${token}`;
+    const url = `${process.env.CLIENT_URL}/forgot?token=${sub}`;
 
     await this.email.send({
       from: `${process.env.NAME_SENDER as string}

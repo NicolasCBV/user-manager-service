@@ -42,10 +42,10 @@ export class TokenHandler
     if (!result) throw this.entitieError;
   }
   async getToken(
-    userId: string,
+    sub: string,
     type: 'refresh_token' | 'access_token' | 'forgot_token',
   ): Promise<string | null> {
-    const token = await redisClient.get(`${this.tokenKW}:${type}.${userId}`);
+    const token = await redisClient.get(`${this.tokenKW}:${type}.${sub}`);
 
     return token;
   }
