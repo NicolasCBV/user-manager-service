@@ -11,7 +11,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
     origin: process.env.CLIENT_URL as string,
-    methods: ['DELETE', 'POST', 'PATCH'],
+    methods: ['DELETE', 'POST', 'PATCH', 'GET'],
     preflightContinue: false,
     credentials: true,
   });

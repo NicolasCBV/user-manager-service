@@ -8,20 +8,26 @@ export interface ISearchUserManagerErrors {
   unauthorized: Error;
 }
 
+interface ISearchUserManagerExec {
+  email: string;
+}
+
 @Injectable()
 export class SearchUserManager extends DefaultService<ISearchUserManagerErrors> {
+  static previsibleErrors = {
+    unauthorized: new Error('Unauthorized'),
+  };
+
   constructor(
     private readonly userHandler: UserHandlerContract,
     private readonly userRepo: UsersRepositories,
   ) {
     super({
-      previsibleErrors: {
-        unauthorized: new Error('Unauthorized'),
-      },
+      previsibleErrors: SearchUserManager.previsibleErrors,
     });
   }
 
-  async exec(email: string): Promise<UserInCache> {
+  async exec({ email }: ISearchUserManagerExec): Promise<UserInCache> {
     let user: UserInCache | null = await this.userHandler.getUser(email);
 
     if (!user) {

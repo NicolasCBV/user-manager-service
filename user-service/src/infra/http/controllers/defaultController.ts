@@ -1,4 +1,6 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { DefaultHandlerParams } from '../../storages/cache/redis/handlers';
+import { SearchUserManager } from '../../storages/search/searchUserManager.service';
 
 export type TMessageErrorsAssimilation = Array<{
   from: string;
@@ -6,7 +8,16 @@ export type TMessageErrorsAssimilation = Array<{
 }>;
 
 export class DefaultController {
-  protected _messageErrors: TMessageErrorsAssimilation = [];
+  protected _messageErrors: TMessageErrorsAssimilation = [
+    {
+      from: new DefaultHandlerParams().cacheErrorMsg,
+      to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+    },
+    {
+      from: SearchUserManager.previsibleErrors.unauthorized.message,
+      to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
+    },
+  ];
 
   interpretErrors = (inputErr: any) => {
     const err = this._messageErrors.find(
@@ -22,7 +33,7 @@ export class DefaultController {
   };
 
   protected makeErrorsBasedOnMessage(input: TMessageErrorsAssimilation) {
-    this._messageErrors = input;
+    this._messageErrors.concat(input);
   }
 
   get messageErrors(): TMessageErrorsAssimilation {

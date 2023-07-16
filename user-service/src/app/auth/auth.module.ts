@@ -4,11 +4,9 @@ import { PassportModule } from '@nestjs/passport';
 import { DatabaseCacheModule } from '@infra/storages/cache/cache.module';
 import { DatabaseModule } from '@infra/storages/db/database.module';
 import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
-import { AdaptersModule } from '../adapters/adapters.module';
-import { AuthService } from '../service/notAuthenticated/auth.service';
-import { CheckFingerprintService } from '../service/notAuthenticated/checkFingerprint.service';
-import { GenTokensService } from '../service/notAuthenticated/genTokens.service';
-import { ForgotTokenGuard } from './forgot-token.guard';
+import { AdaptersModule } from '@app/adapters/adapters.module';
+import { AuthService } from '@app/service/notAuthenticated/auth/auth.service';
+import { GenTokensService } from '@app/service/notAuthenticated/genTokens.service';
 import { JwtStrategy } from './jwt.strategy';
 
 @Module({
@@ -21,14 +19,7 @@ import { JwtStrategy } from './jwt.strategy';
       secret: process.env.TOKEN_SECRET as string,
     }),
   ],
-  providers: [
-    GenTokensService,
-    AuthService,
-    CheckFingerprintService,
-    JwtStrategy,
-    ForgotTokenGuard,
-    SearchUserManager,
-  ],
+  providers: [GenTokensService, AuthService, JwtStrategy, SearchUserManager],
   exports: [AuthService],
 })
 export class AuthModule {}

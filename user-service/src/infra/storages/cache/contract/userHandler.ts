@@ -17,11 +17,7 @@ export abstract class UserHandlerContract extends DefaultHandlerParams {
     user: UserInCache,
     ttl: string | number,
   ): Promise<void>;
-  abstract updateUser(
-    user: UserInCache,
-    content: UserNewContent,
-    ttl: number | string,
-  ): Promise<void>;
+
   abstract getUser(email: string): Promise<UserInCache | null>;
   abstract sendOTPForUser(
     user: UserInCache,

@@ -35,7 +35,7 @@ export class User {
 
   public isEqual(user: User): boolean {
     return (
-      user._id === this._id &&
+      user.id === this._id &&
       user.name.value === this.props.name.value &&
       user.email.value === this.props.email.value &&
       user?.description?.value === this.props?.description?.value &&
