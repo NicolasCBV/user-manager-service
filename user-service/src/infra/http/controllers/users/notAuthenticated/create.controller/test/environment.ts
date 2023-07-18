@@ -13,33 +13,37 @@ interface IProps {
 
 export const createDefaultEnvOnCreateUserE2E = async ({
   shouldCreateContentOnDB,
-  shouldCreateContentOnCache
+  shouldCreateContentOnCache,
 }: IProps) => {
   const { userRepo, userHandler, app } = await getCreateUserModuleE2E();
 
-  if(shouldCreateContentOnDB)
-    await userRepo.create(userFactory({
-      name: new Name("John Doe"),
-	  email: new Email("johndoe@email.com"),
-	  password: new Password("1234Df")
-    }));
+  if (shouldCreateContentOnDB)
+    await userRepo.create(
+      userFactory({
+        name: new Name('John Doe'),
+        email: new Email('johndoe@email.com'),
+        password: new Password('1234Df'),
+      }),
+    );
 
-  if(shouldCreateContentOnCache)
-    await userHandler.sendUser(userInCacheFactory({
-      name: new Name("John Doe"),
-	  email: new Email("johndoe@email.com"),
-	  password: new Password("1234Df")
-    }), 10000);
+  if (shouldCreateContentOnCache)
+    await userHandler.sendUser(
+      userInCacheFactory({
+        name: new Name('John Doe'),
+        email: new Email('johndoe@email.com'),
+        password: new Password('1234Df'),
+      }),
+      10000,
+    );
 
   const res = await request(app.getHttpServer())
-    .post('/users/create') 
+    .post('/users/create')
     .send({
-      name: "John Doe",
-	  email: "johndoe@email.com",
-	  password: "1234Df"
+      name: 'John Doe',
+      email: 'johndoe@email.com',
+      password: '1234Df',
     })
     .set('Content-Type', 'application/json');
 
   return res;
-}
-
+};

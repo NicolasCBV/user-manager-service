@@ -28,12 +28,7 @@ import { AdaptersModule } from '@app/adapters/adapters.module';
 import { AuthModule } from '@app/auth/auth.module';
 
 @Module({
-  imports: [
-    AuthModule, 
-    DatabaseModule, 
-    DatabaseCacheModule, 
-    AdaptersModule
-  ],
+  imports: [AuthModule, DatabaseModule, DatabaseCacheModule, AdaptersModule],
   controllers: [
     GetUserController,
     CancelCreationController,

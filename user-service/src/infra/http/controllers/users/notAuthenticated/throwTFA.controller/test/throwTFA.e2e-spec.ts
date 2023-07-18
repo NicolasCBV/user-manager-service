@@ -1,11 +1,11 @@
-import { redisClient } from "@infra/storages/cache/redis/redisClient";
+import { redisClient } from '@infra/storages/cache/redis/redisClient';
 import { z } from 'zod';
-import { createDefaultEnvOnThrowTFAE2E } from "./environment";
+import { createDefaultEnvOnThrowTFAE2E } from './environment';
 
 describe('Throw TFA E2E test', () => {
   const expectedResponseErr = z.object({
     statusCode: z.number(),
-    message: z.string()
+    message: z.string(),
   });
 
   afterEach(async () => {
@@ -18,7 +18,7 @@ describe('Throw TFA E2E test', () => {
 
   it('should be able to throw TFA', async () => {
     const res = await createDefaultEnvOnThrowTFAE2E({
-      shouldCreateContent: true
+      shouldCreateContent: true,
     });
     expect(res.status).toBe(200);
   });
@@ -30,17 +30,15 @@ describe('Throw TFA E2E test', () => {
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
     expect(res?.body?.message).toEqual('Unauthorized');
-  })
+  });
 
   it('throw one error: wrong password', async () => {
     const res = await createDefaultEnvOnThrowTFAE2E({
       shouldCreateContent: true,
-      passwordInput: 'wrong password'
+      passwordInput: 'wrong password',
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
     expect(res?.body?.message).toEqual('Unauthorized');
-  })
+  });
 });
-
-

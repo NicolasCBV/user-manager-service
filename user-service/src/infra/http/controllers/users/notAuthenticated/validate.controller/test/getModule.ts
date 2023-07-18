@@ -1,32 +1,24 @@
-import { JwtService } from "@nestjs/jwt"
-import { Test } from "@nestjs/testing"
-import { AdaptersModule } from "@app/adapters/adapters.module"
-import { GenTokensService } from "@app/service/notAuthenticated/genTokens.service"
-import { ValidateAccountService } from "@service/notAuthenticated/validateAccount/validateAccount.service"
-import { DatabaseCacheModule } from "@infra/storages/cache/cache.module"
-import { DatabaseModule } from "@infra/storages/db/database.module"
-import { ValidateUserController } from ".."
-import { UsersRepositories } from "@app/repositories/users"
-import { CryptAdapter } from "@app/adapters/crypt"
-import { UserHandlerContract } from "@infra/storages/cache/contract/userHandler"
-import { OTPHandlerContract } from "@infra/storages/cache/contract/OTPHandler"
-import { MiscellaneousHandlerContract } from "@infra/storages/cache/contract/miscellaneousHandler"
-import * as cookieParser from "cookie-parser"
-import { ValidationPipe } from "@nestjs/common"
+import { JwtService } from '@nestjs/jwt';
+import { Test } from '@nestjs/testing';
+import { AdaptersModule } from '@app/adapters/adapters.module';
+import { GenTokensService } from '@app/service/notAuthenticated/genTokens.service';
+import { ValidateAccountService } from '@service/notAuthenticated/validateAccount/validateAccount.service';
+import { DatabaseCacheModule } from '@infra/storages/cache/cache.module';
+import { DatabaseModule } from '@infra/storages/db/database.module';
+import { ValidateUserController } from '..';
+import { UsersRepositories } from '@app/repositories/users';
+import { CryptAdapter } from '@app/adapters/crypt';
+import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
+import { OTPHandlerContract } from '@infra/storages/cache/contract/OTPHandler';
+import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
+import * as cookieParser from 'cookie-parser';
+import { ValidationPipe } from '@nestjs/common';
 
 export const getValidateAccountModuleE2E = async () => {
   const moduleRef = await Test.createTestingModule({
-    imports: [
-      DatabaseModule,
-      DatabaseCacheModule,
-      AdaptersModule
-    ],
+    imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
     controllers: [ValidateUserController],
-    providers: [
-      GenTokensService,
-      JwtService,
-      ValidateAccountService
-    ]
+    providers: [GenTokensService, JwtService, ValidateAccountService],
   }).compile();
 
   const app = moduleRef.createNestApplication();
@@ -41,6 +33,6 @@ export const getValidateAccountModuleE2E = async () => {
     userHandler: moduleRef.get(UserHandlerContract),
     OTPHandler: moduleRef.get(OTPHandlerContract),
     miscHandler: moduleRef.get(MiscellaneousHandlerContract),
-    app
-  }
-}
+    app,
+  };
+};

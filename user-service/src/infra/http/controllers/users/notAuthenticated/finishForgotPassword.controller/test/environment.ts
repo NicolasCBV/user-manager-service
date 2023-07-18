@@ -1,8 +1,8 @@
-import { userFactory } from "@test/fatories/user";
-import { getFinishForgotPasswordModuleE2E } from "./getModule";
+import { userFactory } from '@test/fatories/user';
+import { getFinishForgotPasswordModuleE2E } from './getModule';
 import * as request from 'supertest';
-import { randomUUID } from "crypto";
-import { Password } from "@root/src/app/entities/user/password";
+import { randomUUID } from 'crypto';
+import { Password } from '@root/src/app/entities/user/password';
 
 interface IProps {
   shouldCreateContent: boolean;
@@ -13,24 +13,23 @@ interface IProps {
 export const createDefaultEnvOnFinishForgotPasswordE2E = async ({
   shouldCreateContent,
   deviceIdInput,
-  deviceIdOutput
+  deviceIdOutput,
 }: IProps) => {
-  const {
-    app,
-    userRepo,
-    ...dependencies
-  } = await getFinishForgotPasswordModuleE2E();
+  const { app, userRepo, ...dependencies } =
+    await getFinishForgotPasswordModuleE2E();
   const sub = randomUUID();
   const password = new Password(await dependencies.crypt.hash('1234Df'));
   const user = userFactory({ password });
 
-  if(shouldCreateContent) {
+  if (shouldCreateContent) {
     const token = dependencies.jwtService.sign(
       {
         sub,
         email: user.email.value,
         type: 'forgot_token',
-        deviceId: deviceIdOutput ? await dependencies.crypt.hash(deviceIdOutput) : null,
+        deviceId: deviceIdOutput
+          ? await dependencies.crypt.hash(deviceIdOutput)
+          : null,
       },
       {
         secret: process.env.FORGOT_TOKEN_KEY as string,
@@ -52,16 +51,16 @@ export const createDefaultEnvOnFinishForgotPasswordE2E = async ({
     .send({
       email: user.email.value,
       password: '1234NewPassword',
-      deviceId: deviceIdInput
+      deviceId: deviceIdInput,
     })
     .set('authorization', `Bearer ${sub}`)
     .set('Content-Type', 'application/json');
 
   const newUser = await userRepo.find({ id: user.id });
-  return { 
-    res, 
-    dependencies, 
+  return {
+    res,
+    dependencies,
     oldPassword: password.value,
-    newPassword: newUser
+    newPassword: newUser,
   };
-}
+};

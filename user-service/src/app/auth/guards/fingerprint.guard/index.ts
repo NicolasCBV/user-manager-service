@@ -11,7 +11,10 @@ import { IDefaultPropsJwt } from '../../jwt.core';
 export class FingerprintGuard implements CanActivate {
   constructor(private readonly crypt: CryptAdapter) {}
 
-  private async compareDeviceId(deviceId?: string, hashedDeviceId?: string | null) {
+  private async compareDeviceId(
+    deviceId?: string,
+    hashedDeviceId?: string | null,
+  ) {
     return hashedDeviceId
       ? await this.crypt.compare(String(deviceId), hashedDeviceId)
       : !deviceId;
@@ -28,10 +31,11 @@ export class FingerprintGuard implements CanActivate {
 
     const unhashedDeviceId: string | undefined = searchOnBody
       ? searchOnBody
-      : searchOnQuery instanceof Array ? decodeURIComponent(searchOnQuery[1])
-      : undefined; 
- 
-    if ( !(await this.compareDeviceId(unhashedDeviceId, user.deviceId)) )
+      : searchOnQuery instanceof Array
+      ? decodeURIComponent(searchOnQuery[1])
+      : undefined;
+
+    if (!(await this.compareDeviceId(unhashedDeviceId, user.deviceId)))
       throw new UnauthorizedException();
 
     return true;

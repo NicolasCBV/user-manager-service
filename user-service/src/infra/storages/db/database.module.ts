@@ -9,26 +9,29 @@ import { InMemmoryUser } from '@root/test/inMemmoryDatabases/user';
 dotenv.config();
 
 @Module({
-  providers: process.env.NODE_ENV !== 'test'
-    ? [
-        /* switch for this to use prisma, dont forget to import this contents:
-        * PrismaService,
-        * {
-        *   provide: UsersRepositories,
-        *   useClass: PrismaUserRepository,
-        * },
-        */
-        ...databaseProviders,
-        ...entitiesProviders,
-        {
-          provide: UsersRepositories,
-          useClass: UserService,
-        },
-    ]
-    : [{
-      provide: UsersRepositories,
-        useClass: InMemmoryUser,
-      }],
+  providers:
+    process.env.NODE_ENV !== 'test'
+      ? [
+          /* switch for this to use prisma, dont forget to import this contents:
+           * PrismaService,
+           * {
+           *   provide: UsersRepositories,
+           *   useClass: PrismaUserRepository,
+           * },
+           */
+          ...databaseProviders,
+          ...entitiesProviders,
+          {
+            provide: UsersRepositories,
+            useClass: UserService,
+          },
+        ]
+      : [
+          {
+            provide: UsersRepositories,
+            useClass: InMemmoryUser,
+          },
+        ],
   exports: [UsersRepositories],
 })
 export class DatabaseModule {}

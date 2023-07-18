@@ -68,7 +68,10 @@ export class RelaunchOTPService extends DefaultService<IErrors> {
     return userOnDatabase;
   }
 
-  async exec({ email, isLoging = false }: ILaunchOTPExec): Promise<string | undefined> {
+  async exec({
+    email,
+    isLoging = false,
+  }: ILaunchOTPExec): Promise<string | undefined> {
     // Check data
     const user: User | UserInCache = isLoging
       ? await this.isLoging(email)
@@ -95,9 +98,7 @@ export class RelaunchOTPService extends DefaultService<IErrors> {
     });
 
     // gen cancel key
-    const genKey = isLoging 
-        ? undefined 
-        : await this.setCancelKey(email);
+    const genKey = isLoging ? undefined : await this.setCancelKey(email);
 
     // Launch OTP
     const TTL = !isLoging

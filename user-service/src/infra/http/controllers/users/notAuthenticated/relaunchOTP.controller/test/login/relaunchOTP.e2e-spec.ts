@@ -1,11 +1,11 @@
-import { redisClient } from "@infra/storages/cache/redis/redisClient";
+import { redisClient } from '@infra/storages/cache/redis/redisClient';
 import { z } from 'zod';
-import { createRelaunchOTPE2E } from "./environment";
+import { createRelaunchOTPE2E } from './environment';
 
 describe('Relaunch OTP E2E login test', () => {
   const expectedResponseErr = z.object({
     statusCode: z.number(),
-    message: z.string()
+    message: z.string(),
   });
 
   afterEach(async () => {
@@ -18,7 +18,7 @@ describe('Relaunch OTP E2E login test', () => {
 
   it('should be able to relaunch OTP', async () => {
     const res = await createRelaunchOTPE2E({
-      shouldCreateContent: {}
+      shouldCreateContent: {},
     });
     expect(res.status).toBe(201);
   });
@@ -28,32 +28,27 @@ describe('Relaunch OTP E2E login test', () => {
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
     expect(res?.body?.message).toEqual('Unauthorized');
-  })
+  });
 
   it('throw one error: wrong time - to early', async () => {
     const res = await createRelaunchOTPE2E({
       shouldCreateContent: {
-        time: new Date
+        time: new Date(),
       },
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
     expect(res?.body?.message).toEqual('Unauthorized');
-  })
+  });
 
   it('throw one error: wrong time - to late', async () => {
     const res = await createRelaunchOTPE2E({
       shouldCreateContent: {
-        time: new Date(
-          Date.now() - parseInt(process.env.OTP_TIME ?? '120000')
-        )
+        time: new Date(Date.now() - parseInt(process.env.OTP_TIME ?? '120000')),
       },
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
     expect(res?.body?.message).toEqual('Unauthorized');
-  })
-
+  });
 });
-
-

@@ -4,9 +4,6 @@ import { NonAuthUsersRoutesModule } from './controllers/users/notAuthenticated/n
 import { AuthUsersRoutes } from './controllers/users/authenticated/authUsersRoutes.module';
 
 @Module({
-  imports: [
-    NonAuthUsersRoutesModule, 
-    AuthUsersRoutes
-  ],
+  imports: [NonAuthUsersRoutesModule, AuthUsersRoutes],
 })
 export class HttpModule {}
