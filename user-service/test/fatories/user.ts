@@ -9,8 +9,8 @@ export function userFactory(override: IOverride = {}) {
   return new User(
     {
       name: new Name('default name'),
-      email: new Email('default email'),
-      password: new Password('123456'),
+      email: new Email('default@email.com'),
+      password: new Password('1234Df'),
       ...override,
     },
     override.id ?? 'default id',

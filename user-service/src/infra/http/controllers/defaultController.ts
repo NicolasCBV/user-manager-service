@@ -33,7 +33,7 @@ export class DefaultController {
   };
 
   protected makeErrorsBasedOnMessage(input: TMessageErrorsAssimilation) {
-    this._messageErrors.concat(input);
+    this._messageErrors.push(...input);
   }
 
   get messageErrors(): TMessageErrorsAssimilation {

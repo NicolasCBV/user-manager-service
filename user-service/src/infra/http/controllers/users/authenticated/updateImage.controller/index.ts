@@ -14,11 +14,11 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '@app/auth/guards/jwt-auth.guard';
 import { IJwtTokenUser } from '@app/auth/jwt.core';
-import { UploadImageService } from '@app/service/authenticated/uploadImage/uploadImage.service';
+import { UploadImageService } from '@service/authenticated/uploadImage/uploadImage.service';
 import { Request } from 'express';
-import { name } from '..';
+import { name } from '../../';
 import { DefaultController } from '@infra/http/controllers/defaultController';
-import { FingerprintGuard } from '@root/src/app/auth/guards/fingerprint.guard';
+import { FingerprintGuard } from '@app/auth/guards/fingerprint.guard';
 
 @Controller(name)
 export class UpdateUserImageController extends DefaultController {

@@ -11,10 +11,10 @@ import { IDefaultPropsJwt } from '../../jwt.core';
 export class FingerprintGuard implements CanActivate {
   constructor(private readonly crypt: CryptAdapter) {}
 
-  private async compareDeviceId(deviceId?: string, hashedDeviceId?: string) {
+  private async compareDeviceId(deviceId?: string, hashedDeviceId?: string | null) {
     return hashedDeviceId
-      ? !(await this.crypt.compare(String(deviceId), hashedDeviceId))
-      : hashedDeviceId !== deviceId;
+      ? await this.crypt.compare(String(deviceId), hashedDeviceId)
+      : !deviceId;
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -22,9 +22,16 @@ export class FingerprintGuard implements CanActivate {
     const user: IDefaultPropsJwt | undefined = req?.user;
     if (!user) throw new UnauthorizedException();
 
-    const unhashedDeviceId: string | undefined =
-      req?.body?.deviceId ?? req?.params?.deviceId;
-    if (await this.compareDeviceId(unhashedDeviceId, user.deviceId))
+    const regex = /deviceId=([^&]+)/gm;
+    const searchOnQuery = regex.exec(req?._parsedUrl?.query ?? '');
+    const searchOnBody: string | undefined = req?.body?.deviceId;
+
+    const unhashedDeviceId: string | undefined = searchOnBody
+      ? searchOnBody
+      : searchOnQuery instanceof Array ? decodeURIComponent(searchOnQuery[1])
+      : undefined; 
+ 
+    if ( !(await this.compareDeviceId(unhashedDeviceId, user.deviceId)) )
       throw new UnauthorizedException();
 
     return true;

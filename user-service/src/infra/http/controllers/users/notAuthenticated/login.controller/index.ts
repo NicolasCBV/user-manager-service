@@ -5,15 +5,13 @@ import {
   HttpException,
   HttpStatus,
   Res,
-  UseGuards,
 } from '@nestjs/common';
-import { AuthService } from '@app/service/notAuthenticated/auth/auth.service';
+import { AuthService } from '@service/notAuthenticated/auth/auth.service';
 import { Response } from 'express';
 import { name } from '../../';
 import { LoginUserBody } from '@infra/http/dto/loginUser';
 import { Throttle } from '@nestjs/throttler';
 import { DefaultController } from '@infra/http/controllers/defaultController';
-import { FingerprintGuard } from '@root/src/app/auth/guards/fingerprint.guard';
 
 @Throttle(3, 60)
 @Controller(name)
@@ -30,7 +28,6 @@ export class LoginController extends DefaultController {
     ]);
   }
 
-  @UseGuards(FingerprintGuard)
   @Post('login')
   async loginUser(
     @Res({ passthrough: true }) res: Response,

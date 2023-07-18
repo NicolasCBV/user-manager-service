@@ -1,9 +1,9 @@
 import { APP_GUARD } from '@nestjs/core';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 
 import { HttpModule } from './infra/http/http.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [

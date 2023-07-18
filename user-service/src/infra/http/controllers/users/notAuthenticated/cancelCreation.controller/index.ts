@@ -5,7 +5,7 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { CancelCreationService } from '@app/service/notAuthenticated/cancelCreation/cancelCreation.service';
+import { CancelCreationService } from '@service/notAuthenticated/cancelCreation/cancelCreation.service';
 import { CancelBody } from '@infra/http/dto/cancelBody';
 import { name } from '../../';
 import { Throttle } from '@nestjs/throttler';

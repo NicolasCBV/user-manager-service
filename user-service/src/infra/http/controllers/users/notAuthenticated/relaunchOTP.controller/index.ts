@@ -6,7 +6,7 @@ import {
   Body,
   HttpCode,
 } from '@nestjs/common';
-import { RelaunchOTPService } from '@app/service/notAuthenticated/relaunchOTP/relaunchOTP.service';
+import { RelaunchOTPService } from '@service/notAuthenticated/relaunchOTP/relaunchOTP.service';
 import { name } from '../../';
 import { LaunchOTPBody } from '@infra/http/dto/launchOTPBody';
 import { DefaultController } from '@infra/http/controllers/defaultController';
@@ -39,10 +39,8 @@ export class RelaunchOTPController extends DefaultController {
 
   @Post('launch-otp-login')
   async launchOTPLogin(@Body() { email }: LaunchOTPBody) {
-    const cancelKey = await this.relaunchOTPService
+    await this.relaunchOTPService
       .exec({ email, isLoging: true })
       .catch((err) => this.interpretErrors(err));
-
-    return { cancelKey };
   }
 }

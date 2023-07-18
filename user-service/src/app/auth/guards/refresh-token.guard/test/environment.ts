@@ -11,7 +11,7 @@ export const createDefaultSituationOnRTGuard = async (
   await dependencies.tokenHandler.sendToken({
     id: token.sub,
     type: token.type,
-    content: 'content_token',
+    content: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkZWZhdWx0IGlkIiwiZW1haWwiOiJkZWZhdWx0QGVtYWlsLmNvbSIsInR5cGUiOiJyZWZyZXNoX3Rva2VuIiwiZGV2aWNlSWQiOiIkMmIkMTAkVWh1cXc4U3FsbVFRT3RXUGpPb0J5Lk1BVDMwZEsySHRmSVM3UC9iQXA4ekh5QWNXYXozdzIiLCJpYXQiOjE2ODk2MzU3NTksImV4cCI6MTY4OTcyMjE1OX0.2toUmdNhTJ_oEwTWUIxdpvKxxHFVQlG8EpYjokcF9eE',
     expiresIn: token.iat,
   });
 

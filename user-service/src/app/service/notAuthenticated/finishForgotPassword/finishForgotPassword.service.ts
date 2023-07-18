@@ -9,15 +9,6 @@ import { CryptAdapter } from '@app/adapters/crypt';
 import { UsersRepositories } from '@app/repositories/users';
 import { DefaultService } from '@app/service/defaultService';
 
-export interface IFinishForgotPasswordProps {
-  userRepo: UsersRepositories;
-  userHandler: UserHandlerContract;
-  searchForUser: SearchUserManager;
-  tokenHandler: TokenHandlerContract;
-  miscHandler: MiscellaneousHandlerContract;
-  crypt: CryptAdapter;
-}
-
 interface IErrors {
   unauthorized: Error;
 }
@@ -51,12 +42,6 @@ export class FinishForgotPasswordService extends DefaultService<IErrors> {
     password,
   }: IFinishForgotPasswordExec): Promise<void> {
     const oldUser = await this.searchForUser.exec({ email });
-    const token = await this.tokenHandler.exist(
-      sub,
-      this.tokenHandler.tokenTypes.forgotToken,
-    );
-
-    if (!token) throw this.previsibileErrors.unauthorized;
 
     const passwordHashed = await this.crypt.hash(password);
 

@@ -119,7 +119,7 @@ export class UserHandler
     name: string,
     TTL: number,
     newOTP: OTP,
-    cancelKeyOTP: OTP,
+    cancelKeyOTP?: OTP,
   ): Promise<void> {
     const userKey = `${this.userKW}:${email}`;
     const reservedNameKey = `${this.userKW}:reservedName[${name}]`;
@@ -140,19 +140,26 @@ export class UserHandler
         state: `received ${existentEntities} instead 3`,
       });
 
-    await redisClient
-      .multi()
-      .expire(userKey, TTL, 'XX')
-      .expire(reservedNameKey, TTL, 'XX')
-      .set(OTPKey, JSON.stringify(newOTP), 'PX', otpTTL, 'XX')
-      .set(
-        `${this.otpKW}:${email}.cancelKey`,
-        JSON.stringify(cancelKeyOTP),
-        'PX',
-        otpTTL,
-        'XX',
-      )
-      .exec();
+    cancelKeyOTP
+      ? await redisClient
+          .multi()
+          .expire(userKey, TTL, 'XX')
+          .expire(reservedNameKey, TTL, 'XX')
+          .set(OTPKey, JSON.stringify(newOTP), 'PX', otpTTL, 'XX')
+          .set(
+            `${this.otpKW}:${email}.cancelKey`,
+            JSON.stringify(cancelKeyOTP),
+            'PX',
+            otpTTL,
+            'XX',
+          )
+          .exec()
+      : await redisClient
+          .multi()
+          .expire(userKey, TTL, 'XX')
+          .expire(reservedNameKey, TTL, 'XX')
+          .set(OTPKey, JSON.stringify(newOTP), 'PX', otpTTL, 'XX')
+          .exec();
   }
 
   async existUser(email: string, name: string): Promise<boolean> {

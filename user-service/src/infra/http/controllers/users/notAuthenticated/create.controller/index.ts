@@ -6,13 +6,13 @@ import {
   HttpStatus,
   Post,
 } from '@nestjs/common';
-import { CreateUserService } from '@app/service/notAuthenticated/createUser/createUser.service';
+import { CreateUserService } from '@service/notAuthenticated/createUser/createUser.service';
 import { name } from '../../';
 import { CreateUserBody } from '@infra/http/dto/createUserBody';
 import { Throttle } from '@nestjs/throttler';
 import { DefaultController } from '@infra/http/controllers/defaultController';
 
-@Throttle(2, 15)
+@Throttle(4, 15)
 @Controller(name)
 export class CreateUserController extends DefaultController {
   constructor(private readonly createUserService: CreateUserService) {
@@ -22,7 +22,7 @@ export class CreateUserController extends DefaultController {
     this.makeErrorsBasedOnMessage([
       {
         from: userAlreadyExist.message,
-        to: new HttpException('Unathorized', HttpStatus.UNAUTHORIZED),
+        to: new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED),
       },
     ]);
   }

@@ -1,5 +1,8 @@
 import { readFileSync } from 'node:fs';
 import handlebars from 'handlebars';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 const lang = process.env.LANG as string;
 let source: string | undefined;

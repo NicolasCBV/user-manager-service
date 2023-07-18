@@ -10,14 +10,6 @@ import { CryptAdapter } from '@app/adapters/crypt';
 import { EmailAdapter } from '@app/adapters/email';
 import { randomUUID } from 'crypto';
 
-export interface IForgotPasswordProps {
-  tokenHandler: TokenHandlerContract;
-  searchForUser: SearchUserManager;
-  jwtService: JwtService;
-  crypt: CryptAdapter;
-  email: EmailAdapter;
-}
-
 interface IForgotPasswordExec {
   email: string;
   deviceId?: string;

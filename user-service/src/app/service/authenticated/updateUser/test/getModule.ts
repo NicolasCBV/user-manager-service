@@ -1,13 +1,13 @@
 import { Test } from '@nestjs/testing';
-import { UsersRepositories } from '@root/src/app/repositories/users';
-import { DatabaseCacheModule } from '@root/src/infra/storages/cache/cache.module';
-import { UserHandlerContract } from '@root/src/infra/storages/cache/contract/userHandler';
-import { DatabaseTestModule } from '@root/src/infra/storages/db/databaseTest.module';
+import { UsersRepositories } from '@app/repositories/users';
+import { DatabaseCacheModule } from '@infra/storages/cache/cache.module';
+import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
+import { DatabaseModule } from '@infra/storages/db/database.module';
 import { UpdateUserService } from '../updateUser.service';
 
 export const getUpdateUserModule = async () => {
   const moduleRef = await Test.createTestingModule({
-    imports: [DatabaseTestModule, DatabaseCacheModule],
+    imports: [DatabaseModule, DatabaseCacheModule],
     providers: [UpdateUserService],
   }).compile();
 

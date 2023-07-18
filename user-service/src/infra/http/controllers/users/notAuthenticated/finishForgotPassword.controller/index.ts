@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { IDefaultPropsJwt } from '@app/auth/jwt.core';
-import { FinishForgotPasswordService } from '@app/service/notAuthenticated/finishForgotPassword/finishForgotPassword.service';
+import { FinishForgotPasswordService } from '@service/notAuthenticated/finishForgotPassword/finishForgotPassword.service';
 import { Request } from 'express';
 import { name } from '../../';
 import { FinishForgotPasswordBody } from '@infra/http/dto/finishForgotPasswordBody';

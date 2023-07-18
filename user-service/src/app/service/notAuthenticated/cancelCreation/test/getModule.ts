@@ -1,15 +1,15 @@
 import { Test } from '@nestjs/testing';
-import { AdaptersModule } from '@root/src/app/adapters/adapters.module';
-import { DatabaseCacheModule } from '@root/src/infra/storages/cache/cache.module';
-import { MiscellaneousHandlerContract } from '@root/src/infra/storages/cache/contract/miscellaneousHandler';
-import { OTPHandlerContract } from '@root/src/infra/storages/cache/contract/OTPHandler';
-import { UserHandlerContract } from '@root/src/infra/storages/cache/contract/userHandler';
-import { DatabaseTestModule } from '@root/src/infra/storages/db/databaseTest.module';
+import { AdaptersModule } from '@app/adapters/adapters.module';
+import { DatabaseCacheModule } from '@infra/storages/cache/cache.module';
+import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
+import { OTPHandlerContract } from '@infra/storages/cache/contract/OTPHandler';
+import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
+import { DatabaseModule } from '@infra/storages/db/database.module';
 import { CancelCreationService } from '../cancelCreation.service';
 
 export const getCancelCreationModule = async () => {
   const moduleRef = await Test.createTestingModule({
-    imports: [DatabaseTestModule, DatabaseCacheModule, AdaptersModule],
+    imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
     providers: [CancelCreationService],
   }).compile();
 

@@ -5,8 +5,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { CookieAdapter } from '@root/src/app/adapters/cookie';
-import { TokenHandlerContract } from '@root/src/infra/storages/cache/contract/tokenHandler';
+import { CookieAdapter } from '@app/adapters/cookie';
+import { TokenHandlerContract } from '@infra/storages/cache/contract/tokenHandler';
 import { IDefaultPropsJwt } from '../../jwt.core';
 
 @Injectable()
@@ -32,8 +32,7 @@ export class RefreshTokenGuard implements CanActivate {
       .verifyAsync(token, {
         secret: process.env.REFRESH_TOKEN_KEY,
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
         throw new UnauthorizedException();
       });
 
@@ -53,7 +52,11 @@ export class RefreshTokenGuard implements CanActivate {
     const authCookie = req?.headers.cookie.split('refresh-cookie=')[1];
     if (!authCookie) throw new UnauthorizedException();
 
-    const token = await this.checkCookie(authCookie);
+    const rawToken = await this.checkCookie(authCookie);
+    const tokenArray = rawToken.split('.');
+    tokenArray.pop();
+
+    const token = tokenArray.join().replaceAll(',', '.');
     const tokenData = await this.checkToken(token);
 
     req.user = tokenData;

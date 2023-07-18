@@ -6,7 +6,7 @@ import {
   Post,
   Res,
 } from '@nestjs/common';
-import { ValidateAccountService } from '@app/service/notAuthenticated/validateAccount/validateAccount.service';
+import { ValidateAccountService } from '@service/notAuthenticated/validateAccount/validateAccount.service';
 import { Response } from 'express';
 import { name } from '../../';
 import { ValidateUserBody } from '@infra/http/dto/validateUserBody';

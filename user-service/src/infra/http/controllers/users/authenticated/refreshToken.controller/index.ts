@@ -9,7 +9,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { RefreshTokenService } from '@app/service/authenticated/refreshToken/refreshToken.service';
+import { RefreshTokenService } from '@service/authenticated/refreshToken/refreshToken.service';
 import { Request, Response } from 'express';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { name } from '../../';

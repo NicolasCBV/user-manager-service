@@ -1,5 +1,5 @@
 import { Controller, Body, Post, HttpCode } from '@nestjs/common';
-import { ForgotPasswordService } from '@app/service/notAuthenticated/forgotPassword/forgotPassword.service';
+import { ForgotPasswordService } from '@service/notAuthenticated/forgotPassword/forgotPassword.service';
 import { name } from '../../';
 import { ForgotPasswordBody } from '@infra/http/dto/forgotPassword';
 import { Throttle } from '@nestjs/throttler';

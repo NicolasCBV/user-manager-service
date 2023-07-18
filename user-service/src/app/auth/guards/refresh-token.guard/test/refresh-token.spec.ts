@@ -10,6 +10,8 @@ import { createDefaultSituationOnRTGuard } from './environment';
 jest.mock('@nestjs/jwt');
 
 describe('Refresh token guard test', () => {
+  const fakeToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkZWZhdWx0IGlkIiwiZW1haWwiOiJkZWZhdWx0QGVtYWlsLmNvbSIsInR5cGUiOiJyZWZyZXNoX3Rva2VuIiwiZGV2aWNlSWQiOiIkMmIkMTAkVWh1cXc4U3FsbVFRT3RXUGpPb0J5Lk1BVDMwZEsySHRmSVM3UC9iQXA4ekh5QWNXYXozdzIiLCJpYXQiOjE2ODk2MzU3NTksImV4cCI6MTY4OTcyMjE1OX0.2toUmdNhTJ_oEwTWUIxdpvKxxHFVQlG8EpYjokcF9eE.0mvJYm6b+UnBl0xjpzDfe9s5zjTCeexy33jIR4/oGI0';
+
   const token = tokenFactory({
     type: 'refresh_token',
   });
@@ -17,7 +19,7 @@ describe('Refresh token guard test', () => {
   beforeEach(() => {
     JwtService.prototype.verifyAsync = jest.fn(async (): Promise<any> => token);
     CookieAdapter.prototype.validateSignedCookie = jest.fn(
-      () => 'content_token',
+      () => fakeToken,
     );
   });
 
@@ -32,7 +34,7 @@ describe('Refresh token guard test', () => {
 
   it('should resolve refresh-token guard', async () => {
     const { exec } = await createDefaultSituationOnRTGuard(
-      'content_token',
+      fakeToken,
       token,
     );
 
@@ -44,20 +46,20 @@ describe('Refresh token guard test', () => {
       'wrong_token',
       token,
     );
-
+  
     expect(exec).rejects.toThrowError(UnauthorizedException);
   });
-
+  
   it('should throw one error: violated signature - cookie', async () => {
     CookieParserAdapter.prototype.validateSignedCookie = jest.fn(() => false);
     const { exec } = await createDefaultSituationOnRTGuard(
       'content_token',
       token,
     );
-
+  
     expect(exec).rejects.toThrowError(UnauthorizedException);
   });
-
+  
   it('should throw one error: violated signature - token', async () => {
     JwtService.prototype.verifyAsync = jest.fn(() => {
       throw new UnauthorizedException();
@@ -66,17 +68,17 @@ describe('Refresh token guard test', () => {
       'content_token',
       token,
     );
-
+  
     expect(exec).rejects.toThrowError(UnauthorizedException);
   });
-
+  
   it('should throw one error: token does not exist', async () => {
     TokenHandlerContract.prototype.sendToken = jest.fn();
     const { exec } = await createDefaultSituationOnRTGuard(
       'content_token',
       token,
     );
-
+  
     expect(exec).rejects.toThrowError(UnauthorizedException);
   });
 });

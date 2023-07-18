@@ -1,21 +1,21 @@
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
-import { AdaptersModule } from '@root/src/app/adapters/adapters.module';
-import { CryptAdapter } from '@root/src/app/adapters/crypt';
-import { EmailAdapter } from '@root/src/app/adapters/email';
-import { DatabaseCacheModule } from '@root/src/infra/storages/cache/cache.module';
-import { MiscellaneousHandlerContract } from '@root/src/infra/storages/cache/contract/miscellaneousHandler';
-import { OTPHandlerContract } from '@root/src/infra/storages/cache/contract/OTPHandler';
-import { TokenHandlerContract } from '@root/src/infra/storages/cache/contract/tokenHandler';
-import { UserHandlerContract } from '@root/src/infra/storages/cache/contract/userHandler';
-import { DatabaseTestModule } from '@root/src/infra/storages/db/databaseTest.module';
-import { SearchUserManager } from '@root/src/infra/storages/search/searchUserManager.service';
+import { AdaptersModule } from '@app/adapters/adapters.module';
+import { CryptAdapter } from '@app/adapters/crypt';
+import { EmailAdapter } from '@app/adapters/email';
+import { DatabaseCacheModule } from '@infra/storages/cache/cache.module';
+import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
+import { OTPHandlerContract } from '@infra/storages/cache/contract/OTPHandler';
+import { TokenHandlerContract } from '@infra/storages/cache/contract/tokenHandler';
+import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
+import { DatabaseModule } from '@infra/storages/db/database.module';
+import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { GenTokensService } from '../../genTokens.service';
 import { AuthService } from '../auth.service';
 
 export const getAuthModule = async () => {
   const moduleRef = await Test.createTestingModule({
-    imports: [DatabaseTestModule, AdaptersModule, DatabaseCacheModule],
+    imports: [DatabaseModule, AdaptersModule, DatabaseCacheModule],
     providers: [SearchUserManager, GenTokensService, JwtService, AuthService],
   }).compile();
 

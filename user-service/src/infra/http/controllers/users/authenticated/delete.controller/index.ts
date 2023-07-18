@@ -8,11 +8,11 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from '@app/auth/guards/jwt-auth.guard';
 import { IJwtTokenUser } from '@app/auth/jwt.core';
-import { DeleteUserService } from '@app/service/authenticated/deleteUser/deleteUser.service';
+import { DeleteUserService } from '@service/authenticated/deleteUser/deleteUser.service';
 import { Request } from 'express';
-import { name } from '..';
-import { DefaultController } from '../../defaultController';
-import { FingerprintGuard } from '@root/src/app/auth/guards/fingerprint.guard';
+import { name } from '../../';
+import { DefaultController } from '@infra/http/controllers/defaultController';
+import { FingerprintGuard } from '@app/auth/guards/fingerprint.guard';
 
 @Controller(name)
 export class DeleteUserController extends DefaultController {

@@ -1,15 +1,15 @@
 import { Test } from '@nestjs/testing';
-import { AdaptersModule } from '@root/src/app/adapters/adapters.module';
-import { UsersRepositories } from '@root/src/app/repositories/users';
-import { DatabaseCacheModule } from '@root/src/infra/storages/cache/cache.module';
-import { OTPHandlerContract } from '@root/src/infra/storages/cache/contract/OTPHandler';
-import { UserHandlerContract } from '@root/src/infra/storages/cache/contract/userHandler';
-import { DatabaseTestModule } from '@root/src/infra/storages/db/databaseTest.module';
+import { AdaptersModule } from '@src/app/adapters/adapters.module';
+import { UsersRepositories } from '@src/app/repositories/users';
+import { DatabaseCacheModule } from '@src/infra/storages/cache/cache.module';
+import { OTPHandlerContract } from '@src/infra/storages/cache/contract/OTPHandler';
+import { UserHandlerContract } from '@src/infra/storages/cache/contract/userHandler';
+import { DatabaseModule } from '@src/infra/storages/db/database.module';
 import { CreateUserService } from '../createUser.service';
 
 export const getCreateUserModule = async () => {
   const moduleRef = await Test.createTestingModule({
-    imports: [DatabaseTestModule, DatabaseCacheModule, AdaptersModule],
+    imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
     providers: [CreateUserService],
   }).compile();
 

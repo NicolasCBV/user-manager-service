@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { DeleteUserService } from '@app/service/authenticated/deleteUser/deleteUser.service';
-import { RefreshTokenService } from '@app/service/authenticated/refreshToken/refreshToken.service';
-import { UpdateUserService } from '@app/service/authenticated/updateUser/updateUser.service';
-import { UploadImageService } from '@app/service/authenticated/uploadImage/uploadImage.service';
+import { DeleteUserService } from '@service/authenticated/deleteUser/deleteUser.service';
+import { RefreshTokenService } from '@service/authenticated/refreshToken/refreshToken.service';
+import { UpdateUserService } from '@service/authenticated/updateUser/updateUser.service';
+import { UploadImageService } from '@service/authenticated/uploadImage/uploadImage.service';
 import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
-import { GenTokensService } from '@app/service/notAuthenticated/genTokens.service';
+import { GenTokensService } from '@service/notAuthenticated/genTokens.service';
 
 import { DeleteUserController } from './delete.controller';
 import { RefreshTokenController } from './refreshToken.controller';

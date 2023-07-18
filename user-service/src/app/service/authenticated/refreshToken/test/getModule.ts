@@ -1,14 +1,14 @@
 import { Test } from '@nestjs/testing';
-import { DatabaseCacheModule } from '@root/src/infra/storages/cache/cache.module';
-import { TokenHandlerContract } from '@root/src/infra/storages/cache/contract/tokenHandler';
-import { DatabaseTestModule } from '@root/src/infra/storages/db/databaseTest.module';
-import { SearchUserManager } from '@root/src/infra/storages/search/searchUserManager.service';
+import { DatabaseCacheModule } from '@infra/storages/cache/cache.module';
+import { TokenHandlerContract } from '@infra/storages/cache/contract/tokenHandler';
+import { DatabaseModule } from '@infra/storages/db/database.module';
+import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { GenTokensService } from '../../../notAuthenticated/genTokens.service';
 import { RefreshTokenService } from '../refreshToken.service';
 
 export const getRefreshTokenModule = async () => {
   const moduleRef = await Test.createTestingModule({
-    imports: [DatabaseTestModule, DatabaseCacheModule],
+    imports: [DatabaseModule, DatabaseCacheModule],
     providers: [RefreshTokenService, GenTokensService, SearchUserManager],
   }).compile();
 

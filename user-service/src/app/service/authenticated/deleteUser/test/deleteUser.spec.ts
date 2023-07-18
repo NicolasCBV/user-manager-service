@@ -1,5 +1,5 @@
 import { redisClient } from '@infra/storages/cache/redis/redisClient';
-import { UserInCache } from '@root/src/app/entities/userInCache/userInCache';
+import { UserInCache } from '@app/entities/userInCache/userInCache';
 import { userFactory } from '@test/fatories/user';
 import { getDeleteUserModule } from './getModule';
 

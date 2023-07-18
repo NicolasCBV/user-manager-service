@@ -1,18 +1,18 @@
 import { Test } from '@nestjs/testing';
-import { AdaptersModule } from '@root/src/app/adapters/adapters.module';
-import { CryptAdapter } from '@root/src/app/adapters/crypt';
-import { UsersRepositories } from '@root/src/app/repositories/users';
-import { DatabaseCacheModule } from '@root/src/infra/storages/cache/cache.module';
-import { MiscellaneousHandlerContract } from '@root/src/infra/storages/cache/contract/miscellaneousHandler';
-import { TokenHandlerContract } from '@root/src/infra/storages/cache/contract/tokenHandler';
-import { UserHandlerContract } from '@root/src/infra/storages/cache/contract/userHandler';
-import { DatabaseTestModule } from '@root/src/infra/storages/db/databaseTest.module';
-import { SearchUserManager } from '@root/src/infra/storages/search/searchUserManager.service';
+import { AdaptersModule } from '@app/adapters/adapters.module';
+import { CryptAdapter } from '@app/adapters/crypt';
+import { UsersRepositories } from '@app/repositories/users';
+import { DatabaseCacheModule } from '@infra/storages/cache/cache.module';
+import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
+import { TokenHandlerContract } from '@infra/storages/cache/contract/tokenHandler';
+import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
+import { DatabaseModule } from '@infra/storages/db/database.module';
+import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { FinishForgotPasswordService } from '../finishForgotPassword.service';
 
 export const getFinishForgotPasswordModule = async () => {
   const moduleRef = await Test.createTestingModule({
-    imports: [DatabaseTestModule, DatabaseCacheModule, AdaptersModule],
+    imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
     providers: [SearchUserManager, FinishForgotPasswordService],
   }).compile();
 

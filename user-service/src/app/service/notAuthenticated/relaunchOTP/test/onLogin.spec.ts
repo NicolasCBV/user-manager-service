@@ -31,7 +31,7 @@ describe('Launch OTP test', () => {
       time: fakeActualTime,
       isLoging: true,
     });
-    expect(typeof (await exec())).toEqual('string');
+    expect(await exec()).toBeUndefined()
   });
 
   it('should throw an error: user does not exist', async () => {

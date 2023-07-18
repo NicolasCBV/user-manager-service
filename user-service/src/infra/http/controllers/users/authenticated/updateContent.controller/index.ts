@@ -9,12 +9,12 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from '@app/auth/guards/jwt-auth.guard';
 import { IJwtTokenUser } from '@app/auth/jwt.core';
-import { UpdateUserService } from '@app/service/authenticated/updateUser/updateUser.service';
+import { UpdateUserService } from '@service/authenticated/updateUser/updateUser.service';
 import { UpdateUserBody } from '@infra/http/dto/updateUserBody';
 import { Request } from 'express';
-import { name } from '..';
+import { name } from '../../';
 import { DefaultController } from '@infra/http/controllers/defaultController';
-import { FingerprintGuard } from '@root/src/app/auth/guards/fingerprint.guard';
+import { FingerprintGuard } from '@app/auth/guards/fingerprint.guard';
 
 @Controller(name)
 export class UpdateUserContentController extends DefaultController {

@@ -1,7 +1,7 @@
 import { IsEmail, IsString, Length } from 'class-validator';
 
 export class ThrowTFABody {
-  @Length(6, 64)
+  @Length(6, 256)
   @IsEmail()
   email: string;
 

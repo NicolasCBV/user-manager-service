@@ -1,5 +1,5 @@
 import { Controller, Get, Param, HttpCode } from '@nestjs/common';
-import { GetUserService } from '@app/service/notAuthenticated/getUser/getUser.service';
+import { GetUserService } from '@service/notAuthenticated/getUser/getUser.service';
 import { name } from '../../';
 import { GetUserParam } from '@infra/http/dto/getUserParam';
 import { DefaultController } from '@infra/http/controllers/defaultController';

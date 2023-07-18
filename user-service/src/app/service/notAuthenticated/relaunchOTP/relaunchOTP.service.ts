@@ -40,6 +40,17 @@ export class RelaunchOTPService extends DefaultService<IErrors> {
     });
   }
 
+  private async setCancelKey(email: string) {
+    const cancelKey = randomUUID();
+    const cancelKeyHashed = await this.crypt.hash(cancelKey);
+    const cancelKeyOTP = new OTP({
+      userIdentificator: `${this.userHandler.userKW}:${email}`,
+      code: cancelKeyHashed,
+    });
+
+    return { cancelKey: cancelKeyOTP, code: cancelKey };
+  }
+
   private async isSigining(email: string): Promise<UserInCache> {
     const userOnDatabase = await this.userRepo.exist({ email });
     if (userOnDatabase) throw this.previsibileErrors.indisponible;
@@ -57,7 +68,7 @@ export class RelaunchOTPService extends DefaultService<IErrors> {
     return userOnDatabase;
   }
 
-  async exec({ email, isLoging = false }: ILaunchOTPExec): Promise<string> {
+  async exec({ email, isLoging = false }: ILaunchOTPExec): Promise<string | undefined> {
     // Check data
     const user: User | UserInCache = isLoging
       ? await this.isLoging(email)
@@ -84,12 +95,9 @@ export class RelaunchOTPService extends DefaultService<IErrors> {
     });
 
     // gen cancel key
-    const cancelKey = randomUUID();
-    const cancelKeyHashed = await this.crypt.hash(cancelKey);
-    const cancelKeyOTP = new OTP({
-      userIdentificator: `${this.userHandler.userKW}:${email}`,
-      code: cancelKeyHashed,
-    });
+    const genKey = isLoging 
+        ? undefined 
+        : await this.setCancelKey(email);
 
     // Launch OTP
     const TTL = !isLoging
@@ -100,7 +108,7 @@ export class RelaunchOTPService extends DefaultService<IErrors> {
       user.name.value,
       TTL,
       newOTP,
-      cancelKeyOTP,
+      genKey?.cancelKey,
     );
 
     // Send email
@@ -117,6 +125,6 @@ export class RelaunchOTPService extends DefaultService<IErrors> {
       }),
     });
 
-    return cancelKey;
+    return !isLoging ? genKey?.code : undefined;
   }
 }

@@ -6,7 +6,7 @@ import {
   Post,
   HttpCode,
 } from '@nestjs/common';
-import { AuthService } from '@app/service/notAuthenticated/auth/auth.service';
+import { AuthService } from '@service/notAuthenticated/auth/auth.service';
 import { ThrowTFABody } from '@infra/http/dto/throwTFABody';
 import { name } from '../../';
 import { Throttle } from '@nestjs/throttler';

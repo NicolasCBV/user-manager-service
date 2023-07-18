@@ -18,7 +18,7 @@ export class ForgotTokenGuard implements CanActivate {
   private async checkToken(token: string) {
     const tokenData: IDefaultPropsJwt = await this.jwtService
       .verifyAsync(token, {
-        secret: process.env.REFRESH_TOKEN_KEY,
+        secret: process.env.FORGOT_TOKEN_KEY,
       })
       .catch(() => {
         throw new UnauthorizedException();
