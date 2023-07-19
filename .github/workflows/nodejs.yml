@@ -48,4 +48,4 @@ jobs:
         EMAIL_SENDER: ${{secrets.EMAIL_SENDER}}
         PASS_SENDER: ${{secrets.PASS_SENDER}}
       run: |
-        docker compose -f ./tests/docker-compose.yml run --rm -p 3030:3030 app sh -c "yarn test && yarn test:e2e"
+        docker compose -f ./tests/docker-compose.yml run app sh -c "yarn migration:run && yarn test && yarn test:e2e"

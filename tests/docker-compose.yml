@@ -14,8 +14,6 @@ services:
       - "3306"
     networks:
       - internal_network     
-    volumes:
-      - db:/var/lib/mysql
   
   redis_db:
     image: redis:7.0.5-bullseye
@@ -26,8 +24,6 @@ services:
     command: redis-server --loglevel warning --requirepass password 
     networks:
       - internal_network 
-    volumes:
-      - cache:/data
 
   app:
     build:
@@ -35,9 +31,6 @@ services:
       dockerfile: tests.Dockerfile
     hostname: app
     restart: always
-    volumes:
-      - ./user-service:/usr/app/
-      - '/usr/app/node_modules'
     ports:
       - "3030:3030"
     networks:
@@ -46,12 +39,6 @@ services:
     depends_on:
       - db
       - redis_db
-
-volumes:
-  db:
-    driver: local
-  cache:
-    driver: local
 
 networks:
   external_network:
