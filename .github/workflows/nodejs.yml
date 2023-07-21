@@ -1,17 +1,15 @@
-name: Node.js CI (TEST)
+name: Node.js CI - Unit & E2E tests
 
 on:
   push:
-    branches: "*"
-  pull_request:
-    branches: "*"
+    branches: [ "master", "develop" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [16.x, 18.x]
     steps:
     - uses: actions/checkout@v3
     - name: Node.js ${{ matrix.node-version }}
@@ -22,7 +20,7 @@ jobs:
       run: |
           sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
-    - name: Unit test
+    - name: Unit test & E2E test
       env: 
         CACHE_HOSTNAME: ${{secrets.CACHE_HOSTNAME}}
         CACHE_PASSWORD: ${{secrets.CACHE_PASSWORD}}
