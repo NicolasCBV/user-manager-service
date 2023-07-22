@@ -1,12 +1,29 @@
 import { readFileSync } from 'node:fs';
-import Handlebars from 'handlebars';
+import handlebars from 'handlebars';
+import * as dotenv from 'dotenv';
 
-const source = readFileSync(
-  '/usr/app/templates/forgotPassword/forgotPassword.html',
-  'utf-8',
-);
+dotenv.config();
 
-const template = Handlebars.compile(source);
+const lang = process.env.LANG as string;
+let source: string | undefined;
+export let forgotPasswordRecommendedTitle: string | undefined;
+
+switch(lang) {
+  case 'PT_br':
+    source = readFileSync('/usr/app/templates/forgotPassword/forgotPassword.pt_br.html', 'utf-8');
+    forgotPasswordRecommendedTitle = 'Verificação de duas etapas';
+    break;
+
+  case 'English':
+    source = readFileSync('/usr/app/templates/forgotPassword/forgotPassword.eng.html', 'utf-8');
+    forgotPasswordRecommendedTitle = 'Two factors step';
+    break;
+
+  default:
+    throw new Error('The language was not defined!');
+}
+
+const template = handlebars.compile(source);
 
 interface Props {
   name: string;

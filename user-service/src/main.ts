@@ -11,13 +11,13 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
     origin: process.env.CLIENT_URL as string,
-    methods: ['DELETE', 'POST', 'PATCH'],
+    methods: ['DELETE', 'POST', 'PATCH', 'GET'],
     preflightContinue: false,
     credentials: true,
   });
   app.use(cookieParser(process.env.COOKIE_SECRET));
 
-  const server = await app.listen(3030);
+  const server = await app.listen(process.env.PORT ?? 3030);
   server.setTimeout(1000 * 60);
 }
 bootstrap();

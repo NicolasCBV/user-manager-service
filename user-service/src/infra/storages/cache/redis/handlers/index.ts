@@ -9,8 +9,7 @@ export class DefaultHandlerParams {
   userKW = 'user';
   otpKW = 'OTP';
 
-  entitieError = new Error('The entitie already exist.');
-  entitieNotExistError = new Error("The entitie doesn't exist.");
+  cacheErrorMsg = 'Could not finish operation on cache';
 
   tokenTypes: ITokenTypes = {
     refreshToken: 'refresh_token',

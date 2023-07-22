@@ -24,7 +24,6 @@ interface IUserInJson {
   description?: string | null;
   password: string;
   imageUrl?: string | null;
-  phoneNumber?: string | null;
   createdAt: string;
   updatedAt: string;
   cachedAt: string;

@@ -26,8 +26,10 @@
     "noFallthroughCasesInSwitch": false,
 
     "paths": {
+      "@root/*": ["./*"],
       "@src/*": ["src/*"],
       "@app/*": ["src/app/*"],
+      "@service/*": ["src/app/service/*"],
       "@infra/*": ["src/infra/*"],
       "@helpers/*": ["src/helpers/*"],
       "@test/*": ["test/*"],

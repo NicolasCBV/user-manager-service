@@ -1,6 +1,7 @@
-import { Length, IsEmail } from 'class-validator';
+import { Length, IsEmail, IsString } from 'class-validator';
 
 export class CreateUserBody {
+  @IsString()
   @Length(2, 64)
   name: string;
 
@@ -8,6 +9,7 @@ export class CreateUserBody {
   @IsEmail()
   email: string;
 
+  @IsString()
   @Length(6, 256)
   password: string;
 }

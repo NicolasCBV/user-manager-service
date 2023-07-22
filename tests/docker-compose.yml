@@ -1,0 +1,71 @@
+version: "3"
+
+services:
+  db:
+    image: mysql:latest
+    hostname: mysql_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: "db"
+      MYSQL_ROOT_PASSWORD: "password"
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    networks:
+      - internal_network     
+  
+  redis_db:
+    image: redis:7.0.5-bullseye
+    restart: always
+    hostname: redis
+    ports:
+      - "6379:6379"
+    command: redis-server --loglevel warning --requirepass password 
+    networks:
+      - internal_network 
+
+  app:
+    build:
+      context: ../user-service
+      dockerfile: tests.Dockerfile
+    hostname: app
+    restart: always
+    ports:
+      - "3030:3030"
+    networks:
+      - internal_network
+      - external_network
+    environment:
+      - CACHE_HOSTNAME=${CACHE_HOSTNAME}
+      - CACHE_PASSWORD=${CACHE_PASSWORD}
+      - CLIENT_URL=${CLIENT_URL}
+      - COOKIE_SECRET=${COOKIE_SECRET}
+      - DATABASE_URL=${DATABASE_URL}
+      - FORGOT_TOKEN_EXPIRES=${FORGOT_TOKEN_EXPIRES}
+      - FORGOT_TOKEN_KEY=${FORGOT_TOKEN_KEY}
+      - LANG=${LANG}
+      - NODE_ENV=${NODE_ENV}
+      - OTP_TIME=${OTP_TIME}
+      - PORT=${PORT}
+      - PROJECT_NAME=${PROJECT_NAME}
+      - REFRESH_TOKEN_EXPIRES=${REFRESH_TOKEN_EXPIRES}
+      - REFRESH_TOKEN_KEY=${REFRESH_TOKEN_KEY}
+      - TOKEN_EXPIRES=${TOKEN_EXPIRES}
+      - TOKEN_SECRET=${TOKEN_SECRET}
+      - FIREBASE=${FIREBASE}
+      - FIREBASE_TEMPLATE_IMAGE_LINK=${FIREBASE_TEMPLATE_IMAGE_LINK}
+      - FIREBASE_BUCKET=${FIREBASE_BUCKET}
+      - HOST_SENDER=${HOST_SENDER}
+      - HOST_PORT_SENDER=${HOST_PORT_SENDER}
+      - EMAIL_SENDER=${EMAIL_SENDER}
+      - PASS_SENDER=${PASS_SENDER}
+    depends_on:
+      - db
+      - redis_db
+
+networks:
+  external_network:
+  internal_network:
+    internal: true
+
