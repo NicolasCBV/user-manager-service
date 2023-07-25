@@ -31,12 +31,12 @@ services:
 
   app:
     build:
-      context: ./user-service
-      dockerfile: app.Dockerfile
+      dockerfile: ./user-service/app.Dockerfile
     hostname: app
     restart: always
     volumes:
       - ./user-service:/usr/app/
+      - ./dashboard:/dashboard
       - '/usr/app/node_modules'
     ports:
       - "3030:3030"

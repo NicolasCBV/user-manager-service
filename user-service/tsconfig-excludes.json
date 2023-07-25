@@ -1,0 +1,10 @@
+{
+  "exclude": [
+    "**/*spec.ts",
+    "dashboard/**/*",
+    "**/*test*",
+    "**/*prisma*",
+    "node_modules",
+    "dist",
+  ]
+}

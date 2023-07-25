@@ -19,6 +19,7 @@ main() {
     /usr/bin/clear;
     case $RESPONSE in
         1) 
+            /bin/echo "WARN: to start server with prisma, run some migration";
             /bin/echo "Initializing app in zsh.   :)";
             /usr/bin/zsh;
             menu;
