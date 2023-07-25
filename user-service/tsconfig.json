@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig-excludes.json",
   "compilerOptions": {
     "module": "CommonJS",
     "declaration": true,
@@ -35,5 +36,9 @@
       "@test/*": ["test/*"],
       "@templates/*": ["templates/*"]
     }
-  }
+  },
+  "include": [
+    "src/**/*",
+    "./*.ts"
+  ]
 }
