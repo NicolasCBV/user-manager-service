@@ -70,7 +70,7 @@ class OrmMenu : public AbstractView, public WindowFlow {
           write << "    \"**/*typeorm*\",\n";
           write << "    \"ormconfig.ts\",\n";
           write << "    \"node_modules\",\n";
-          write << "    \"dist\",\n";
+          write << "    \"dist\"\n";
           write << "  ]\n";
           write << "}";
 
@@ -131,7 +131,7 @@ class OrmMenu : public AbstractView, public WindowFlow {
           write << "    \"**/*prisma*\",\n";
 
           write << "    \"node_modules\",\n";
-          write << "    \"dist\",\n";
+          write << "    \"dist\"\n";
           write << "  ]\n";
           write << "}";
 
