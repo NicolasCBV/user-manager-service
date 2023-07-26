@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import handlebars from 'handlebars';
 import * as dotenv from 'dotenv';
+import { join } from 'path';
 
 dotenv.config();
 
@@ -8,14 +9,24 @@ const lang = process.env.LANG as string;
 let source: string | undefined;
 export let createAccountRecommendedTitle: string | undefined;
 
-switch(lang) {
+const project_dir =
+  process.env.NODE_ENV === 'test'
+    ? join(__dirname + '../../../')
+    : join(__dirname + '../../../../');
+switch (lang) {
   case 'PT_br':
-    source = readFileSync('/usr/app/templates/createAccount/createAccount.pt_br.html', 'utf-8');
+    source = readFileSync(
+      join(project_dir + 'templates/createAccount/createAccount.pt_br.html'),
+      'utf-8',
+    );
     createAccountRecommendedTitle = 'Verificação de duas etapas';
     break;
 
   case 'English':
-    source = readFileSync('/usr/app/templates/createAccount/createAccount.eng.html', 'utf-8');
+    source = readFileSync(
+      join(project_dir + 'templates/createAccount/createAccount.pt_br.html'),
+      'utf-8',
+    );
     createAccountRecommendedTitle = 'Two factors step';
     break;
 

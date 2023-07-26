@@ -1,0 +1,26 @@
+{
+	"configurations": {
+		"debug": {
+			"workingDirectory": "${workspaceFolder}",
+			"adapter": "vscode-cpptools",
+			"breakpoints": {
+				"exception": {
+					"all": "N",
+					"uncaught": "N"
+				}
+			},
+			"configuration": {
+				"request": "launch",
+				"program": "${workspaceFolder}/build/init",
+				"args": ["-actions", "${workspaceFolder}/../user-service"],
+				"cwd": "${workspaceFolder}",
+				"environment": [],
+				"externalConsole": false,
+				"MIMode": "gdb",
+				"logging": {
+					"engineLogging": true
+				}
+			}
+		}
+	}
+}

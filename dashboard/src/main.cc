@@ -1,57 +1,28 @@
-#include "views/actionsMenu/actionsMenu.view.h"
-#include "views/mainMenu/mainMenu.view.h"
-#include "views/ormMenu/ormMenu.view.h"
-#include "window/window-flow.h"
-#include <cstdlib>
-#include <functional>
+#include "./initializers/menus/main.menu/init.hpp"
+#include "./initializers/menus/actions.menu/init.hpp"
+#include "checks/header.hpp"
+#include "window/window.hpp"
+
+#include <cstdint>
+#include <filesystem>
 #include <iostream>
 #include <ncurses.h>
 #include <string>
-#include <vector>
 
 int main(int argc, char* argv[]) {
-  std::system("clear");
+  Check::projectDirFlag(argc, argv);
 
-  ActionsMenu actionMenu;
-  OrmMenu ormMenu;
+  Window::init();
 
-  actionMenu.options->insert(
-    actionMenu.options->begin() + 1,
-    { 
-      "Select ORM", 
-      false, 
-      [&ormMenu, &actionMenu](){
-        actionMenu.remove();
+  if(!Check::actionFlag(argc, argv)) {
+    MainMenuReturn mainMenuContainer = MainMenu::init();
+    mainMenuContainer.instance->lifecycle();
   
-        ormMenu.spawn();
-        ormMenu.lifeCycle();
-      } 
-    }
-  );
-  
-  ormMenu.options->insert(
-    ormMenu.options->begin(),
-    { 
-      "Undo", 
-      false, 
-      [&ormMenu, &actionMenu](){
-        ormMenu.remove();
-  
-        actionMenu.spawn();
-        actionMenu.lifeCycle();
-      } 
-    }
-  );
-
-  if(argc != 2 || argv[1] != std::string("actions")) {
-    MainMenu mainMenu;
-
-    mainMenu.spawn();
-    mainMenu.lifeCycle();
-  } else {
-    actionMenu.spawn();
-    actionMenu.lifeCycle();
+    return 0;
   }
+  
+  ActionsMenuReturn actionsMenuContainer = ActionsMenu::init();
+  actionsMenuContainer.actionInstance->lifecycle();
 
   return 0;
 }

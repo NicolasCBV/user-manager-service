@@ -35,9 +35,9 @@ services:
     hostname: app
     restart: always
     volumes:
-      - ./user-service:/usr/app/
-      - ./dashboard:/dashboard
-      - '/usr/app/node_modules'
+      - ./user-service:/usr/app/user-service
+      - ./dashboard:/usr/app/dashboard
+      - '/usr/app/user-service/node_modules'
     ports:
       - "3030:3030"
     networks:

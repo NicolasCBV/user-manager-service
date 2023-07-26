@@ -1,7 +1,7 @@
 #include <ncurses.h>
 
-#include "./window-flow.h"
+#include "./window.hpp"
 
-void WindowFlow::finish() {
+void Window::finish() {
   endwin();
 }

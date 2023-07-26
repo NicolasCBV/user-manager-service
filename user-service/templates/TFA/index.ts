@@ -1,21 +1,31 @@
 import { readFileSync } from 'node:fs';
 import handlebars from 'handlebars';
 import * as dotenv from 'dotenv';
+import { join } from 'path';
 
 dotenv.config();
-
 const lang = process.env.LANG as string;
 let source: string | undefined;
 export let TFARecommendedTitle: string | undefined;
 
-switch(lang) {
+const project_dir =
+  process.env.NODE_ENV === 'test'
+    ? join(__dirname + '../../../')
+    : join(__dirname + '../../../../');
+switch (lang) {
   case 'PT_br':
-    source = readFileSync('/usr/app/templates/TFA/TFA.pt_br.html', 'utf-8');
+    source = readFileSync(
+      join(project_dir + 'templates/TFA/TFA.pt_br.html'),
+      'utf-8',
+    );
     TFARecommendedTitle = 'Verificação de duas etapas';
     break;
 
   case 'English':
-    source = readFileSync('/usr/app/templates/TFA/TFA.eng.html', 'utf-8');
+    source = readFileSync(
+      join(project_dir + 'templates/TFA/TFA.eng.html'),
+      'utf-8',
+    );
     TFARecommendedTitle = 'Two factors step';
     break;
 

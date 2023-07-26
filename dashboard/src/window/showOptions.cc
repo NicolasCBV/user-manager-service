@@ -3,7 +3,7 @@
 #include <memory>
 #include <ncurses.h>
 #include <string>
-#include "./window-flow.h"
+#include "./window.hpp"
 
 using std::string;
 using std::vector;
@@ -30,7 +30,9 @@ string createPadding(
   return padding;
 }
 
-void WindowFlow::showOptions(shared_ptr<vector<Option>> options) {
+void Window::showOptions(shared_ptr<vector<Option>> options) {
+  clear();
+
   int ymax, xmax;
   getmaxyx(stdscr, ymax, xmax);
 
@@ -48,4 +50,6 @@ void WindowFlow::showOptions(shared_ptr<vector<Option>> options) {
 
     index++;
   }
+  
+  refresh();
 }
