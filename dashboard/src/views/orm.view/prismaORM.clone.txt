@@ -1,10 +1,9 @@
-import { UsersRepositories } from '../../../app/repositories/users';
-import { entitiesProviders } from './typeorm/entities/entities.provider';
 import { Module } from '@nestjs/common';
-import { UserService } from './typeorm/entities/user/user.service';
-import { databaseProviders } from './typeorm/database.provider';
+import { UsersRepositories } from '../../../app/repositories/users';
 import * as dotenv from 'dotenv';
 import { InMemmoryUser } from '@root/test/inMemmoryDatabases/user';
+import { PrismaUserRepository } from './prisma/repositories/user';
+import { PrismaService } from './prisma/prisma.service';
 
 dotenv.config();
 
@@ -12,11 +11,10 @@ dotenv.config();
   providers:
     process.env.NODE_ENV !== 'test'
       ? [
-          ...databaseProviders,
-          ...entitiesProviders,
+          PrismaService,
           {
             provide: UsersRepositories,
-            useClass: UserService,
+            useClass: PrismaUserRepository,
           },
         ]
       : [
@@ -28,3 +26,5 @@ dotenv.config();
   exports: [UsersRepositories],
 })
 export class DatabaseModule {}
+
+

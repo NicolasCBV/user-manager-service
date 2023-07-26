@@ -2,7 +2,7 @@
 #include <iterator>
 #include <memory>
 #include <ncurses.h>
-#include "./window-flow.h"
+#include "./window.hpp"
 
 using std::vector;
 using std::shared_ptr;
@@ -66,7 +66,7 @@ void enter(shared_ptr<vector<Option>>& options) {
     option->action();
 }
 
-void WindowFlow::watchKeyboard(shared_ptr<vector<Option>> options) {
+void Window::watchKeyboard(shared_ptr<vector<Option>> options) {
   auto input = getch();
 
   refresh();

@@ -1,7 +1,8 @@
+#include <cstdlib>
 #include <ncurses.h>
-#include "./window-flow.h"
+#include "./window.hpp"
 
-void WindowFlow::init() {
+void Window::init() {
   initscr();
   curs_set(0);
   clear();

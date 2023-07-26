@@ -4,5 +4,6 @@ CompileFlags:
 	-Wall,
 	-Werror,
 	-Wextra,
-	-Wpedantic
+	-Wpedantic,
+	-DPROJECT_DIR="./"
   ]
