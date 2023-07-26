@@ -32,6 +32,7 @@ aux_source_directory(src/window WINDOW_SRC)
 target_sources(
   ${PROJECT_NAME} 
   PRIVATE 
+  
   ${CHECKS_SRC}
 
   ${MAIN_VIEW_SRC}

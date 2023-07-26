@@ -50,6 +50,6 @@ void Window::showOptions(shared_ptr<vector<Option>> options) {
 
     index++;
   }
-
+  
   refresh();
 }
