@@ -1,3 +1,0 @@
-/home/nicolas/Projects/Dropneos/backend/user-manager-service/dashboard/build/CMakeFiles/init.dir
-/home/nicolas/Projects/Dropneos/backend/user-manager-service/dashboard/build/CMakeFiles/edit_cache.dir
-/home/nicolas/Projects/Dropneos/backend/user-manager-service/dashboard/build/CMakeFiles/rebuild_cache.dir
