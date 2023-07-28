@@ -5,7 +5,7 @@ WORKDIR /usr/app
 
 COPY package.json ./
 RUN yarn install
+RUN yarn prisma generate
 
 COPY . .
-RUN rm -rf ./src/infra/storages/db/prisma
 
