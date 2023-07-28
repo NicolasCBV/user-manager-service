@@ -13,6 +13,7 @@ const config: Config = {
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
 
+  setupFilesAfterEnv: ['./test/setup/memories.ts'],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: '<rootDir>/',
   }),

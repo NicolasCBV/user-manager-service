@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig-excludes.json",
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "CommonJs",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,

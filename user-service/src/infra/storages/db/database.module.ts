@@ -24,7 +24,7 @@ dotenv.config();
             provide: UsersRepositories,
             useClass: InMemmoryUser,
           },
-      ],
+        ],
   exports: [UsersRepositories],
 })
 export class DatabaseModule {}

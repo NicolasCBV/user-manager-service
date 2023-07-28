@@ -1,6 +1,6 @@
-import { redisClient } from '@infra/storages/cache/redis/redisClient';
 import { z } from 'zod';
 import { createDefaultEnvOnRefreshTokenE2E } from './environment';
+import { getRefreshTokenModuleE2E, IRefreshTokenModReturn } from './getModule';
 
 describe('Refresh token E2E test', () => {
   const expectedResponseErr = z.object({
@@ -8,17 +8,20 @@ describe('Refresh token E2E test', () => {
     message: z.string(),
   });
 
-  afterEach(async () => {
-    await redisClient.flushall();
+  let deps: IRefreshTokenModReturn;
+
+  beforeAll(async () => {
+    deps = await getRefreshTokenModuleE2E();
   });
 
   afterAll(async () => {
-    await redisClient.quit();
-  });
+    await deps.app.close();
+  })
 
   it('should be able to refresh tokens', async () => {
     const { res } = await createDefaultEnvOnRefreshTokenE2E({
       shouldCreateContent: true,
+      ...deps
     });
 
     expect(res.status).toBe(200);
@@ -36,6 +39,7 @@ describe('Refresh token E2E test', () => {
         deviceIdOutput: 'device id',
         deviceIdInput: 'device id',
       },
+      ...deps
     });
 
     expect(res.status).toBe(200);
@@ -53,6 +57,7 @@ describe('Refresh token E2E test', () => {
         deviceIdOutput: 'device id',
         deviceIdInput: 'wrong device id',
       },
+      ...deps
     });
 
     expect(res.status).toBe(401);
@@ -64,6 +69,7 @@ describe('Refresh token E2E test', () => {
       shouldCreateContent: {
         onlyTokens: true,
       },
+      ...deps
     });
 
     expect(res.status).toBe(401);

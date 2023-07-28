@@ -8,14 +8,12 @@ const lang = process.env.LANG as string;
 let source: string | undefined;
 export let TFARecommendedTitle: string | undefined;
 
-const project_dir =
-  process.env.NODE_ENV === 'test'
-    ? join(__dirname + '../../../')
-    : join(__dirname + '../../../../');
+const project_dir = __dirname.split(/\/user-service(?!.*\/user-service)/)[0];
+
 switch (lang) {
   case 'PT_br':
     source = readFileSync(
-      join(project_dir + 'templates/TFA/TFA.pt_br.html'),
+      join(project_dir + '/user-service/templates/TFA/TFA.pt_br.html'),
       'utf-8',
     );
     TFARecommendedTitle = 'Verificação de duas etapas';
@@ -23,7 +21,7 @@ switch (lang) {
 
   case 'English':
     source = readFileSync(
-      join(project_dir + 'templates/TFA/TFA.eng.html'),
+      join(project_dir + '/user-service/templates/TFA/TFA.eng.html'),
       'utf-8',
     );
     TFARecommendedTitle = 'Two factors step';

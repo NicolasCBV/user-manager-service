@@ -1,19 +1,20 @@
 import { userFactory } from '@root/test/fatories/user';
 import * as request from 'supertest';
 import { Password } from '@app/entities/user/password';
-import { getThrowTFAModuleE2E } from './getModule';
+import { IThrowTFAModReturn } from './getModule';
 
-interface IProps {
+type TProps = {
   shouldCreateContent: boolean;
   passwordInput?: string;
-}
+} & IThrowTFAModReturn;
 
 export const createDefaultEnvOnThrowTFAE2E = async ({
   shouldCreateContent,
   passwordInput,
-}: IProps) => {
-  const { app, userRepo, ...dependencies } = await getThrowTFAModuleE2E();
-
+  app,
+  userRepo,
+  ...dependencies
+}: TProps) => {
   const password = '1234Df';
   const user = userFactory({
     password: new Password(await dependencies.crypt.hash(password)),

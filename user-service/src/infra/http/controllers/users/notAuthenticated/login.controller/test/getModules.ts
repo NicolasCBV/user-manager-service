@@ -17,8 +17,21 @@ import { AuthService } from '@service/notAuthenticated/auth/auth.service';
 import { UsersRepositories } from '@app/repositories/users';
 import { DatabaseModule } from '@infra/storages/db/database.module';
 import * as cookieParser from 'cookie-parser';
+import { INestApplication } from '@nestjs/common';
 
-export const getAuthModuleE2E = async () => {
+export interface IGetAuthModReturn {
+  userRepo: UsersRepositories;
+  genTokens: GenTokensService;
+  crypt: CryptAdapter;
+  tokenHandler: TokenHandlerContract;
+  searchForUser: SearchUserManager;
+  userHandler: UserHandlerContract;
+  otpHandler: OTPHandlerContract;
+  miscHandler: MiscellaneousHandlerContract;
+  emailAdapter: EmailAdapter;
+  app: INestApplication;
+}
+export const getAuthModuleE2E = async (): Promise<IGetAuthModReturn> => {
   const moduleRef = await Test.createTestingModule({
     imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule, AuthModule],
     controllers: [LoginController],

@@ -11,8 +11,18 @@ import { RelaunchOTPController } from '../../relaunchOTP.controller';
 import { RelaunchOTPService } from '@service/notAuthenticated/relaunchOTP/relaunchOTP.service';
 import { UsersRepositories } from '@app/repositories/users';
 import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
+import { INestApplication } from '@nestjs/common';
 
-export const getRelaunchOTPModuleE2E = async () => {
+export interface IRelaunchOTPModReturn {
+  miscHandler: MiscellaneousHandlerContract;
+  userRepo: UsersRepositories;
+  crypt: CryptAdapter;
+  email: EmailAdapter;
+  userHandler: UserHandlerContract;
+  otpHandler: OTPHandlerContract;
+  app: INestApplication;
+}
+export const getRelaunchOTPModuleE2E = async (): Promise<IRelaunchOTPModReturn> => {
   const moduleRef = await Test.createTestingModule({
     imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
     controllers: [RelaunchOTPController],

@@ -1,6 +1,6 @@
-import { redisClient } from '@infra/storages/cache/redis/redisClient';
 import { z } from 'zod';
 import { createDefaultEnvOnUpdateContentE2E } from './environment';
+import { getUpdateContentModuleE2E, IUpdateContentModReturn } from './getModule';
 
 describe('Update user content E2E test', () => {
   const expectedResponseErr = z.object({
@@ -8,18 +8,21 @@ describe('Update user content E2E test', () => {
     message: z.string(),
   });
 
-  afterEach(async () => {
-    await redisClient.flushall();
+  let deps: IUpdateContentModReturn;
+
+  beforeAll(async () => {
+    deps = await getUpdateContentModuleE2E();
   });
 
   afterAll(async () => {
-    await redisClient.quit();
-  });
+    await deps.app.close();
+  })
 
   it('should be able to update user content', async () => {
     const { res, dependencies, user } =
       await createDefaultEnvOnUpdateContentE2E({
         shouldCreateContent: true,
+        ...deps
       });
     const userOnDB = await dependencies.userRepo.find({
       id: user.id,
@@ -37,6 +40,7 @@ describe('Update user content E2E test', () => {
           deviceIdOutput: 'device id',
           deviceIdInput: 'device id',
         },
+        ...deps
       });
     const userOnDB = await dependencies.userRepo.find({
       id: user.id,
@@ -53,6 +57,7 @@ describe('Update user content E2E test', () => {
         deviceIdOutput: 'device id',
         deviceIdInput: 'wrong device id',
       },
+      ...deps
     });
 
     expect(res.status).toBe(401);
@@ -62,6 +67,7 @@ describe('Update user content E2E test', () => {
   it('should throw one error: user does not exist', async () => {
     const { res } = await createDefaultEnvOnUpdateContentE2E({
       shouldCreateContent: false,
+      ...deps
     });
 
     expect(res.status).toBe(401);

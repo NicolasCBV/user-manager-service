@@ -12,8 +12,17 @@ import { JwtService } from '@nestjs/jwt';
 import { TokenHandlerContract } from '@infra/storages/cache/contract/tokenHandler';
 import { AuthModule } from '@app/auth/auth.module';
 import { CryptAdapter } from '@app/adapters/crypt';
+import { INestApplication } from '@nestjs/common';
 
-export const getUpdateContentModuleE2E = async () => {
+export interface IUpdateContentModReturn {
+  crypt: CryptAdapter;
+  tokenHandler: TokenHandlerContract;
+  genToken: GenTokensService;
+  userRepo: UsersRepositories;
+  userHandler: UserHandlerContract;
+  app: INestApplication;
+}
+export const getUpdateContentModuleE2E = async (): Promise<IUpdateContentModReturn> => {
   const moduleRef = await Test.createTestingModule({
     imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule, AuthModule],
     controllers: [UpdateUserContentController],

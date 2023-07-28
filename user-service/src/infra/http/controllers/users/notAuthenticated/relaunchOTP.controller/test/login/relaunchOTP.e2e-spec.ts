@@ -1,5 +1,5 @@
-import { redisClient } from '@infra/storages/cache/redis/redisClient';
 import { z } from 'zod';
+import { getRelaunchOTPModuleE2E, IRelaunchOTPModReturn } from '../getModule';
 import { createRelaunchOTPE2E } from './environment';
 
 describe('Relaunch OTP E2E login test', () => {
@@ -8,23 +8,26 @@ describe('Relaunch OTP E2E login test', () => {
     message: z.string(),
   });
 
-  afterEach(async () => {
-    await redisClient.flushall();
+  let deps: IRelaunchOTPModReturn;
+
+  beforeAll(async () => {
+    deps = await getRelaunchOTPModuleE2E();
   });
 
   afterAll(async () => {
-    await redisClient.quit();
-  });
+    await deps.app.close();
+  })
 
   it('should be able to relaunch OTP', async () => {
     const res = await createRelaunchOTPE2E({
       shouldCreateContent: {},
+      ...deps
     });
     expect(res.status).toBe(201);
   });
 
   it('throw one error: OTP not launched', async () => {
-    const res = await createRelaunchOTPE2E({});
+    const res = await createRelaunchOTPE2E({ ...deps });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
     expect(res?.body?.message).toEqual('Unauthorized');
@@ -35,6 +38,7 @@ describe('Relaunch OTP E2E login test', () => {
       shouldCreateContent: {
         time: new Date(),
       },
+      ...deps
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
@@ -46,6 +50,7 @@ describe('Relaunch OTP E2E login test', () => {
       shouldCreateContent: {
         time: new Date(Date.now() - parseInt(process.env.OTP_TIME ?? '120000')),
       },
+      ...deps
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();

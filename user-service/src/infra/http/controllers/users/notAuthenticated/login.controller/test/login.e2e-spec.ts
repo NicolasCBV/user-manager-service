@@ -1,6 +1,6 @@
-import { redisClient } from '@infra/storages/cache/redis/redisClient';
 import { z } from 'zod';
 import { createDefaultEnvOnLoginE2E } from './environment';
+import { getAuthModuleE2E, IGetAuthModReturn } from './getModules';
 
 describe('Login E2E test', () => {
   const expectedResponseErr = z.object({
@@ -8,12 +8,14 @@ describe('Login E2E test', () => {
     message: z.string(),
   });
 
-  afterEach(async () => {
-    await redisClient.flushall();
+  let deps: IGetAuthModReturn;
+
+  beforeAll(async () => {
+    deps = await getAuthModuleE2E();
   });
 
   afterAll(async () => {
-    await redisClient.quit();
+    await deps.app.close();
   });
 
   it('should be able to authenticate user', async () => {
@@ -21,6 +23,7 @@ describe('Login E2E test', () => {
       shouldCreateContent: {
         shouldUseDeviceId: false,
       },
+      ...deps
     });
     expect(res.status).toBe(201);
     expect(typeof res.body.access_token).toEqual('string');
@@ -30,12 +33,13 @@ describe('Login E2E test', () => {
       ),
     ).toBeTruthy();
   });
-
+  
   it('should be able to authenticate user with deviceId', async () => {
     const res = await createDefaultEnvOnLoginE2E({
       shouldCreateContent: {
         shouldUseDeviceId: true,
       },
+      ...deps
     });
     expect(res.status).toBe(201);
     expect(typeof res.body.access_token).toEqual('string');
@@ -45,20 +49,21 @@ describe('Login E2E test', () => {
       ),
     ).toBeTruthy();
   });
-
+  
   it('throw one error: user does not exist', async () => {
-    const res = await createDefaultEnvOnLoginE2E({});
+    const res = await createDefaultEnvOnLoginE2E({ ...deps });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
     expect(res?.body?.message).toEqual('Unauthorized');
   });
-
+  
   it('throw one error: wrong code', async () => {
     const res = await createDefaultEnvOnLoginE2E({
       shouldCreateContent: {
         shouldUseDeviceId: false,
       },
       codeInput: 'wrong code',
+      ...deps
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();

@@ -1,6 +1,6 @@
-import { redisClient } from '@infra/storages/cache/redis/redisClient';
 import { createDefaultEnvOnCancelCreationE2E } from './environment';
 import { z } from 'zod';
+import { getCancelCreationModuleE2E, ICancelCreationUserModReturn } from './getModules';
 
 describe('Cancel user creation E2E', () => {
   const expectedResponseErr = z.object({
@@ -8,19 +8,22 @@ describe('Cancel user creation E2E', () => {
     message: z.string(),
   });
 
-  afterEach(async () => {
-    await redisClient.flushall();
+  let deps: ICancelCreationUserModReturn;
+
+  beforeAll(async () => {
+    deps = await getCancelCreationModuleE2E();
   });
 
   afterAll(async () => {
-    await redisClient.quit();
-  });
+    await deps.app.close();
+  })
 
   it('should cancel user creation', async () => {
     const { res, user, userHandler } =
       await createDefaultEnvOnCancelCreationE2E({
         isCancelKeyWrong: false,
         shouldCreateContent: true,
+        ...deps
       });
 
     const nonexistentUser = await userHandler.find({ id: user.id });
@@ -32,6 +35,7 @@ describe('Cancel user creation E2E', () => {
     const { res } = await createDefaultEnvOnCancelCreationE2E({
       shouldCreateContent: false,
       isCancelKeyWrong: false,
+      ...deps
     });
 
     expect(res.status).toBe(401);

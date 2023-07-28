@@ -1,17 +1,18 @@
-import { redisClient } from '@infra/storages/cache/redis/redisClient';
 import { z } from 'zod';
-import { getModulesOfGetUserE2E } from './getModule';
+import { getModulesOfGetUserE2E, IGetUserModReturn } from './getModule';
 import { userFactory } from '@root/test/fatories/user';
 import * as request from 'supertest';
 
 describe('Get user E2E', () => {
-  afterEach(async () => {
-    await redisClient.flushall();
+  let deps: IGetUserModReturn;
+
+  beforeAll(async () => {
+    deps = await getModulesOfGetUserE2E();
   });
 
   afterAll(async () => {
-    await redisClient.quit();
-  });
+    await deps.app.close();
+  })
 
   it('should be able to get user', async () => {
     const expectedReponse = z.object({
@@ -24,12 +25,11 @@ describe('Get user E2E', () => {
       }),
     });
 
-    const { app, userRepo } = await getModulesOfGetUserE2E();
     const user = userFactory();
 
-    await userRepo.create(user);
+    await deps.userRepo.create(user);
 
-    const res = await request(app.getHttpServer()).get(
+    const res = await request(deps.app.getHttpServer()).get(
       `/users/${encodeURIComponent(user.email.value)}`,
     );
 
@@ -41,8 +41,7 @@ describe('Get user E2E', () => {
     const expectedResponse = z.object({
       user: z.null(),
     });
-    const { app } = await getModulesOfGetUserE2E();
-    const res = await request(app.getHttpServer()).get(
+    const res = await request(deps.app.getHttpServer()).get(
       `/users/${encodeURIComponent('fake@email.com')}`,
     );
 

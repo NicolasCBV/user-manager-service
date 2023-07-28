@@ -7,8 +7,14 @@ import { DatabaseCacheModule } from '@infra/storages/cache/cache.module';
 import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler';
 import { DatabaseModule } from '@infra/storages/db/database.module';
 import { CreateUserController } from '..';
+import { INestApplication } from '@nestjs/common';
 
-export const getCreateUserModuleE2E = async () => {
+export interface ICreateUserModReturn {
+  userRepo: UsersRepositories;
+  userHandler: UserHandlerContract;
+  app: INestApplication;
+}
+export const getCreateUserModuleE2E = async (): Promise<ICreateUserModReturn> => {
   const moduleRef = await Test.createTestingModule({
     imports: [DatabaseCacheModule, DatabaseModule, AdaptersModule],
     controllers: [CreateUserController],

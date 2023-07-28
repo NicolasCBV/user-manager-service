@@ -13,8 +13,16 @@ import { RefreshTokenService } from '@service/authenticated/refreshToken/refresh
 import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import * as cookieParser from 'cookie-parser';
 import { UsersRepositories } from '@app/repositories/users';
+import { INestApplication } from '@nestjs/common';
 
-export const getRefreshTokenModuleE2E = async () => {
+export interface IRefreshTokenModReturn {
+  crypt: CryptAdapter;
+  tokenHandler: TokenHandlerContract;
+  genToken: GenTokensService;
+  userRepo: UsersRepositories;
+  app: INestApplication;
+}
+export const getRefreshTokenModuleE2E = async (): Promise<IRefreshTokenModReturn> => {
   const moduleRef = await Test.createTestingModule({
     imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule, AuthModule],
     controllers: [RefreshTokenController],

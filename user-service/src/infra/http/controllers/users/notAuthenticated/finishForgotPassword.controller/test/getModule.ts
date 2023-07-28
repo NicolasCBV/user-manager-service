@@ -11,8 +11,18 @@ import { CryptAdapter } from '@app/adapters/crypt';
 import { EmailAdapter } from '@app/adapters/email';
 import { UsersRepositories } from '@app/repositories/users';
 import { ValidationPipe } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 
-export const getFinishForgotPasswordModuleE2E = async () => {
+export interface IFinishForgotPasswordModReturn {
+  userRepo: UsersRepositories;
+  tokenHandler: TokenHandlerContract;
+  searchForUser: SearchUserManager;
+  jwtService: JwtService;
+  crypt: CryptAdapter;
+  email: EmailAdapter;
+  app: INestApplication;
+}
+export const getFinishForgotPasswordModuleE2E = async (): Promise<IFinishForgotPasswordModReturn> => {
   const moduleRef = await Test.createTestingModule({
     imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
     controllers: [FinishForgotPasswordController],

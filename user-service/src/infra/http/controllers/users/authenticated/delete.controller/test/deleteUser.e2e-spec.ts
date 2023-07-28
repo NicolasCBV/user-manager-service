@@ -1,6 +1,6 @@
-import { redisClient } from '@infra/storages/cache/redis/redisClient';
 import { z } from 'zod';
 import { createDefaultEnvOnDeleteUserE2E } from './environment';
+import { getDeleteUserModuleE2E, IDeleteUserModReturn } from './getModule';
 
 describe('Delete user E2E test', () => {
   const expectedResponseErr = z.object({
@@ -8,17 +8,20 @@ describe('Delete user E2E test', () => {
     message: z.string(),
   });
 
-  afterEach(async () => {
-    await redisClient.flushall();
+  let deps: IDeleteUserModReturn;
+
+  beforeAll(async () => {
+    deps = await getDeleteUserModuleE2E();
   });
 
   afterAll(async () => {
-    await redisClient.quit();
-  });
+    await deps.app.close();
+  })
 
   it('should be able to delete user', async () => {
     const { res, dependencies, user } = await createDefaultEnvOnDeleteUserE2E({
       shouldCreateContent: true,
+      ...deps
     });
     const userOnDB = await dependencies.userRepo.find({
       id: user.id,
@@ -34,6 +37,7 @@ describe('Delete user E2E test', () => {
         deviceIdOutput: 'device id',
         deviceIdInput: 'device id',
       },
+      ...deps
     });
     const userOnDB = await dependencies.userRepo.find({
       id: user.id,
@@ -49,6 +53,7 @@ describe('Delete user E2E test', () => {
         deviceIdOutput: 'device id',
         deviceIdInput: 'wrong device id',
       },
+      ...deps
     });
 
     expect(res.status).toBe(401);
@@ -60,6 +65,7 @@ describe('Delete user E2E test', () => {
       shouldCreateContent: {
         onlyTokens: true,
       },
+      ...deps
     });
 
     expect(res.status).toBe(404);

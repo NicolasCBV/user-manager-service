@@ -1,22 +1,23 @@
 import { userFactory } from '@test/fatories/user';
-import { getFinishForgotPasswordModuleE2E } from './getModule';
+import { IFinishForgotPasswordModReturn } from './getModule';
 import * as request from 'supertest';
 import { randomUUID } from 'crypto';
 import { Password } from '@root/src/app/entities/user/password';
 
-interface IProps {
+type TProps = {
   shouldCreateContent: boolean;
   deviceIdInput?: string;
   deviceIdOutput?: string;
-}
+} & IFinishForgotPasswordModReturn;
 
 export const createDefaultEnvOnFinishForgotPasswordE2E = async ({
   shouldCreateContent,
   deviceIdInput,
   deviceIdOutput,
-}: IProps) => {
-  const { app, userRepo, ...dependencies } =
-    await getFinishForgotPasswordModuleE2E();
+  app,
+  userRepo,
+  ...dependencies
+}: TProps) => {
   const sub = randomUUID();
   const password = new Password(await dependencies.crypt.hash('1234Df'));
   const user = userFactory({ password });

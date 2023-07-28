@@ -1,9 +1,9 @@
 import * as request from 'supertest';
-import { getRefreshTokenModuleE2E } from './getModule';
+import { IRefreshTokenModReturn } from './getModule';
 import { userFactory } from '@test/fatories/user';
 import * as cookie from 'cookie-signature';
 
-interface IProps {
+type TProps = {
   shouldCreateContent?:
     | {
         onlyTokens?: boolean;
@@ -11,14 +11,17 @@ interface IProps {
         deviceIdInput?: string;
       }
     | boolean;
-}
+} & IRefreshTokenModReturn;
 
 export const createDefaultEnvOnRefreshTokenE2E = async ({
   shouldCreateContent,
-}: IProps) => {
+  app,
+  genToken,
+  tokenHandler,
+  crypt,
+  userRepo
+}: TProps) => {
   const user = userFactory();
-  const { app, genToken, tokenHandler, crypt, userRepo } =
-    await getRefreshTokenModuleE2E();
 
   let deviceIdOnDB: string | undefined;
   let deviceIdOnBody: string | undefined;

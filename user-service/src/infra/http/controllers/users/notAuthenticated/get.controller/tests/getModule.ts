@@ -5,8 +5,14 @@ import { DatabaseCacheModule } from '@infra/storages/cache/cache.module';
 import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { GetUserController } from '..';
 import { DatabaseModule } from '@infra/storages/db/database.module';
+import { INestApplication } from '@nestjs/common';
 
-export const getModulesOfGetUserE2E = async () => {
+export interface IGetUserModReturn {
+  searchUserManager: SearchUserManager;
+  userRepo: UsersRepositories;
+  app: INestApplication;
+}
+export const getModulesOfGetUserE2E = async (): Promise<IGetUserModReturn> => {
   const moduleRef = await Test.createTestingModule({
     imports: [DatabaseCacheModule, DatabaseModule],
     controllers: [GetUserController],

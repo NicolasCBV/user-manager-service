@@ -1,9 +1,8 @@
-import { DataSource } from 'typeorm';
 import { typeORMConsts } from './constants';
 import config from '@root/ormconfig';
+import { TypeORMService } from './typeORM.service';
 
-const dataSource = new DataSource({ ...config });
-
+const dataSource = new TypeORMService({ ...config });
 export const databaseProviders = [
   {
     provide: typeORMConsts.databaseProvider,
@@ -13,4 +12,4 @@ export const databaseProviders = [
   },
 ];
 
-export default dataSource;
+export { dataSource };

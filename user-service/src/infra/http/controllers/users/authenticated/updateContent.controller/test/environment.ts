@@ -1,22 +1,24 @@
 import * as request from 'supertest';
-import { getUpdateContentModuleE2E } from './getModule';
+import { IUpdateContentModReturn } from './getModule';
 import { userFactory } from '@root/test/fatories/user';
 
-interface IProps {
+type TProps = {
   shouldCreateContent?:
     | {
         deviceIdOutput: string;
         deviceIdInput: string;
       }
     | boolean;
-}
+} & IUpdateContentModReturn;
 
 export const createDefaultEnvOnUpdateContentE2E = async ({
   shouldCreateContent,
-}: IProps) => {
+  app,
+  genToken,
+  tokenHandler,
+  ...dependencies
+}: TProps) => {
   const user = userFactory();
-  const { app, genToken, tokenHandler, ...dependencies } =
-    await getUpdateContentModuleE2E();
 
   let deviceIdOnDB: string | undefined;
   let deviceIdOnBody: string | undefined;

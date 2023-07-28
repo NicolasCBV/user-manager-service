@@ -1,23 +1,25 @@
 import * as request from 'supertest';
-import { getUploadImageModuleE2E } from './getModule';
+import { IUploadImageModReturn } from './getModule';
 import { userFactory } from '@root/test/fatories/user';
 import * as path from 'path';
 
-interface IProps {
+type TProps = {
   shouldCreateContent?:
     | {
         deviceIdOutput: string;
         deviceIdInput: string;
       }
     | boolean;
-}
+} & IUploadImageModReturn;
 
 export const createDefaultEnvOnUpdateImageE2E = async ({
   shouldCreateContent,
-}: IProps) => {
+  app,
+  genToken,
+  tokenHandler,
+  ...dependencies
+}: TProps) => {
   const user = userFactory();
-  const { app, genToken, tokenHandler, ...dependencies } =
-    await getUploadImageModuleE2E();
 
   let deviceIdOnDB: string | undefined;
   let deviceIdOnBody: string | undefined;

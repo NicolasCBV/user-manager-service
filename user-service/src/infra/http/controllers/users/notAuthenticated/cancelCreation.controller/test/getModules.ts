@@ -8,8 +8,15 @@ import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/mis
 import { DatabaseModule } from '@infra/storages/db/database.module';
 import { CancelCreationController } from '..';
 import { UsersRepositories } from '@root/src/app/repositories/users';
+import { INestApplication } from '@nestjs/common';
 
-export const getCancelCreationModuleE2E = async () => {
+export interface ICancelCreationUserModReturn {
+  userHandler: UsersRepositories;
+  miscHandler: MiscellaneousHandlerContract;
+  crypt: CryptAdapter;
+  app: INestApplication;
+}
+export const getCancelCreationModuleE2E = async (): Promise<ICancelCreationUserModReturn> => {
   const moduleRef = await Test.createTestingModule({
     imports: [DatabaseCacheModule, DatabaseModule, AdaptersModule],
     controllers: [CancelCreationController],

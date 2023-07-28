@@ -11,8 +11,17 @@ import { JwtService } from '@nestjs/jwt';
 import { ForgotPasswordController } from '..';
 import { ForgotPasswordService } from '@service/notAuthenticated/forgotPassword/forgotPassword.service';
 import { ValidationPipe } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 
-export const getForgotPasswordModuleE2E = async () => {
+export interface IForgotPasswordModReturn {
+  userRepo: UsersRepositories;
+  userHandler: UserHandlerContract;
+  searchForUser: SearchUserManager;
+  tokenHandler: TokenHandlerContract;
+  miscHandler: MiscellaneousHandlerContract;
+  app: INestApplication
+}
+export const getForgotPasswordModuleE2E = async (): Promise<IForgotPasswordModReturn> => {
   const moduleRef = await Test.createTestingModule({
     imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
     controllers: [ForgotPasswordController],

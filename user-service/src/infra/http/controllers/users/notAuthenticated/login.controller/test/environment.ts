@@ -1,23 +1,24 @@
 import { generateRandomCharacters } from '@infra/helpers/generateRandomCharacters';
 import { OTPFactory } from '@root/test/fatories/OTP';
 import { userFactory } from '@root/test/fatories/user';
-import { getAuthModuleE2E } from './getModules';
+import { IGetAuthModReturn } from './getModules';
 import * as request from 'supertest';
 import { Password } from '@app/entities/user/password';
 
-interface IProps {
+type TProps = {
   shouldCreateContent?: {
     shouldUseDeviceId: boolean;
   };
   codeInput?: string;
-}
+} & IGetAuthModReturn;
 
 export const createDefaultEnvOnLoginE2E = async ({
   shouldCreateContent,
   codeInput,
-}: IProps) => {
-  const { app, userRepo, ...dependencies } = await getAuthModuleE2E();
-
+  app,
+  userRepo,
+  ...dependencies
+}: TProps) => {
   const user = userFactory({
     password: new Password(await dependencies.crypt.hash('1234Df')),
   });

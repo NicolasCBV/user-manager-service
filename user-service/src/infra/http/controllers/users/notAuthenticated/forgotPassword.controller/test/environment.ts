@@ -1,18 +1,19 @@
 import { userFactory } from '@root/test/fatories/user';
-import { getForgotPasswordModuleE2E } from './getModule';
+import { IForgotPasswordModReturn } from './getModule';
 import * as request from 'supertest';
 
-interface IProps {
+type TProps = {
   shouldCreateContent: boolean;
-}
+} & IForgotPasswordModReturn;
 
 export const createDefaultEnvOnForgotPasswordE2E = async ({
   shouldCreateContent,
-}: IProps) => {
+  app,
+  ...dependencies
+}: TProps) => {
   const user = userFactory();
-  const { app, ...dependencies } = await getForgotPasswordModuleE2E();
 
-  if (shouldCreateContent) dependencies.userRepo.create(user);
+  if (shouldCreateContent) await dependencies.userRepo.create(user);
 
   const res = await request(app.getHttpServer())
     .post('/users/forgot-password')

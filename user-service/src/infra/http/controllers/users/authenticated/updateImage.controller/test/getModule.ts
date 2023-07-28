@@ -13,8 +13,17 @@ import { CryptAdapter } from '@app/adapters/crypt';
 import { UpdateUserImageController } from '..';
 import { ApiModule } from '@infra/api/api.module';
 import { UploadImageService } from '@service/authenticated/uploadImage/uploadImage.service';
+import { INestApplication } from '@nestjs/common';
 
-export const getUploadImageModuleE2E = async () => {
+export interface IUploadImageModReturn {
+  crypt: CryptAdapter;
+  tokenHandler: TokenHandlerContract;
+  genToken: GenTokensService;
+  userRepo: UsersRepositories;
+  userHandler: UserHandlerContract;
+  app: INestApplication;
+}
+export const getUploadImageModuleE2E = async (): Promise<IUploadImageModReturn> => {
   const moduleRef = await Test.createTestingModule({
     imports: [
       DatabaseModule,

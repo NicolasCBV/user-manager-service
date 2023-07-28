@@ -16,8 +16,21 @@ import { DatabaseModule } from '@infra/storages/db/database.module';
 import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { ThrowTFAController } from '..';
 import { ValidationPipe } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 
-export const getThrowTFAModuleE2E = async () => {
+export interface IThrowTFAModReturn {
+  userRepo: UsersRepositories;
+  genTokens: GenTokensService;
+  crypt: CryptAdapter;
+  tokenHandler: TokenHandlerContract;
+  searchForUser: SearchUserManager;
+  userHandler: UserHandlerContract;
+  otpHandler: OTPHandlerContract;
+  miscHandler: MiscellaneousHandlerContract;
+  emailAdapter: EmailAdapter;
+  app: INestApplication;
+}
+export const getThrowTFAModuleE2E = async (): Promise<IThrowTFAModReturn> => {
   const moduleRef = await Test.createTestingModule({
     imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule, AuthModule],
     controllers: [ThrowTFAController],

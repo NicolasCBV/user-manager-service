@@ -1,20 +1,27 @@
-import { redisClient } from '@infra/storages/cache/redis/redisClient';
 import { z } from 'zod';
 import { createDefaultEnvOnCreateUserE2E } from './environment';
+import { getCreateUserModuleE2E, ICreateUserModReturn } from './getModule';
 
 describe('Create user e2e test', () => {
   const expectedResponse = z.object({
     cancelKey: z.string().uuid(),
   });
 
-  afterEach(async () => {
-    await redisClient.flushall();
+  let deps: ICreateUserModReturn;
+
+  beforeAll(async () => {
+    deps = await getCreateUserModuleE2E();
   });
+
+  afterAll(async () => {
+    await deps.app.close();
+  })
 
   it('should create one user', async () => {
     const res = await createDefaultEnvOnCreateUserE2E({
       shouldCreateContentOnDB: false,
       shouldCreateContentOnCache: false,
+      ...deps
     });
 
     expect(res.status).toBe(200);
@@ -30,6 +37,7 @@ describe('Create user e2e test', () => {
     const res = await createDefaultEnvOnCreateUserE2E({
       shouldCreateContentOnDB: true,
       shouldCreateContentOnCache: false,
+      ...deps
     });
 
     expect(res.status).toBe(401);
@@ -45,6 +53,7 @@ describe('Create user e2e test', () => {
     const res = await createDefaultEnvOnCreateUserE2E({
       shouldCreateContentOnDB: false,
       shouldCreateContentOnCache: true,
+      ...deps
     });
 
     expect(res.status).toBe(401);

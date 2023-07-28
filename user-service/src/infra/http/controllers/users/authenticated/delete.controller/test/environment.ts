@@ -1,8 +1,8 @@
 import * as request from 'supertest';
-import { getDeleteUserModuleE2E } from './getModule';
+import { IDeleteUserModReturn } from './getModule';
 import { userFactory } from '@root/test/fatories/user';
 
-interface IProps {
+type TProps = {
   shouldCreateContent?:
     | {
         onlyTokens?: boolean;
@@ -10,14 +10,17 @@ interface IProps {
         deviceIdInput?: string;
       }
     | boolean;
-}
+} & IDeleteUserModReturn;
 
 export const createDefaultEnvOnDeleteUserE2E = async ({
   shouldCreateContent,
-}: IProps) => {
+  app,
+  genToken,
+  tokenHandler,
+  crypt,
+  ...dependencies
+}: TProps) => {
   const user = userFactory();
-  const { app, genToken, tokenHandler, crypt, ...dependencies } =
-    await getDeleteUserModuleE2E();
 
   let deviceIdOnDB: string | undefined;
   let deviceIdOnBody: string | undefined;

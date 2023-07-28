@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:slim
 
 RUN mkdir -p /usr/app
 WORKDIR /usr/app

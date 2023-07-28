@@ -4,19 +4,20 @@ import { Password } from '@app/entities/user/password';
 import { userFactory } from '@root/test/fatories/user';
 import { userInCacheFactory } from '@root/test/fatories/userInCache';
 import * as request from 'supertest';
-import { getCreateUserModuleE2E } from './getModule';
+import { ICreateUserModReturn } from './getModule';
 
-interface IProps {
+type TProps = {
   shouldCreateContentOnDB: boolean;
   shouldCreateContentOnCache: boolean;
-}
+} & ICreateUserModReturn;
 
 export const createDefaultEnvOnCreateUserE2E = async ({
   shouldCreateContentOnDB,
   shouldCreateContentOnCache,
-}: IProps) => {
-  const { userRepo, userHandler, app } = await getCreateUserModuleE2E();
-
+  userRepo,
+  userHandler,
+  app
+}: TProps) => {
   if (shouldCreateContentOnDB)
     await userRepo.create(
       userFactory({

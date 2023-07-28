@@ -1,23 +1,23 @@
 import * as request from 'supertest';
 import { Password } from '@app/entities/user/password';
-import { getValidateAccountModuleE2E } from './getModule';
+import { IValidateAccountModReturn } from './getModule';
 import { userInCacheFactory } from '@root/test/fatories/userInCache';
 import { OTPFactory } from '@root/test/fatories/OTP';
 import { generateRandomCharacters } from '@infra/helpers/generateRandomCharacters';
 
-interface IProps {
+type TProps = {
   shouldCreateContent: boolean;
   codeInput?: string;
   deviceIdInput?: string;
-}
+} & IValidateAccountModReturn;
 
 export const createDefaultEnvOnValidateUserE2E = async ({
   shouldCreateContent,
   codeInput,
   deviceIdInput,
-}: IProps) => {
-  const { app, ...dependencies } = await getValidateAccountModuleE2E();
-
+  app,
+  ...dependencies
+}: TProps) => {
   const password = '1234Df';
   const user = userInCacheFactory({
     password: new Password(await dependencies.crypt.hash(password)),

@@ -15,8 +15,19 @@ import { DeleteUserService } from '@service/authenticated/deleteUser/deleteUser.
 import { ImageContract } from '@infra/api/contracts/imageContract';
 import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
 import { ApiModule } from '@infra/api/api.module';
+import { INestApplication } from '@nestjs/common';
 
-export const getDeleteUserModuleE2E = async () => {
+export interface IDeleteUserModReturn {
+  crypt: CryptAdapter;
+  tokenHandler: TokenHandlerContract;
+  genToken: GenTokensService;
+  userRepo: UsersRepositories;
+  userHandler: UserHandlerContract;
+  imageContract: ImageContract;
+  miscHandler: MiscellaneousHandlerContract;
+  app: INestApplication;
+}
+export const getDeleteUserModuleE2E = async (): Promise<IDeleteUserModReturn> => {
   const moduleRef = await Test.createTestingModule({
     imports: [
       DatabaseModule,

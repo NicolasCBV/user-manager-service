@@ -2,20 +2,20 @@ import { OTPFactory } from '@test/fatories/OTP';
 import { userInCacheFactory } from '@test/fatories/userInCache';
 import { randomUUID } from 'crypto';
 import * as request from 'supertest';
-import { getCancelCreationModuleE2E } from './getModules';
+import { ICancelCreationUserModReturn } from './getModules';
 
-interface IProps {
+type TProps = {
   shouldCreateContent: boolean;
   isCancelKeyWrong: boolean;
-}
+} & ICancelCreationUserModReturn;
 
 export const createDefaultEnvOnCancelCreationE2E = async ({
   shouldCreateContent,
   isCancelKeyWrong,
-}: IProps) => {
-  const { app, userHandler, ...dependencies } =
-    await getCancelCreationModuleE2E();
-
+  app,
+  userHandler,
+  ...dependencies
+}: TProps) => {
   const key = randomUUID();
   const user = userInCacheFactory();
 

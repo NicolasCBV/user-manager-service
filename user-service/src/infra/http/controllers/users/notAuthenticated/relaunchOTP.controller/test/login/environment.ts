@@ -3,17 +3,20 @@ import { Password } from '@app/entities/user/password';
 import { userInCacheFactory } from '@root/test/fatories/userInCache';
 import { OTPFactory } from '@root/test/fatories/OTP';
 import { generateRandomCharacters } from '@infra/helpers/generateRandomCharacters';
-import { getRelaunchOTPModuleE2E } from '../../../relaunchOTP.controller/test/getModule';
+import { IRelaunchOTPModReturn } from '../../../relaunchOTP.controller/test/getModule';
 
-interface IProps {
+type TProps = {
   shouldCreateContent?: {
     time?: Date;
   };
-}
+} & IRelaunchOTPModReturn;
 
-export const createRelaunchOTPE2E = async ({ shouldCreateContent }: IProps) => {
-  const { app, miscHandler, ...dependencies } = await getRelaunchOTPModuleE2E();
-
+export const createRelaunchOTPE2E = async ({ 
+  shouldCreateContent,
+  app,
+  miscHandler,
+  ...dependencies
+}: TProps) => {
   const password = '1234Df';
   const user = userInCacheFactory({
     password: new Password(await dependencies.crypt.hash(password)),

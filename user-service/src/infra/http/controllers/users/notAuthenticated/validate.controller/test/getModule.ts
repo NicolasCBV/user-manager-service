@@ -13,8 +13,18 @@ import { OTPHandlerContract } from '@infra/storages/cache/contract/OTPHandler';
 import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
 import * as cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 
-export const getValidateAccountModuleE2E = async () => {
+export interface IValidateAccountModReturn {
+  genTokens: GenTokensService;
+  userRepo: UsersRepositories;
+  crypt: CryptAdapter;
+  userHandler: UserHandlerContract;
+  OTPHandler: OTPHandlerContract;
+  miscHandler: MiscellaneousHandlerContract;
+  app: INestApplication;
+}
+export const getValidateAccountModuleE2E = async (): Promise<IValidateAccountModReturn> => {
   const moduleRef = await Test.createTestingModule({
     imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
     controllers: [ValidateUserController],
