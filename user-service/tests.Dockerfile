@@ -1,11 +1,14 @@
-FROM node:slim
+FROM node:alpine
 
-RUN mkdir -p /usr/app
-WORKDIR /usr/app
+RUN mkdir -p /usr/app/user-service
+WORKDIR /usr/app/user-service
+
+RUN apk update
 
 COPY package.json ./
 RUN yarn install
-RUN yarn prisma generate
 
 COPY . .
+
+RUN yarn prisma generate
 
