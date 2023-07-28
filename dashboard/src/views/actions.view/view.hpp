@@ -2,12 +2,7 @@
 
 #include "../../window/window.hpp"
 #include "../abstractView.hpp"
-#include <ncurses.h>
-#include <cstdlib>
-#include <initializer_list>
-#include <iostream>
 #include <memory>
-#include <thread>
 #include <vector>
 
 using std::vector;

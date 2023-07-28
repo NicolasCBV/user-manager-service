@@ -2,17 +2,8 @@
 
 #include "../../window/window.hpp"
 #include "../abstractView.hpp"
-#include <chrono>
-#include <cstdlib>
-#include <initializer_list>
-#include <ios>
-#include <iostream>
 #include <memory>
-#include <string>
-#include <thread>
 #include <vector>
-#include <fstream>
-#include <ncurses.h>
 
 using std::vector;
 using std::shared_ptr;

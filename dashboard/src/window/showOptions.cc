@@ -2,7 +2,6 @@
 #include <cstring>
 #include <memory>
 #include <ncurses.h>
-#include <string>
 #include "./window.hpp"
 
 using std::string;

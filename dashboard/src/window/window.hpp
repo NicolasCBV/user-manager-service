@@ -4,7 +4,6 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <ncurses.h>
 
 using std::vector;
 using std::shared_ptr;
@@ -19,6 +18,7 @@ class Window {
   public: 
     static void init();
     static void finish();
+    static void writeCentralizedText(const char* text);
     static void showOptions(shared_ptr<vector<Option>>);
     static void watchKeyboard(shared_ptr<vector<Option>>);
 };

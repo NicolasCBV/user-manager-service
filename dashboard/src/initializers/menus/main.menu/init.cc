@@ -1,7 +1,7 @@
 #include "init.hpp"
 #include "../../components/orm.view/view.hpp"
 #include <chrono>
-#include <stdexcept>
+#include <iostream>
 #include <thread>
 
 MainMenuReturn MainMenu::init() {

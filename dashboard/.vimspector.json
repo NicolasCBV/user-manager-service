@@ -12,7 +12,7 @@
 			"configuration": {
 				"request": "launch",
 				"program": "${workspaceFolder}/build/init",
-				"args": ["-actions", "${workspaceFolder}/../user-service"],
+				"args": ["${workspaceFolder}/../user-service", "-setORM=typeorm"],
 				"cwd": "${workspaceFolder}",
 				"environment": [],
 				"externalConsole": false,

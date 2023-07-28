@@ -27,8 +27,7 @@ services:
 
   app:
     build:
-      context: ../user-service
-      dockerfile: tests.Dockerfile
+      dockerfile: ./user-service/tests.Dockerfile
     hostname: app
     restart: always
     ports:
@@ -60,6 +59,7 @@ services:
       - HOST_PORT_SENDER=${HOST_PORT_SENDER}
       - EMAIL_SENDER=${EMAIL_SENDER}
       - PASS_SENDER=${PASS_SENDER}
+      - NOT_SEND_EMAILS=${NOT_SEND_EMAILS}
     depends_on:
       - db
       - redis_db

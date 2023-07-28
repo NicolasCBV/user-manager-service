@@ -3,14 +3,13 @@
 #include "checks/header.hpp"
 #include "window/window.hpp"
 
-#include <cstdint>
 #include <filesystem>
-#include <iostream>
-#include <ncurses.h>
-#include <string>
 
 int main(int argc, char* argv[]) {
   Check::projectDirFlag(argc, argv);
+
+  Check::typeORMOption(argc, argv);
+  Check::prismaOption(argc, argv);
 
   Window::init();
 

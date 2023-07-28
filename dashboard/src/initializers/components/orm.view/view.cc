@@ -1,81 +1,27 @@
 #include "view.hpp"
 #include "../../../checks/header.hpp"
+#include "../../../services/defineORM.hpp"
 #include <chrono>
-#include <cstring>
-#include <fstream>
+#include <ios>
 #include <thread>
-#include <ncurses.h>
 
-void defineOrm(std::shared_ptr<OrmView> ormView, bool&& isPrisma) {
-  int ymax, xmax;
-  getmaxyx(stdscr, ymax, xmax);
-
-  clear();
+void setORM(std::shared_ptr<OrmView> genericView, bool isPrisma) {
   const char* msg = "Loading files...";
-  mvprintw((ymax/2), (xmax/2 - std::strlen(msg)/2), "%s", msg);
-  refresh();
+  Window::writeCentralizedText(msg);
   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
-  std::string baseFile = isPrisma 
-      ? "prismaORM.clone.txt"
-      : "typeORM.clone.txt";
-  std::ifstream databaseModuleClone(
-    std::string(PROJECT_DIR) +
-    "/src/views/orm.view/" +
-    baseFile  
-  );
-  std::ofstream writeDatabaseModule(Check::uriProject + "/src/infra/storages/db/database.module.ts");
-  std::ofstream writeTsconfig(Check::uriProject + "/tsconfig-excludes.json");
-  std::ofstream writeEslintIgnore(Check::uriProject + "/.eslintignore");
-
-  if(
-    !databaseModuleClone.is_open() ||
-    !writeTsconfig.is_open() || 
-    !writeDatabaseModule.is_open() ||
-    !writeEslintIgnore.is_open()
-  ) {
-    clear();
-    const char* msg = "Unable to open required files. Stopping operation.";
-    mvprintw((ymax/2), (xmax/2 - std::strlen(msg)/2), "%s", msg);
-    refresh();
+  try {
+    DefineORM::exec(isPrisma);
+  } catch(std::ios_base::failure& err) {
+    const char* msg = err.what();
+    Window::writeCentralizedText(msg);
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
 
-    ormView->lifecycle();
+    genericView->lifecycle();
     return;
   }
 
-  std::string line;
-  while(std::getline(databaseModuleClone, line))
-    writeDatabaseModule << line << std::endl;
-
-  writeTsconfig << "{\n";
-  writeTsconfig << "  \"exclude\": [\n";
-  writeTsconfig << "    \"node_modules\",\n";
-  writeTsconfig << "    \"dist\",\n";
-
-  writeEslintIgnore << "**/*.js\n";
-
-  if (isPrisma) {
-    writeTsconfig << "    \"**/*typeorm*\",\n";
-    writeTsconfig << "    \"ormconfig.ts\"\n";
-
-    writeEslintIgnore << "**/*typeorm*\n";
-    writeEslintIgnore << "ormconfig.ts\n";
-  } else {
-    writeTsconfig << "    \"**/*prisma*\"\n";
-
-    writeEslintIgnore << "**/*prisma*\n";
-  }
-
-  writeTsconfig << "  ]\n";
-  writeTsconfig << "}";
-
-  databaseModuleClone.close();
-  writeEslintIgnore.close();
-  writeTsconfig.close();
-  writeDatabaseModule.close();
-
-  ormView->lifecycle();
+  genericView->lifecycle();
 }
 
 OrmComponentReturn OrmComponent::init(std::shared_ptr<AbstractView> abstractMenu) {
@@ -96,14 +42,14 @@ OrmComponentReturn OrmComponent::init(std::shared_ptr<AbstractView> abstractMenu
         "Prisma", 
         false, 
         [ormView](){
-          defineOrm(ormView, true);
+          setORM(ormView, true);
         }
       },
       { 
         "TypeORM (default)", 
         true, 
         [ormView](){
-          defineOrm(ormView, false);
+          setORM(ormView, false);
         }
       }
     }

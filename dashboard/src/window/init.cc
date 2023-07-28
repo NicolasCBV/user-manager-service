@@ -1,4 +1,3 @@
-#include <cstdlib>
 #include <ncurses.h>
 #include "./window.hpp"
 

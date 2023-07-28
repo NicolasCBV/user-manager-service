@@ -1,7 +1,6 @@
 #include "header.hpp"
 #include <cstdint>
 #include <filesystem>
-#include <iostream>
 #include <stdexcept>
 
 void Check::projectDirFlag(int argc, char* argv[]){

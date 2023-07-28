@@ -18,6 +18,7 @@ add_executable(${PROJECT_NAME} src/main.cc)
 
 # DEFINE AUX DIRS AND INCLUDE THEM
 aux_source_directory(src/checks CHECKS_SRC)
+aux_source_directory(src/services SERVICES_SRC)
 
 aux_source_directory(src/views/main.view MAIN_VIEW_SRC)
 aux_source_directory(src/views/actions.view ACTIONS_VIEW_SRC)
@@ -34,6 +35,8 @@ target_sources(
   PRIVATE 
   
   ${CHECKS_SRC}
+  
+  ${SERVICES_SRC}
 
   ${MAIN_VIEW_SRC}
   ${ACTIONS_VIEW_SRC}
