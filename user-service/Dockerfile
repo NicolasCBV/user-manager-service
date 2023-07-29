@@ -1,7 +1,9 @@
-FROM node:slim AS base
+FROM node:alpine AS base
 
-RUN mkdir -p /usr/app
-WORKDIR /usr/app
+RUN mkdir -p /usr/app/user-service
+WORKDIR /usr/app/user-service
+
+RUN apk update
 
 #--------- build stage -----------
 FROM base AS builder
@@ -23,13 +25,13 @@ FROM base AS release
 
 COPY templates ./templates
 
-RUN rm ./templates/TFA/index.ts
-RUN rm ./templates/createAccount/index.ts
-RUN rm ./templates/forgotPassword/index.ts
+RUN rm ./templates/TFA/index.ts && \
+	rm ./templates/createAccount/index.ts && \
+	rm ./templates/forgotPassword/index.ts
 
-COPY --from=builder /usr/app/dist ./dist
-COPY --from=builder /usr/app/package.json ./package.json
-COPY --from=builder /usr/app/node_modules ./node_modules
+COPY --from=builder /usr/app/user-service/dist ./dist
+COPY --from=builder /usr/app/user-service/package.json ./package.json
+COPY --from=builder /usr/app/user-service/node_modules ./node_modules
 
 VOLUME ["/usr/app/node_modules"]
 
