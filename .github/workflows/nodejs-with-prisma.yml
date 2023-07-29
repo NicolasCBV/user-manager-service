@@ -40,4 +40,4 @@ jobs:
         PASS_SENDER: ${{secrets.PASS_SENDER}}
         NOT_SEND_EMAILS: ${{secrets.NOT_SEND_EMAILS}}
       run: |
-        docker compose -f ./docker-compose.test.yml run app sh -c "/menu/init /usr/app/user-service -setORM=prisma && yarn migration:run && yarn test && export NODE_ENV=production && yarn test:e2e"
+        docker compose -f ./tests/docker-compose.test.yml run app sh -c "/menu/init /usr/app/user-service -setORM=prisma && yarn prisma migrate dev && yarn test && export NODE_ENV=production && yarn test:e2e"

@@ -1,4 +1,4 @@
-FROM node:slim
+FROM node:latest
 
 RUN mkdir -p /usr/app
 WORKDIR /usr/app
@@ -15,6 +15,8 @@ RUN cd ./dashboard && cmake -B /menu . && cd /menu && make
 WORKDIR /usr/app/user-service
 COPY ./user-service/package.json .
 RUN yarn install
-RUN yarn prisma generate
+
+COPY ./user-service .
+RUN yarn prisma migrate
 
 EXPOSE 3030

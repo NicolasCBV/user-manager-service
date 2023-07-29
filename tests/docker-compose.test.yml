@@ -27,6 +27,7 @@ services:
 
   app:
     build:
+      context: ..
       dockerfile: ./user-service/tests.Dockerfile
     hostname: app
     restart: always
