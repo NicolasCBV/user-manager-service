@@ -1,4 +1,4 @@
-name: Node.js CI - Unit & E2E tests
+name: Node.js CI - Unit & E2E tests - typeorm
 
 on:
   push:
