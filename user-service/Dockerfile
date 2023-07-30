@@ -13,12 +13,12 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn gen
 RUN yarn build
 RUN yarn install --production=true \
 				 --ignore-scripts \
 				 --prefer-offline \
 				 --link-duplicates 
+RUN yarn remove @prisma/client prisma 
 
 #------- release stage -----------
 FROM base AS release
@@ -33,7 +33,7 @@ COPY --from=builder /usr/app/user-service/dist ./dist
 COPY --from=builder /usr/app/user-service/package.json ./package.json
 COPY --from=builder /usr/app/user-service/node_modules ./node_modules
 
-VOLUME ["/usr/app/node_modules"]
+VOLUME ["/usr/app/user-service/node_modules"]
 
 CMD ["yarn", "start:prod"]
 
