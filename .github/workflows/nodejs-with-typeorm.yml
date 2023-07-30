@@ -2,7 +2,7 @@ name: Node.js CI - Unit & E2E tests - typeorm
 
 on:
   push:
-    branches: [ "master", "develop" ]
+    branches: [ "develop" ]
 
 jobs:
   build:

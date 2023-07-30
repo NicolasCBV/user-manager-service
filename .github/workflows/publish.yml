@@ -1,8 +1,8 @@
-name: Node.js CI - Unit & E2E tests - prisma
+name: Publish image
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: ["master"]
 
 jobs:
   build:
@@ -40,4 +40,22 @@ jobs:
         PASS_SENDER: ${{secrets.PASS_SENDER}}
         NOT_SEND_EMAILS: ${{secrets.NOT_SEND_EMAILS}}
       run: |
-        docker compose -f ./tests/docker-compose.test.yml run app sh -c "/menu/init /usr/app/user-service -setORM=prisma && yarn prisma migrate dev && yarn test && export NODE_ENV=production && yarn test:e2e"
+        docker compose -f ./tests/docker-compose.test.yml run app sh -c "/menu/init /usr/app/user-service -setORM=typeorm && yarn migration:run && yarn test && export NODE_ENV=production && yarn test:e2e"
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker hub login
+        uses: docker/login-action@v1
+        with:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_TOKEN}}
+      - name: Build and push image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./user-service
+          push: true
+          tags: nicolascbv/tests:latest
