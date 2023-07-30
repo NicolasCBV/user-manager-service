@@ -7,15 +7,13 @@ export class OTPHandler extends DefaultHandlerParams implements OTPHandler {
   async sendOTP(otp: OTP, email: string): Promise<void> {
     const ttl = process.env.OTP_TIME as unknown as number;
 
-    const result = await redisClient.set(
+    await redisClient.set(
       `${this.otpKW}:${email}`,
       JSON.stringify(otp),
       'PX',
       ttl,
       'NX',
     );
-
-    if (!result) throw this.entitieError;
   }
   async getOTP(email: string): Promise<OTP | null> {
     const rawOTPString = await redisClient.get(`${this.otpKW}:${email}`);

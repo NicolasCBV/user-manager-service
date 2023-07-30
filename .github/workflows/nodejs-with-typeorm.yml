@@ -1,0 +1,43 @@
+name: Node.js CI - Unit & E2E tests - typeorm
+
+on:
+  push:
+    branches: [ "master", "develop" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install docker compose
+      run: |
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+    - name: Unit test & E2E test
+      env: 
+        CACHE_HOSTNAME: ${{secrets.CACHE_HOSTNAME}}
+        CACHE_PASSWORD: ${{secrets.CACHE_PASSWORD}}
+        CLIENT_URL: ${{secrets.CLIENT_URL}}
+        COOKIE_SECRET: ${{secrets.COOKIE_SECRET}}
+        DATABASE_URL: ${{secrets.DATABASE_URL}}
+        FORGOT_TOKEN_EXPIRES: ${{secrets.FORGOT_TOKEN_EXPIRES}}
+        FORGOT_TOKEN_KEY: ${{secrets.FORGOT_TOKEN_KEY}}
+        LANG: ${{secrets.LANG}}
+        NODE_ENV: ${{secrets.NODE_ENV}}
+        OTP_TIME: ${{secrets.OTP_TIME}}
+        PORT: ${{secrets.PORT}}
+        PROJECT_NAME: ${{secrets.PROJECT_NAME}}
+        REFRESH_TOKEN_EXPIRES: ${{secrets.REFRESH_TOKEN_EXPIRES}}
+        REFRESH_TOKEN_KEY: ${{secrets.REFRESH_TOKEN_KEY}}
+        TOKEN_EXPIRES: ${{secrets.TOKEN_EXPIRES}}
+        TOKEN_SECRET: ${{secrets.TOKEN_SECRET}}
+        FIREBASE: ${{secrets.FIREBASE}}
+        FIREBASE_TEMPLATE_IMAGE_LINK: ${{secrets.FIREBASE_TEMPLATE_IMAGE_LINK}}
+        FIREBASE_BUCKET: ${{secrets.FIREBASE_BUCKET}}
+        HOST_SENDER: ${{secrets.HOST_SENDER}}
+        HOST_PORT_SENDER: ${{secrets.HOST_PORT_SENDER}}
+        EMAIL_SENDER: ${{secrets.EMAIL_SENDER}}
+        PASS_SENDER: ${{secrets.PASS_SENDER}}
+        NOT_SEND_EMAILS: ${{secrets.NOT_SEND_EMAILS}}
+      run: |
+        docker compose -f ./tests/docker-compose.test.yml run app sh -c "/menu/init /usr/app/user-service -setORM=typeorm && yarn migration:run && yarn test && export NODE_ENV=production && yarn test:e2e"

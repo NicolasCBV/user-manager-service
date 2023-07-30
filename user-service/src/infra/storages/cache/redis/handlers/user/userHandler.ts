@@ -1,15 +1,11 @@
 import { OTP } from '@src/app/entities/OTP/_OTP';
-import { Description } from '@src/app/entities/user/description';
-import { Name } from '@src/app/entities/user/name';
 import { User } from '@src/app/entities/user/_user';
 import { UserInCache } from '@src/app/entities/userInCache/userInCache';
 import { UserOnCache } from '@src/app/mappers/UserOnCache';
 import { DefaultHandlerParams } from '../';
-import {
-  UserHandlerContract,
-  UserNewContent,
-} from '../../../contract/userHandler';
+import { UserHandlerContract } from '../../../contract/userHandler';
 import { redisClient } from '../../redisClient';
+import { CacheError } from '../errors/cacheError';
 
 export class UserHandler
   extends DefaultHandlerParams
@@ -40,39 +36,6 @@ export class UserHandler
       .multi()
       .expire(`${this.userKW}:${user.email.value}`, ttl)
       .expire(`${this.userKW}:reservedName[${user.name.value}]`, ttl)
-      .exec();
-  }
-
-  async updateUser(
-    user: UserInCache,
-    content: UserNewContent,
-    ttl: number | string,
-  ): Promise<void> {
-    const userInUpdateState = user;
-
-    userInUpdateState.name = content.name ? new Name(content.name) : user.name;
-    userInUpdateState.description = content.description
-      ? new Description(content.description)
-      : user.description;
-    userInUpdateState.imageUrl = content.imageUrl;
-
-    await redisClient
-      .multi()
-      .set(
-        `${this.userKW}:${userInUpdateState.email.value}`,
-        JSON.stringify(UserOnCache.toObject(userInUpdateState)),
-        'PX',
-        ttl,
-        'XX',
-      )
-      .del(`${this.userKW}:reservedName[${user.name.value}]`)
-      .set(
-        `${this.userKW}:reservedName[${userInUpdateState.name.value}]`,
-        JSON.stringify({ createdAt: new Date() }),
-        'PX',
-        ttl,
-        'NX',
-      )
       .exec();
   }
 
@@ -122,7 +85,7 @@ export class UserHandler
       .multi()
       .set(
         `${this.userKW}:${user.email.value}`,
-        JSON.stringify(user),
+        JSON.stringify(UserOnCache.toObject(user)),
         'PX',
         ttl,
         'NX',
@@ -156,13 +119,13 @@ export class UserHandler
     name: string,
     TTL: number,
     newOTP: OTP,
-    cancelKeyOTP: OTP,
+    cancelKeyOTP?: OTP,
   ): Promise<void> {
     const userKey = `${this.userKW}:${email}`;
     const reservedNameKey = `${this.userKW}:reservedName[${name}]`;
     const OTPKey = `${this.otpKW}:${email}`;
 
-    const ttl = process.env.OTP_TIME as unknown as number;
+    const otpTTL = process.env.OTP_TIME as unknown as number;
 
     const existentEntities = await redisClient.exists([
       userKey,
@@ -170,21 +133,33 @@ export class UserHandler
       OTPKey,
     ]);
 
-    if (existentEntities !== 3) throw new Error('An error happened on redis');
+    if (existentEntities !== 3)
+      throw new CacheError({
+        name: "ERR: entities doesn't exist",
+        message: this.cacheErrorMsg,
+        state: `received ${existentEntities} instead 3`,
+      });
 
-    await redisClient
-      .multi()
-      .expire(userKey, TTL, 'XX')
-      .expire(reservedNameKey, TTL, 'XX')
-      .set(OTPKey, JSON.stringify(newOTP), 'PX', ttl, 'XX')
-      .set(
-        `${this.otpKW}:${email}.cancelKey`,
-        JSON.stringify(cancelKeyOTP),
-        'PX',
-        ttl,
-        'XX',
-      )
-      .exec();
+    cancelKeyOTP
+      ? await redisClient
+          .multi()
+          .expire(userKey, TTL, 'XX')
+          .expire(reservedNameKey, TTL, 'XX')
+          .set(OTPKey, JSON.stringify(newOTP), 'PX', otpTTL, 'XX')
+          .set(
+            `${this.otpKW}:${email}.cancelKey`,
+            JSON.stringify(cancelKeyOTP),
+            'PX',
+            otpTTL,
+            'XX',
+          )
+          .exec()
+      : await redisClient
+          .multi()
+          .expire(userKey, TTL, 'XX')
+          .expire(reservedNameKey, TTL, 'XX')
+          .set(OTPKey, JSON.stringify(newOTP), 'PX', otpTTL, 'XX')
+          .exec();
   }
 
   async existUser(email: string, name: string): Promise<boolean> {

@@ -45,5 +45,3 @@ lerna-debug.log*
 *.lock
 *.pnpm-store
 
-# migrations
-**/prisma/migrations*
