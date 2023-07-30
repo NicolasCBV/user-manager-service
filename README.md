@@ -16,7 +16,7 @@ CMake & make: to build the dashboard cli tool
 To start, follow these steps:
 - Firstly, be sure to have the ncurses c/c++ lib installed on your system.
 - Clone the repo with: ```git clone https://github.com/NicolasCBV/user-manager-service.git```
-- Enter on dashboard dir: ``` cd ./user-manager-service/dashboard```
+- Enter on dashboard dir: ```cd ./user-manager-service/dashboard```
 - Create a build dir with CMake: ```cmake -B ./build .```
 - Enter in build dir and compile: ```cd ./build && make```
 - Now you need to run the executable and point to the project dir located on /user-service, this is important and obligatory, because dashboard cli needs to know where your project is to make some changes if necessary: ```./init ../../user-service```
