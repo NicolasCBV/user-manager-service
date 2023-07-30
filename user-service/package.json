@@ -1,6 +1,6 @@
 {
-  "name": "user-manager-boilerplate",
-  "version": "2.0.1",
+  "name": "user-manager-service",
+  "version": "3.0.0",
   "author": "Nícolas Basilio",
   "description": "This is a user manager service",
   "license": "MIT",
