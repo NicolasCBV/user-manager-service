@@ -1,6 +1,7 @@
-import { Length } from 'class-validator';
+import { IsString, Length } from 'class-validator';
 
-export class FinishForgotPassworBody {
+export class FinishForgotPasswordBody {
+  @IsString()
   @Length(6, 256)
   password: string;
 }

@@ -9,8 +9,8 @@ export function userInCacheFactory(override: IOverride = {}) {
   return new UserInCache({
     id: 'default id',
     name: new Name('default name'),
-    email: new Email('default email'),
-    password: new Password('123456'),
+    email: new Email('default@email.com'),
+    password: new Password('1234Df'),
     ...override,
   });
 }

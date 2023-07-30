@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserObject } from '@src/app/mappers/userInObjects';
+import { UserObject } from '@app/mappers/userInObjects';
 
 interface IGenToken {
   userId: string;
