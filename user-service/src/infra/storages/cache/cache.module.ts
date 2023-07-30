@@ -7,9 +7,15 @@ import { MiscellaneousHandler } from './redis/handlers/misc/miscellaneousHandler
 import { OTPHandler } from './redis/handlers/OTP/OTPHandler';
 import { TokenHandler } from './redis/handlers/token/tokenHandler';
 import { UserHandler } from './redis/handlers/user/userHandler';
+import { RedisService } from './redis/redis.service';
+import { redisClient } from './redis/redisClient';
 
 @Module({
   providers: [
+    {
+      provide: 'CACHE_INSTANCE',
+      useValue: new RedisService(redisClient)
+    },
     {
       provide: TokenHandlerContract,
       useClass: TokenHandler,
@@ -25,7 +31,7 @@ import { UserHandler } from './redis/handlers/user/userHandler';
     {
       provide: MiscellaneousHandlerContract,
       useClass: MiscellaneousHandler,
-    },
+    }
   ],
   exports: [
     TokenHandlerContract,

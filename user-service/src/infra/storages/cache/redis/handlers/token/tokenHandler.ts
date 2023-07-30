@@ -37,18 +37,18 @@ export class TokenHandler
 
     const key = `${this.tokenKW}:${token.type}.${token.id}`;
 
-    const result = await redisClient.set(key, token.content, 'PX', ttl);
-
-    if (!result) throw this.entitieError;
+    await redisClient.set(key, token.content, 'PX', ttl);
   }
+
   async getToken(
-    userId: string,
+    sub: string,
     type: 'refresh_token' | 'access_token' | 'forgot_token',
   ): Promise<string | null> {
-    const token = await redisClient.get(`${this.tokenKW}:${type}.${userId}`);
+    const token = await redisClient.get(`${this.tokenKW}:${type}.${sub}`);
 
     return token;
   }
+
   async refreshAllUsersToken(
     accessToken: TokenInCache,
     refreshToken: TokenInCache,

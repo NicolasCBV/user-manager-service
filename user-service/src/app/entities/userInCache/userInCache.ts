@@ -22,6 +22,19 @@ export class UserInCache extends User {
       !(data instanceof User) && data.cachedAt ? data.cachedAt : new Date();
   }
 
+  public isEqual(user: UserInCache): boolean {
+    return (
+      user.id === this.id &&
+      user.name.value === this.name.value &&
+      user.email.value === this.email.value &&
+      user?.description?.value === this.description?.value &&
+      user.imageUrl === this.imageUrl &&
+      user.password === this.password &&
+      user.updatedAt === this.updatedAt &&
+      user.createdAt === this.createdAt
+    );
+  }
+
   set cachedAt(cachedAt: Date) {
     this._cachedAt = cachedAt;
   }

@@ -1,0 +1,5 @@
+*.ts linguist-language=TypeScript
+*.js linguist-language=JavaScript
+*.cc linguist-language=C++
+*.hpp linguist-language=C++
+

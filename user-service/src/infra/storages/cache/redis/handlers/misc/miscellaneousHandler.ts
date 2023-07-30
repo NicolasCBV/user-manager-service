@@ -11,9 +11,7 @@ export class MiscellaneousHandler
   implements MiscellaneousHandlerContract
 {
   async del(key: string): Promise<void> {
-    const result = await redisClient.del(key);
-
-    if (!result) throw this.entitieNotExistError;
+    await redisClient.del(key);
   }
 
   async deleteAllUserDatas(
