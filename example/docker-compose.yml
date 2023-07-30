@@ -35,6 +35,8 @@ services:
     image: nicolascbv/user-manager-service:latest 
     hostname: app
     environment:
+      - LANG=English
+      - PORT=3030
       - PROJECT_NAME=User-service
       - 'CLIENT_URL=http://localhost:3000'
       - 'DATABASE_URL=mysql://root:password@mysql_db/db'

@@ -17,11 +17,7 @@ export abstract class UserHandlerContract extends DefaultHandlerParams {
     user: UserInCache,
     ttl: string | number,
   ): Promise<void>;
-  abstract updateUser(
-    user: UserInCache,
-    content: UserNewContent,
-    ttl: number | string,
-  ): Promise<void>;
+
   abstract getUser(email: string): Promise<UserInCache | null>;
   abstract sendOTPForUser(
     user: UserInCache,
@@ -34,7 +30,7 @@ export abstract class UserHandlerContract extends DefaultHandlerParams {
     name: string,
     TTL: number,
     newOTP: OTP,
-    cancelKeyOTP: OTP,
+    cancelKeyOTP?: OTP,
   ): Promise<void>;
   abstract existUser(email: string, name: string): Promise<boolean>;
   abstract updateTTL(user: UserOnCache, TTL: string | number): Promise<void>;
