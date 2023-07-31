@@ -58,4 +58,4 @@ jobs:
         with:
           context: ./user-service
           push: true
-          tags: nicolascbv/tests:latest
+          tags: nicolascbv/user-manager-service:latest
