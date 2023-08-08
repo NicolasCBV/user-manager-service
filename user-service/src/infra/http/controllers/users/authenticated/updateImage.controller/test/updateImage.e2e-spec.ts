@@ -16,12 +16,12 @@ describe('Update user image E2E test', () => {
 
   afterAll(async () => {
     await deps.app.close();
-  })
+  });
 
   it('should be able to update profile image', async () => {
     const { res, dependencies, user } = await createDefaultEnvOnUpdateImageE2E({
       shouldCreateContent: true,
-      ...deps
+      ...deps,
     });
     const userOnDB = await dependencies.userRepo.find({
       id: user.id,
@@ -39,7 +39,7 @@ describe('Update user image E2E test', () => {
         deviceIdOutput: 'device id',
         deviceIdInput: 'device id',
       },
-      ...deps
+      ...deps,
     });
     const userOnDB = await dependencies.userRepo.find({
       id: user.id,
@@ -57,7 +57,7 @@ describe('Update user image E2E test', () => {
         deviceIdOutput: 'device id',
         deviceIdInput: 'wrong device id',
       },
-      ...deps
+      ...deps,
     });
 
     expect(res.status).toBe(401);
@@ -67,7 +67,7 @@ describe('Update user image E2E test', () => {
   it('should throw one error: user does not exist', async () => {
     const { res } = await createDefaultEnvOnUpdateImageE2E({
       shouldCreateContent: false,
-      ...deps
+      ...deps,
     });
 
     expect(res.status).toBe(404);

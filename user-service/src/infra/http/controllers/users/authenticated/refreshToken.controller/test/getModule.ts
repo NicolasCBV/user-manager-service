@@ -22,28 +22,34 @@ export interface IRefreshTokenModReturn {
   userRepo: UsersRepositories;
   app: INestApplication;
 }
-export const getRefreshTokenModuleE2E = async (): Promise<IRefreshTokenModReturn> => {
-  const moduleRef = await Test.createTestingModule({
-    imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule, AuthModule],
-    controllers: [RefreshTokenController],
-    providers: [
-      RefreshTokenService,
-      SearchUserManager,
-      GenTokensService,
-      JwtService,
-    ],
-  }).compile();
+export const getRefreshTokenModuleE2E =
+  async (): Promise<IRefreshTokenModReturn> => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [
+        DatabaseModule,
+        DatabaseCacheModule,
+        AdaptersModule,
+        AuthModule,
+      ],
+      controllers: [RefreshTokenController],
+      providers: [
+        RefreshTokenService,
+        SearchUserManager,
+        GenTokensService,
+        JwtService,
+      ],
+    }).compile();
 
-  const app = moduleRef.createNestApplication();
-  app.useGlobalPipes(new ValidationPipe());
-  app.use(cookieParser(process.env.COOKIE_SECRET));
-  await app.init();
+    const app = moduleRef.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
+    app.use(cookieParser(process.env.COOKIE_SECRET));
+    await app.init();
 
-  return {
-    crypt: moduleRef.get(CryptAdapter),
-    tokenHandler: moduleRef.get(TokenHandlerContract),
-    genToken: moduleRef.get(GenTokensService),
-    userRepo: moduleRef.get(UsersRepositories),
-    app,
+    return {
+      crypt: moduleRef.get(CryptAdapter),
+      tokenHandler: moduleRef.get(TokenHandlerContract),
+      genToken: moduleRef.get(GenTokensService),
+      userRepo: moduleRef.get(UsersRepositories),
+      app,
+    };
   };
-};

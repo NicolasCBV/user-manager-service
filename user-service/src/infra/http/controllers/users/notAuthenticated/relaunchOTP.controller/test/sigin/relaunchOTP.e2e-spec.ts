@@ -16,7 +16,7 @@ describe('Relaunch OTP E2E sigin test', () => {
 
   afterAll(async () => {
     await deps.app.close();
-  })
+  });
 
   it('should be able to relaunch OTP', async () => {
     const expectedResponse = z.object({
@@ -24,7 +24,7 @@ describe('Relaunch OTP E2E sigin test', () => {
     });
     const res = await createRelaunchOTPE2E({
       shouldCreateContent: {},
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(200);
     expect(expectedResponse.parse(res.body)).toBeTruthy();
@@ -42,7 +42,7 @@ describe('Relaunch OTP E2E sigin test', () => {
       shouldCreateContent: {
         time: new Date(),
       },
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
@@ -54,7 +54,7 @@ describe('Relaunch OTP E2E sigin test', () => {
       shouldCreateContent: {
         time: new Date(Date.now() - parseInt(process.env.OTP_TIME ?? '120000')),
       },
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();

@@ -14,20 +14,21 @@ export interface ICreateUserModReturn {
   userHandler: UserHandlerContract;
   app: INestApplication;
 }
-export const getCreateUserModuleE2E = async (): Promise<ICreateUserModReturn> => {
-  const moduleRef = await Test.createTestingModule({
-    imports: [DatabaseCacheModule, DatabaseModule, AdaptersModule],
-    controllers: [CreateUserController],
-    providers: [CreateUserService],
-  }).compile();
+export const getCreateUserModuleE2E =
+  async (): Promise<ICreateUserModReturn> => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [DatabaseCacheModule, DatabaseModule, AdaptersModule],
+      controllers: [CreateUserController],
+      providers: [CreateUserService],
+    }).compile();
 
-  const app = moduleRef.createNestApplication();
-  app.useGlobalPipes(new ValidationPipe());
-  await app.init();
+    const app = moduleRef.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
+    await app.init();
 
-  return {
-    userRepo: moduleRef.get(UsersRepositories),
-    userHandler: moduleRef.get(UserHandlerContract),
-    app,
+    return {
+      userRepo: moduleRef.get(UsersRepositories),
+      userHandler: moduleRef.get(UserHandlerContract),
+      app,
+    };
   };
-};

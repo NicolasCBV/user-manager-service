@@ -23,29 +23,30 @@ export interface IUploadImageModReturn {
   userHandler: UserHandlerContract;
   app: INestApplication;
 }
-export const getUploadImageModuleE2E = async (): Promise<IUploadImageModReturn> => {
-  const moduleRef = await Test.createTestingModule({
-    imports: [
-      DatabaseModule,
-      DatabaseCacheModule,
-      AdaptersModule,
-      ApiModule,
-      AuthModule,
-    ],
-    controllers: [UpdateUserImageController],
-    providers: [UploadImageService, GenTokensService, JwtService],
-  }).compile();
+export const getUploadImageModuleE2E =
+  async (): Promise<IUploadImageModReturn> => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [
+        DatabaseModule,
+        DatabaseCacheModule,
+        AdaptersModule,
+        ApiModule,
+        AuthModule,
+      ],
+      controllers: [UpdateUserImageController],
+      providers: [UploadImageService, GenTokensService, JwtService],
+    }).compile();
 
-  const app = moduleRef.createNestApplication();
-  app.useGlobalPipes(new ValidationPipe());
-  await app.init();
+    const app = moduleRef.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
+    await app.init();
 
-  return {
-    crypt: moduleRef.get(CryptAdapter),
-    tokenHandler: moduleRef.get(TokenHandlerContract),
-    genToken: moduleRef.get(GenTokensService),
-    userRepo: moduleRef.get(UsersRepositories),
-    userHandler: moduleRef.get(UserHandlerContract),
-    app,
+    return {
+      crypt: moduleRef.get(CryptAdapter),
+      tokenHandler: moduleRef.get(TokenHandlerContract),
+      genToken: moduleRef.get(GenTokensService),
+      userRepo: moduleRef.get(UsersRepositories),
+      userHandler: moduleRef.get(UserHandlerContract),
+      app,
+    };
   };
-};

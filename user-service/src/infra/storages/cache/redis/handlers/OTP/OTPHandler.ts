@@ -4,19 +4,21 @@ import { DefaultHandlerParams } from '..';
 import { redisClient } from '../../redisClient';
 
 export class OTPHandler extends DefaultHandlerParams implements OTPHandler {
-  async sendOTP(otp: OTP, email: string): Promise<void> {
+  async sendOTP(otp: OTP, email: string, login?: boolean): Promise<void> {
     const ttl = process.env.OTP_TIME as unknown as number;
 
     await redisClient.set(
-      `${this.otpKW}:${email}`,
+      `${login ? 'auth:' : ''}${this.otpKW}:${email}`,
       JSON.stringify(otp),
       'PX',
       ttl,
       'NX',
     );
   }
-  async getOTP(email: string): Promise<OTP | null> {
-    const rawOTPString = await redisClient.get(`${this.otpKW}:${email}`);
+  async getOTP(email: string, login?: boolean): Promise<OTP | null> {
+    const rawOTPString = await redisClient.get(
+      `${login ? 'auth:' : ''}${this.otpKW}:${email}`,
+    );
 
     if (!rawOTPString) return null;
 

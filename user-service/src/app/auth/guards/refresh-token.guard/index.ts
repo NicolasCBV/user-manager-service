@@ -49,14 +49,12 @@ export class RefreshTokenGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
 
+    if (!req.headers.cookie) throw new UnauthorizedException();
+
     const authCookie = req?.headers.cookie.split('refresh-cookie=')[1];
     if (!authCookie) throw new UnauthorizedException();
 
-    const rawToken = await this.checkCookie(authCookie);
-    const tokenArray = rawToken.split('.');
-    tokenArray.pop();
-
-    const token = tokenArray.join().replaceAll(',', '.');
+    const token = await this.checkCookie(authCookie);
     const tokenData = await this.checkToken(token);
 
     req.user = tokenData;

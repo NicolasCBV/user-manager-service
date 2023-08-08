@@ -15,13 +15,13 @@ describe('Create user e2e test', () => {
 
   afterAll(async () => {
     await deps.app.close();
-  })
+  });
 
   it('should create one user', async () => {
     const res = await createDefaultEnvOnCreateUserE2E({
       shouldCreateContentOnDB: false,
       shouldCreateContentOnCache: false,
-      ...deps
+      ...deps,
     });
 
     expect(res.status).toBe(200);
@@ -37,7 +37,7 @@ describe('Create user e2e test', () => {
     const res = await createDefaultEnvOnCreateUserE2E({
       shouldCreateContentOnDB: true,
       shouldCreateContentOnCache: false,
-      ...deps
+      ...deps,
     });
 
     expect(res.status).toBe(401);
@@ -53,7 +53,7 @@ describe('Create user e2e test', () => {
     const res = await createDefaultEnvOnCreateUserE2E({
       shouldCreateContentOnDB: false,
       shouldCreateContentOnCache: true,
-      ...deps
+      ...deps,
     });
 
     expect(res.status).toBe(401);

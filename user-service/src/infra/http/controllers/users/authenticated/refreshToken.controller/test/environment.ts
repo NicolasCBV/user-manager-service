@@ -19,7 +19,7 @@ export const createDefaultEnvOnRefreshTokenE2E = async ({
   genToken,
   tokenHandler,
   crypt,
-  userRepo
+  userRepo,
 }: TProps) => {
   const user = userFactory();
 
@@ -67,12 +67,13 @@ export const createDefaultEnvOnRefreshTokenE2E = async ({
   }
 
   const authCookie = token
-    ? cookie.sign(token, process.env.REFRESH_TOKEN_KEY as string)
+    ? 's:' + cookie.sign(token, process.env.COOKIE_SECRET as string)
     : '';
+
   const res = await request(app.getHttpServer())
     .post('/users/refresh-token')
     .set('Content-Type', 'application/json')
-    .set('cookie', `refresh-cookie=${authCookie}`)
+    .set('cookie', `refresh-cookie=${encodeURIComponent(authCookie)}`)
     .send({
       deviceId: deviceIdOnBody ?? '',
     });

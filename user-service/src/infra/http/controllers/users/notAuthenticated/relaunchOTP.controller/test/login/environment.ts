@@ -11,7 +11,7 @@ type TProps = {
   };
 } & IRelaunchOTPModReturn;
 
-export const createRelaunchOTPE2E = async ({ 
+export const createRelaunchOTPE2E = async ({
   shouldCreateContent,
   app,
   miscHandler,

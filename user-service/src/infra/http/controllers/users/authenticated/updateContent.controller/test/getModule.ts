@@ -22,23 +22,29 @@ export interface IUpdateContentModReturn {
   userHandler: UserHandlerContract;
   app: INestApplication;
 }
-export const getUpdateContentModuleE2E = async (): Promise<IUpdateContentModReturn> => {
-  const moduleRef = await Test.createTestingModule({
-    imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule, AuthModule],
-    controllers: [UpdateUserContentController],
-    providers: [UpdateUserService, GenTokensService, JwtService],
-  }).compile();
+export const getUpdateContentModuleE2E =
+  async (): Promise<IUpdateContentModReturn> => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [
+        DatabaseModule,
+        DatabaseCacheModule,
+        AdaptersModule,
+        AuthModule,
+      ],
+      controllers: [UpdateUserContentController],
+      providers: [UpdateUserService, GenTokensService, JwtService],
+    }).compile();
 
-  const app = moduleRef.createNestApplication();
-  app.useGlobalPipes(new ValidationPipe());
-  await app.init();
+    const app = moduleRef.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
+    await app.init();
 
-  return {
-    crypt: moduleRef.get(CryptAdapter),
-    tokenHandler: moduleRef.get(TokenHandlerContract),
-    genToken: moduleRef.get(GenTokensService),
-    userRepo: moduleRef.get(UsersRepositories),
-    userHandler: moduleRef.get(UserHandlerContract),
-    app,
+    return {
+      crypt: moduleRef.get(CryptAdapter),
+      tokenHandler: moduleRef.get(TokenHandlerContract),
+      genToken: moduleRef.get(GenTokensService),
+      userRepo: moduleRef.get(UsersRepositories),
+      userHandler: moduleRef.get(UserHandlerContract),
+      app,
+    };
   };
-};

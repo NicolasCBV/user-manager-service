@@ -14,7 +14,7 @@ import { redisClient } from './redis/redisClient';
   providers: [
     {
       provide: 'CACHE_INSTANCE',
-      useValue: new RedisService(redisClient)
+      useValue: new RedisService(redisClient),
     },
     {
       provide: TokenHandlerContract,

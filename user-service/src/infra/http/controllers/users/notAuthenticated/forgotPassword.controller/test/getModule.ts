@@ -19,25 +19,26 @@ export interface IForgotPasswordModReturn {
   searchForUser: SearchUserManager;
   tokenHandler: TokenHandlerContract;
   miscHandler: MiscellaneousHandlerContract;
-  app: INestApplication
+  app: INestApplication;
 }
-export const getForgotPasswordModuleE2E = async (): Promise<IForgotPasswordModReturn> => {
-  const moduleRef = await Test.createTestingModule({
-    imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
-    controllers: [ForgotPasswordController],
-    providers: [ForgotPasswordService, JwtService, SearchUserManager],
-  }).compile();
+export const getForgotPasswordModuleE2E =
+  async (): Promise<IForgotPasswordModReturn> => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
+      controllers: [ForgotPasswordController],
+      providers: [ForgotPasswordService, JwtService, SearchUserManager],
+    }).compile();
 
-  const app = moduleRef.createNestApplication();
-  app.useGlobalPipes(new ValidationPipe());
-  await app.init();
+    const app = moduleRef.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
+    await app.init();
 
-  return {
-    userRepo: moduleRef.get(UsersRepositories),
-    userHandler: moduleRef.get(UserHandlerContract),
-    searchForUser: moduleRef.get(SearchUserManager),
-    tokenHandler: moduleRef.get(TokenHandlerContract),
-    miscHandler: moduleRef.get(MiscellaneousHandlerContract),
-    app,
+    return {
+      userRepo: moduleRef.get(UsersRepositories),
+      userHandler: moduleRef.get(UserHandlerContract),
+      searchForUser: moduleRef.get(SearchUserManager),
+      tokenHandler: moduleRef.get(TokenHandlerContract),
+      miscHandler: moduleRef.get(MiscellaneousHandlerContract),
+      app,
+    };
   };
-};

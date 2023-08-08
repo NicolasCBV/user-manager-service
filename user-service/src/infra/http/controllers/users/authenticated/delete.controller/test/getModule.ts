@@ -27,31 +27,32 @@ export interface IDeleteUserModReturn {
   miscHandler: MiscellaneousHandlerContract;
   app: INestApplication;
 }
-export const getDeleteUserModuleE2E = async (): Promise<IDeleteUserModReturn> => {
-  const moduleRef = await Test.createTestingModule({
-    imports: [
-      DatabaseModule,
-      DatabaseCacheModule,
-      AdaptersModule,
-      ApiModule,
-      AuthModule,
-    ],
-    controllers: [DeleteUserController],
-    providers: [DeleteUserService, GenTokensService, JwtService],
-  }).compile();
+export const getDeleteUserModuleE2E =
+  async (): Promise<IDeleteUserModReturn> => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [
+        DatabaseModule,
+        DatabaseCacheModule,
+        AdaptersModule,
+        ApiModule,
+        AuthModule,
+      ],
+      controllers: [DeleteUserController],
+      providers: [DeleteUserService, GenTokensService, JwtService],
+    }).compile();
 
-  const app = moduleRef.createNestApplication();
-  app.useGlobalPipes(new ValidationPipe());
-  await app.init();
+    const app = moduleRef.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
+    await app.init();
 
-  return {
-    crypt: moduleRef.get(CryptAdapter),
-    tokenHandler: moduleRef.get(TokenHandlerContract),
-    genToken: moduleRef.get(GenTokensService),
-    userRepo: moduleRef.get(UsersRepositories),
-    userHandler: moduleRef.get(UserHandlerContract),
-    imageContract: moduleRef.get(ImageContract),
-    miscHandler: moduleRef.get(MiscellaneousHandlerContract),
-    app,
+    return {
+      crypt: moduleRef.get(CryptAdapter),
+      tokenHandler: moduleRef.get(TokenHandlerContract),
+      genToken: moduleRef.get(GenTokensService),
+      userRepo: moduleRef.get(UsersRepositories),
+      userHandler: moduleRef.get(UserHandlerContract),
+      imageContract: moduleRef.get(ImageContract),
+      miscHandler: moduleRef.get(MiscellaneousHandlerContract),
+      app,
+    };
   };
-};

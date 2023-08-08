@@ -16,21 +16,22 @@ export interface ICancelCreationUserModReturn {
   crypt: CryptAdapter;
   app: INestApplication;
 }
-export const getCancelCreationModuleE2E = async (): Promise<ICancelCreationUserModReturn> => {
-  const moduleRef = await Test.createTestingModule({
-    imports: [DatabaseCacheModule, DatabaseModule, AdaptersModule],
-    controllers: [CancelCreationController],
-    providers: [CancelCreationService],
-  }).compile();
+export const getCancelCreationModuleE2E =
+  async (): Promise<ICancelCreationUserModReturn> => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [DatabaseCacheModule, DatabaseModule, AdaptersModule],
+      controllers: [CancelCreationController],
+      providers: [CancelCreationService],
+    }).compile();
 
-  const app = moduleRef.createNestApplication();
-  app.useGlobalPipes(new ValidationPipe());
-  await app.init();
+    const app = moduleRef.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
+    await app.init();
 
-  return {
-    userHandler: moduleRef.get(UsersRepositories),
-    miscHandler: moduleRef.get(MiscellaneousHandlerContract),
-    crypt: moduleRef.get(CryptAdapter),
-    app,
+    return {
+      userHandler: moduleRef.get(UsersRepositories),
+      miscHandler: moduleRef.get(MiscellaneousHandlerContract),
+      crypt: moduleRef.get(CryptAdapter),
+      app,
+    };
   };
-};

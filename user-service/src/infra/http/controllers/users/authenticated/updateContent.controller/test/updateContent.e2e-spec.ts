@@ -1,6 +1,9 @@
 import { z } from 'zod';
 import { createDefaultEnvOnUpdateContentE2E } from './environment';
-import { getUpdateContentModuleE2E, IUpdateContentModReturn } from './getModule';
+import {
+  getUpdateContentModuleE2E,
+  IUpdateContentModReturn,
+} from './getModule';
 
 describe('Update user content E2E test', () => {
   const expectedResponseErr = z.object({
@@ -16,13 +19,13 @@ describe('Update user content E2E test', () => {
 
   afterAll(async () => {
     await deps.app.close();
-  })
+  });
 
   it('should be able to update user content', async () => {
     const { res, dependencies, user } =
       await createDefaultEnvOnUpdateContentE2E({
         shouldCreateContent: true,
-        ...deps
+        ...deps,
       });
     const userOnDB = await dependencies.userRepo.find({
       id: user.id,
@@ -40,7 +43,7 @@ describe('Update user content E2E test', () => {
           deviceIdOutput: 'device id',
           deviceIdInput: 'device id',
         },
-        ...deps
+        ...deps,
       });
     const userOnDB = await dependencies.userRepo.find({
       id: user.id,
@@ -57,7 +60,7 @@ describe('Update user content E2E test', () => {
         deviceIdOutput: 'device id',
         deviceIdInput: 'wrong device id',
       },
-      ...deps
+      ...deps,
     });
 
     expect(res.status).toBe(401);
@@ -67,7 +70,7 @@ describe('Update user content E2E test', () => {
   it('should throw one error: user does not exist', async () => {
     const { res } = await createDefaultEnvOnUpdateContentE2E({
       shouldCreateContent: false,
-      ...deps
+      ...deps,
     });
 
     expect(res.status).toBe(401);
