@@ -41,6 +41,7 @@ describe('Auth validate user method tests', () => {
     BcryptAdapter.prototype.compare = jest.fn(async () => true);
 
     const { authService, ...dependencies } = await getAuthModule();
+
     await dependencies.otpHandler.sendOTP(otp, user.email.value, true);
 
     const validateResult = await authService.login({
@@ -79,6 +80,7 @@ describe('Auth validate user method tests', () => {
     BcryptAdapter.prototype.compare = jest.fn(async () => false);
 
     const { authService, ...dependencies } = await getAuthModule();
+
     await dependencies.otpHandler.sendOTP(otp, user.email.value, true);
 
     expect(

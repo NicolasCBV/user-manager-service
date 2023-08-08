@@ -41,7 +41,7 @@ describe('Refresh token E2E test', () => {
       },
       ...deps
     });
-  
+
     expect(res.status).toBe(200);
     expect(typeof res.body.access_token).toEqual('string');
     expect(
@@ -50,7 +50,7 @@ describe('Refresh token E2E test', () => {
       ),
     ).toBeTruthy();
   });
-  
+
   it('should throw one error: wrong device id', async () => {
     const { res } = await createDefaultEnvOnRefreshTokenE2E({
       shouldCreateContent: {
@@ -71,7 +71,7 @@ describe('Refresh token E2E test', () => {
       },
       ...deps
     });
-  
+
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
   });

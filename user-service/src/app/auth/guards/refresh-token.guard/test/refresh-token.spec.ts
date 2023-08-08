@@ -49,7 +49,7 @@ describe('Refresh token guard test', () => {
       'wrong_token',
       token,
     );
-  
+
     expect(exec).rejects.toThrowError(UnauthorizedException);
   });
   
@@ -81,7 +81,7 @@ describe('Refresh token guard test', () => {
       'content_token',
       token,
     );
-  
+
     expect(exec).rejects.toThrowError(UnauthorizedException);
   });
 });
