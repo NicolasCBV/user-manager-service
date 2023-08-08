@@ -24,25 +24,26 @@ export interface IValidateAccountModReturn {
   miscHandler: MiscellaneousHandlerContract;
   app: INestApplication;
 }
-export const getValidateAccountModuleE2E = async (): Promise<IValidateAccountModReturn> => {
-  const moduleRef = await Test.createTestingModule({
-    imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
-    controllers: [ValidateUserController],
-    providers: [GenTokensService, JwtService, ValidateAccountService],
-  }).compile();
+export const getValidateAccountModuleE2E =
+  async (): Promise<IValidateAccountModReturn> => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
+      controllers: [ValidateUserController],
+      providers: [GenTokensService, JwtService, ValidateAccountService],
+    }).compile();
 
-  const app = moduleRef.createNestApplication();
-  app.useGlobalPipes(new ValidationPipe());
-  app.use(cookieParser(process.env.COOKIE_SECRET));
-  await app.init();
+    const app = moduleRef.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
+    app.use(cookieParser(process.env.COOKIE_SECRET));
+    await app.init();
 
-  return {
-    genTokens: moduleRef.get(GenTokensService),
-    userRepo: moduleRef.get(UsersRepositories),
-    crypt: moduleRef.get(CryptAdapter),
-    userHandler: moduleRef.get(UserHandlerContract),
-    OTPHandler: moduleRef.get(OTPHandlerContract),
-    miscHandler: moduleRef.get(MiscellaneousHandlerContract),
-    app,
+    return {
+      genTokens: moduleRef.get(GenTokensService),
+      userRepo: moduleRef.get(UsersRepositories),
+      crypt: moduleRef.get(CryptAdapter),
+      userHandler: moduleRef.get(UserHandlerContract),
+      OTPHandler: moduleRef.get(OTPHandlerContract),
+      miscHandler: moduleRef.get(MiscellaneousHandlerContract),
+      app,
+    };
   };
-};

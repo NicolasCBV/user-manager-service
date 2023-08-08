@@ -22,24 +22,25 @@ export interface IRelaunchOTPModReturn {
   otpHandler: OTPHandlerContract;
   app: INestApplication;
 }
-export const getRelaunchOTPModuleE2E = async (): Promise<IRelaunchOTPModReturn> => {
-  const moduleRef = await Test.createTestingModule({
-    imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
-    controllers: [RelaunchOTPController],
-    providers: [RelaunchOTPService],
-  }).compile();
+export const getRelaunchOTPModuleE2E =
+  async (): Promise<IRelaunchOTPModReturn> => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
+      controllers: [RelaunchOTPController],
+      providers: [RelaunchOTPService],
+    }).compile();
 
-  const app = moduleRef.createNestApplication();
-  app.useGlobalPipes(new ValidationPipe());
-  await app.init();
+    const app = moduleRef.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
+    await app.init();
 
-  return {
-    miscHandler: moduleRef.get(MiscellaneousHandlerContract),
-    userRepo: moduleRef.get(UsersRepositories),
-    crypt: moduleRef.get(CryptAdapter),
-    email: moduleRef.get(EmailAdapter),
-    userHandler: moduleRef.get(UserHandlerContract),
-    otpHandler: moduleRef.get(OTPHandlerContract),
-    app,
+    return {
+      miscHandler: moduleRef.get(MiscellaneousHandlerContract),
+      userRepo: moduleRef.get(UsersRepositories),
+      crypt: moduleRef.get(CryptAdapter),
+      email: moduleRef.get(EmailAdapter),
+      userHandler: moduleRef.get(UserHandlerContract),
+      otpHandler: moduleRef.get(OTPHandlerContract),
+      app,
+    };
   };
-};

@@ -63,9 +63,7 @@ export const createDefaultEnvOnUpdateImageE2E = async ({
   const url = path.join(__dirname, 'test-unsplash.jpg');
   const res = await request(app.getHttpServer())
     .patch(
-      `/users/upload-image${
-        deviceIdOnBody && `?deviceId=${deviceIdOnBody}`
-      }`,
+      `/users/upload-image${deviceIdOnBody && `?deviceId=${deviceIdOnBody}`}`,
     )
     .attach('file', url)
     .set('authorization', `Bearer ${token}`);

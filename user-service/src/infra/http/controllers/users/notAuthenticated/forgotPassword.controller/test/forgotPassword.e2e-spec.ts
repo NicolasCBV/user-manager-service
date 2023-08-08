@@ -1,6 +1,9 @@
 import { z } from 'zod';
 import { createDefaultEnvOnForgotPasswordE2E } from './environment';
-import { getForgotPasswordModuleE2E, IForgotPasswordModReturn } from './getModule';
+import {
+  getForgotPasswordModuleE2E,
+  IForgotPasswordModReturn,
+} from './getModule';
 
 describe('Forgot password E2E test', () => {
   let deps: IForgotPasswordModReturn;
@@ -11,12 +14,12 @@ describe('Forgot password E2E test', () => {
 
   afterAll(async () => {
     await deps.app.close();
-  })
+  });
 
   it('should be able to forgot password process', async () => {
     const res = await createDefaultEnvOnForgotPasswordE2E({
       shouldCreateContent: true,
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(200);
   });
@@ -29,7 +32,7 @@ describe('Forgot password E2E test', () => {
 
     const res = await createDefaultEnvOnForgotPasswordE2E({
       shouldCreateContent: false,
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();

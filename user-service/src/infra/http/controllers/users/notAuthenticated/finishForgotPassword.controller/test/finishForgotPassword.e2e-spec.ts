@@ -1,7 +1,10 @@
 import { randomUUID } from 'crypto';
 import { z } from 'zod';
 import { createDefaultEnvOnFinishForgotPasswordE2E } from './environment';
-import { getFinishForgotPasswordModuleE2E, IFinishForgotPasswordModReturn } from './getModule';
+import {
+  getFinishForgotPasswordModuleE2E,
+  IFinishForgotPasswordModReturn,
+} from './getModule';
 
 describe('Forgot password E2E test', () => {
   let deps: IFinishForgotPasswordModReturn;
@@ -12,13 +15,13 @@ describe('Forgot password E2E test', () => {
 
   afterAll(async () => {
     await deps.app.close();
-  })
+  });
 
   it('should be able to finish forgot password process', async () => {
     const { oldPassword, newPassword, res } =
       await createDefaultEnvOnFinishForgotPasswordE2E({
         shouldCreateContent: true,
-        ...deps
+        ...deps,
       });
 
     expect(res.status).toBe(200);
@@ -33,7 +36,7 @@ describe('Forgot password E2E test', () => {
         shouldCreateContent: true,
         deviceIdInput: deviceId,
         deviceIdOutput: deviceId,
-        ...deps
+        ...deps,
       });
 
     expect(res.status).toBe(200);
@@ -47,7 +50,7 @@ describe('Forgot password E2E test', () => {
       shouldCreateContent: true,
       deviceIdInput: 'wrong device id',
       deviceIdOutput: deviceId,
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(401);
   });
@@ -60,7 +63,7 @@ describe('Forgot password E2E test', () => {
 
     const { res } = await createDefaultEnvOnFinishForgotPasswordE2E({
       shouldCreateContent: false,
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();

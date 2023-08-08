@@ -16,12 +16,12 @@ describe('Delete user E2E test', () => {
 
   afterAll(async () => {
     await deps.app.close();
-  })
+  });
 
   it('should be able to delete user', async () => {
     const { res, dependencies, user } = await createDefaultEnvOnDeleteUserE2E({
       shouldCreateContent: true,
-      ...deps
+      ...deps,
     });
     const userOnDB = await dependencies.userRepo.find({
       id: user.id,
@@ -37,7 +37,7 @@ describe('Delete user E2E test', () => {
         deviceIdOutput: 'device id',
         deviceIdInput: 'device id',
       },
-      ...deps
+      ...deps,
     });
     const userOnDB = await dependencies.userRepo.find({
       id: user.id,
@@ -53,7 +53,7 @@ describe('Delete user E2E test', () => {
         deviceIdOutput: 'device id',
         deviceIdInput: 'wrong device id',
       },
-      ...deps
+      ...deps,
     });
 
     expect(res.status).toBe(401);
@@ -65,7 +65,7 @@ describe('Delete user E2E test', () => {
       shouldCreateContent: {
         onlyTokens: true,
       },
-      ...deps
+      ...deps,
     });
 
     expect(res.status).toBe(404);

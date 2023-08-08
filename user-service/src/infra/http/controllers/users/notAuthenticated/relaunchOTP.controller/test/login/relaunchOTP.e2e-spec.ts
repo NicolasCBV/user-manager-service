@@ -16,12 +16,12 @@ describe('Relaunch OTP E2E login test', () => {
 
   afterAll(async () => {
     await deps.app.close();
-  })
+  });
 
   it('should be able to relaunch OTP', async () => {
     const res = await createRelaunchOTPE2E({
       shouldCreateContent: {},
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(201);
   });
@@ -38,7 +38,7 @@ describe('Relaunch OTP E2E login test', () => {
       shouldCreateContent: {
         time: new Date(),
       },
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
@@ -50,7 +50,7 @@ describe('Relaunch OTP E2E login test', () => {
       shouldCreateContent: {
         time: new Date(Date.now() - parseInt(process.env.OTP_TIME ?? '120000')),
       },
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();

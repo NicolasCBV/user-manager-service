@@ -16,7 +16,7 @@ export const createDefaultEnvOnCreateUserE2E = async ({
   shouldCreateContentOnCache,
   userRepo,
   userHandler,
-  app
+  app,
 }: TProps) => {
   if (shouldCreateContentOnDB)
     await userRepo.create(

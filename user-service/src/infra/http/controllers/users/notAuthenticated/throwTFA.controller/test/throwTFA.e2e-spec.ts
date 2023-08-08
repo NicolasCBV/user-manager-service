@@ -16,12 +16,12 @@ describe('Throw TFA E2E test', () => {
 
   afterAll(async () => {
     await deps.app.close();
-  })
+  });
 
   it('should be able to throw TFA', async () => {
     const res = await createDefaultEnvOnThrowTFAE2E({
       shouldCreateContent: true,
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(200);
   });
@@ -29,7 +29,7 @@ describe('Throw TFA E2E test', () => {
   it('throw one error: user does not exist', async () => {
     const res = await createDefaultEnvOnThrowTFAE2E({
       shouldCreateContent: false,
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
@@ -40,7 +40,7 @@ describe('Throw TFA E2E test', () => {
     const res = await createDefaultEnvOnThrowTFAE2E({
       shouldCreateContent: true,
       passwordInput: 'wrong password',
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();

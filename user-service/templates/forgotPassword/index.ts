@@ -14,7 +14,10 @@ const project_dir = __dirname.split(/\/user-service(?!.*\/user-service)/)[0];
 switch (lang) {
   case 'PT_br':
     source = readFileSync(
-      join(project_dir + '/user-service/templates/forgotPassword/forgotPassword.pt_br.html'),
+      join(
+        project_dir +
+          '/user-service/templates/forgotPassword/forgotPassword.pt_br.html',
+      ),
       'utf-8',
     );
     forgotPasswordRecommendedTitle = 'Verificação de duas etapas';
@@ -22,7 +25,10 @@ switch (lang) {
 
   case 'English':
     source = readFileSync(
-      join(project_dir + '/user-service/templates/forgotPassword/forgotPassword.pt_br.html'),
+      join(
+        project_dir +
+          '/user-service/templates/forgotPassword/forgotPassword.pt_br.html',
+      ),
       'utf-8',
     );
     forgotPasswordRecommendedTitle = 'Two factors step';

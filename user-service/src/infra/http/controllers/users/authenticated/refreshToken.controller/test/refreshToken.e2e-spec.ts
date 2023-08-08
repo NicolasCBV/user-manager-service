@@ -16,19 +16,19 @@ describe('Refresh token E2E test', () => {
 
   afterAll(async () => {
     await deps.app.close();
-  })
+  });
 
   it('should be able to refresh tokens', async () => {
     const { res } = await createDefaultEnvOnRefreshTokenE2E({
       shouldCreateContent: true,
-      ...deps
+      ...deps,
     });
 
     expect(res.status).toBe(200);
     expect(typeof res.body.access_token).toEqual('string');
     expect(
-      res.headers['set-cookie']?.find((item: string) =>
-        item?.includes('refresh-cookie='),
+      res.headers['set-cookie']?.find(
+        (item: string) => item?.includes('refresh-cookie='),
       ),
     ).toBeTruthy();
   });
@@ -39,14 +39,14 @@ describe('Refresh token E2E test', () => {
         deviceIdOutput: 'device id',
         deviceIdInput: 'device id',
       },
-      ...deps
+      ...deps,
     });
 
     expect(res.status).toBe(200);
     expect(typeof res.body.access_token).toEqual('string');
     expect(
-      res.headers['set-cookie']?.find((item: string) =>
-        item?.includes('refresh-cookie='),
+      res.headers['set-cookie']?.find(
+        (item: string) => item?.includes('refresh-cookie='),
       ),
     ).toBeTruthy();
   });
@@ -57,19 +57,19 @@ describe('Refresh token E2E test', () => {
         deviceIdOutput: 'device id',
         deviceIdInput: 'wrong device id',
       },
-      ...deps
+      ...deps,
     });
-  
+
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
   });
-  
+
   it('should throw one error: user does not exist', async () => {
     const { res } = await createDefaultEnvOnRefreshTokenE2E({
       shouldCreateContent: {
         onlyTokens: true,
       },
-      ...deps
+      ...deps,
     });
 
     expect(res.status).toBe(401);

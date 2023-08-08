@@ -22,24 +22,25 @@ export interface IFinishForgotPasswordModReturn {
   email: EmailAdapter;
   app: INestApplication;
 }
-export const getFinishForgotPasswordModuleE2E = async (): Promise<IFinishForgotPasswordModReturn> => {
-  const moduleRef = await Test.createTestingModule({
-    imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
-    controllers: [FinishForgotPasswordController],
-    providers: [FinishForgotPasswordService, JwtService, SearchUserManager],
-  }).compile();
+export const getFinishForgotPasswordModuleE2E =
+  async (): Promise<IFinishForgotPasswordModReturn> => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [DatabaseModule, DatabaseCacheModule, AdaptersModule],
+      controllers: [FinishForgotPasswordController],
+      providers: [FinishForgotPasswordService, JwtService, SearchUserManager],
+    }).compile();
 
-  const app = moduleRef.createNestApplication();
-  app.useGlobalPipes(new ValidationPipe());
-  await app.init();
+    const app = moduleRef.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
+    await app.init();
 
-  return {
-    userRepo: moduleRef.get(UsersRepositories),
-    tokenHandler: moduleRef.get(TokenHandlerContract),
-    searchForUser: moduleRef.get(SearchUserManager),
-    jwtService: moduleRef.get(JwtService),
-    crypt: moduleRef.get(CryptAdapter),
-    email: moduleRef.get(EmailAdapter),
-    app,
+    return {
+      userRepo: moduleRef.get(UsersRepositories),
+      tokenHandler: moduleRef.get(TokenHandlerContract),
+      searchForUser: moduleRef.get(SearchUserManager),
+      jwtService: moduleRef.get(JwtService),
+      crypt: moduleRef.get(CryptAdapter),
+      email: moduleRef.get(EmailAdapter),
+      app,
+    };
   };
-};

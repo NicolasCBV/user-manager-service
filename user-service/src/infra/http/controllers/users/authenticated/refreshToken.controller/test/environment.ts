@@ -19,7 +19,7 @@ export const createDefaultEnvOnRefreshTokenE2E = async ({
   genToken,
   tokenHandler,
   crypt,
-  userRepo
+  userRepo,
 }: TProps) => {
   const user = userFactory();
 
@@ -67,7 +67,7 @@ export const createDefaultEnvOnRefreshTokenE2E = async ({
   }
 
   const authCookie = token
-    ? "s:" + cookie.sign(token, process.env.COOKIE_SECRET as string)
+    ? 's:' + cookie.sign(token, process.env.COOKIE_SECRET as string)
     : '';
 
   const res = await request(app.getHttpServer())

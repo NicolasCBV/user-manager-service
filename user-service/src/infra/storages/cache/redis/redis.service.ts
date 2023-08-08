@@ -1,5 +1,5 @@
-import { OnApplicationShutdown,OnModuleDestroy } from "@nestjs/common";
-import { Injectable } from "@nestjs/common";
+import { OnApplicationShutdown, OnModuleDestroy } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
 
 @Injectable()

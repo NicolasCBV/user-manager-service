@@ -12,7 +12,7 @@ describe('Get user E2E', () => {
 
   afterAll(async () => {
     await deps.app.close();
-  })
+  });
 
   it('should be able to get user', async () => {
     const expectedReponse = z.object({

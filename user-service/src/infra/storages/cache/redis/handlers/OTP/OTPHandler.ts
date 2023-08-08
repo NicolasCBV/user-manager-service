@@ -8,7 +8,7 @@ export class OTPHandler extends DefaultHandlerParams implements OTPHandler {
     const ttl = process.env.OTP_TIME as unknown as number;
 
     await redisClient.set(
-      `${login ? "auth:" : ""}${this.otpKW}:${email}`,
+      `${login ? 'auth:' : ''}${this.otpKW}:${email}`,
       JSON.stringify(otp),
       'PX',
       ttl,
@@ -16,9 +16,9 @@ export class OTPHandler extends DefaultHandlerParams implements OTPHandler {
     );
   }
   async getOTP(email: string, login?: boolean): Promise<OTP | null> {
-    const rawOTPString = await redisClient.get(`${
-      login ? "auth:" : ""
-    }${this.otpKW}:${email}`);
+    const rawOTPString = await redisClient.get(
+      `${login ? 'auth:' : ''}${this.otpKW}:${email}`,
+    );
 
     if (!rawOTPString) return null;
 

@@ -7,7 +7,7 @@ import { UnauthorizedException } from '@nestjs/common';
 import { TokenHandler } from '@root/src/infra/storages/cache/redis/handlers/token/tokenHandler';
 
 jest.mock('@nestjs/jwt');
-jest.mock('@app/adapters/cookie-parser/cookieParserAdapter')
+jest.mock('@app/adapters/cookie-parser/cookieParserAdapter');
 
 describe('Refresh token guard test', () => {
   const fakeToken =
@@ -20,10 +20,10 @@ describe('Refresh token guard test', () => {
   beforeEach(() => {
     JwtService.prototype.verifyAsync = jest.fn(async (): Promise<any> => token);
     CookieParserAdapter.prototype.validateSignedCookie = jest.fn(() => {
-      const tokenArray = fakeToken.split(".");
+      const tokenArray = fakeToken.split('.');
       tokenArray.pop();
 
-      const token = tokenArray.join(".")
+      const token = tokenArray.join('.');
       return token;
     });
   });
@@ -52,17 +52,17 @@ describe('Refresh token guard test', () => {
 
     expect(exec).rejects.toThrowError(UnauthorizedException);
   });
-  
+
   it('should throw one error: violated signature - cookie', async () => {
     CookieParserAdapter.prototype.validateSignedCookie = jest.fn(() => false);
     const { exec } = await createDefaultSituationOnRTGuard(
       'content_token',
       token,
     );
-  
+
     expect(exec).rejects.toThrowError(UnauthorizedException);
   });
-  
+
   it('should throw one error: violated signature - token', async () => {
     JwtService.prototype.verifyAsync = jest.fn(() => {
       throw new UnauthorizedException();
@@ -71,10 +71,10 @@ describe('Refresh token guard test', () => {
       'content_token',
       token,
     );
-  
+
     expect(exec).rejects.toThrowError(UnauthorizedException);
   });
-  
+
   it('should throw one error: token does not exist', async () => {
     TokenHandler.prototype.sendToken = jest.fn();
     const { exec } = await createDefaultSituationOnRTGuard(

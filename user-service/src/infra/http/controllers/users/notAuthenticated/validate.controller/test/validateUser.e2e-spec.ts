@@ -1,7 +1,10 @@
 import { randomUUID } from 'crypto';
 import { z } from 'zod';
 import { createDefaultEnvOnValidateUserE2E } from './environment';
-import { getValidateAccountModuleE2E, IValidateAccountModReturn } from './getModule';
+import {
+  getValidateAccountModuleE2E,
+  IValidateAccountModReturn,
+} from './getModule';
 
 describe('Validate user E2E test', () => {
   const expectedResponseErr = z.object({
@@ -17,18 +20,18 @@ describe('Validate user E2E test', () => {
 
   afterAll(async () => {
     await deps.app.close();
-  })
+  });
 
   it('should be able to validate user account', async () => {
     const res = await createDefaultEnvOnValidateUserE2E({
       shouldCreateContent: true,
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(201);
     expect(typeof res.body.access_token).toEqual('string');
     expect(
-      res.headers['set-cookie']?.find((item: string) =>
-        item?.includes('refresh-cookie='),
+      res.headers['set-cookie']?.find(
+        (item: string) => item?.includes('refresh-cookie='),
       ),
     ).toBeTruthy();
   });
@@ -37,13 +40,13 @@ describe('Validate user E2E test', () => {
     const res = await createDefaultEnvOnValidateUserE2E({
       shouldCreateContent: true,
       deviceIdInput: randomUUID(),
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(201);
     expect(typeof res.body.access_token).toEqual('string');
     expect(
-      res.headers['set-cookie']?.find((item: string) =>
-        item?.includes('refresh-cookie='),
+      res.headers['set-cookie']?.find(
+        (item: string) => item?.includes('refresh-cookie='),
       ),
     ).toBeTruthy();
   });
@@ -51,7 +54,7 @@ describe('Validate user E2E test', () => {
   it('throw one error: user does not exist', async () => {
     const res = await createDefaultEnvOnValidateUserE2E({
       shouldCreateContent: false,
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
@@ -62,7 +65,7 @@ describe('Validate user E2E test', () => {
     const res = await createDefaultEnvOnValidateUserE2E({
       shouldCreateContent: true,
       codeInput: '1234567',
-      ...deps
+      ...deps,
     });
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
