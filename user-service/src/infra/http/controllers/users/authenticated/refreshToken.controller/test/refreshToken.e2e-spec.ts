@@ -59,11 +59,11 @@ describe('Refresh token E2E test', () => {
       },
       ...deps
     });
-
+  
     expect(res.status).toBe(401);
     expect(expectedResponseErr.parse(res.body)).toBeTruthy();
   });
-
+  
   it('should throw one error: user does not exist', async () => {
     const { res } = await createDefaultEnvOnRefreshTokenE2E({
       shouldCreateContent: {

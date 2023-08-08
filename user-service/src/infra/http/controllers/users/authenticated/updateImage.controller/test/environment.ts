@@ -64,7 +64,7 @@ export const createDefaultEnvOnUpdateImageE2E = async ({
   const res = await request(app.getHttpServer())
     .patch(
       `/users/upload-image${
-        deviceIdOnBody && `?deviceId=${deviceIdOnBody}&a=t`
+        deviceIdOnBody && `?deviceId=${deviceIdOnBody}`
       }`,
     )
     .attach('file', url)

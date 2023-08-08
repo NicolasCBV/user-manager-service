@@ -37,6 +37,8 @@ lerna-debug.log*
 #env
 .env
 .env.test
+.env.prod
+.env.dev
 
 # text
 *.txt

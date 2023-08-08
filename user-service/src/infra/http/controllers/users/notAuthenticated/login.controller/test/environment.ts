@@ -30,7 +30,7 @@ export const createDefaultEnvOnLoginE2E = async ({
 
   if (shouldCreateContent) {
     await userRepo.create(user);
-    await dependencies.otpHandler.sendOTP(otp, user.email.value);
+    await dependencies.otpHandler.sendOTP(otp, user.email.value, true);
   }
 
   const res = await request(app.getHttpServer())

@@ -63,7 +63,7 @@ export class AuthService extends DefaultService<IErrors> {
         userIdentificator: `${this.userHandler.userKW}:${email}`,
       });
 
-      await this.otpHandler.sendOTP(otp, email);
+      await this.otpHandler.sendOTP(otp, email, true);
 
       await this.emailAdapter.send({
         from: `${process.env.NAME_SENDER as string}
@@ -90,7 +90,7 @@ export class AuthService extends DefaultService<IErrors> {
   }> {
     const user = await this.searchForUser.exec({ email: userEmail });
 
-    const otp = await this.otpHandler.getOTP(userEmail);
+    const otp = await this.otpHandler.getOTP(userEmail, true);
     if (!otp) throw this.previsibileErrors.unauthorized;
 
     const result = await this.crypt.compare(code, otp.code);
