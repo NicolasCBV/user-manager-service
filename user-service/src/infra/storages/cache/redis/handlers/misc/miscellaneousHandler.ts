@@ -1,3 +1,5 @@
+/* Handlers will be refactored soon */
+
 import { OTP } from '@src/app/entities/OTP/_OTP';
 import { UserInCache } from '@src/app/entities/userInCache/userInCache';
 import { UserOnObjects } from '@src/app/mappers/userInObjects';
@@ -25,6 +27,7 @@ export class MiscellaneousHandler
       .del(`${this.userKW}:${email}`)
       .del(`${this.otpKW}:${email}`)
       .del(`${this.otpKW}:${email}.cancelKey`)
+      .del(`auth:${this.otpKW}:${email}`)
       .del(`${this.tokenKW}:${this.tokenTypes.accessToken}.${id}`)
       .del(`${this.tokenKW}:${this.tokenTypes.refreshToken}.${id}`)
       .exec();

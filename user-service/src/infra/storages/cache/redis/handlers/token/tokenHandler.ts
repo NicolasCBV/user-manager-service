@@ -1,3 +1,5 @@
+/* Handlers will be refactored soon */
+
 import { TokenInCache } from '@src/app/repositories/cacheRepo';
 import { DefaultHandlerParams } from '../';
 import { TokenHandlerContract } from '../../../contract/tokenHandler';
