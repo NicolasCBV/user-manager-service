@@ -1,3 +1,5 @@
+/* Handlers will be refactored soon */
+
 import { OTP } from '@src/app/entities/OTP/_OTP';
 import { OTPMapper } from '@src/app/mappers/OTPMapper';
 import { DefaultHandlerParams } from '..';

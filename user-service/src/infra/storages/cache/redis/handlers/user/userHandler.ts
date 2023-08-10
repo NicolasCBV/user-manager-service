@@ -1,3 +1,5 @@
+/* Handlers will be refactored soon */
+
 import { OTP } from '@src/app/entities/OTP/_OTP';
 import { User } from '@src/app/entities/user/_user';
 import { UserInCache } from '@src/app/entities/userInCache/userInCache';

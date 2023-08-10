@@ -108,7 +108,7 @@ export class AuthService extends DefaultService<IErrors> {
       userData: rest,
     });
 
-    await this.miscHandler.del(`${this.otpHandler.otpKW}:${user.email.value}`);
+    await this.miscHandler.del(`auth:${this.otpHandler.otpKW}:${user.email.value}`);
 
     await this.tokenHandler.throwMainAuthTokens(
       id,

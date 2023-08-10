@@ -55,7 +55,9 @@ export class UpdateUserImageController extends DefaultController {
 
     const url = await this.uploadImageService
       .exec({ id: user.sub, file })
-      .catch((err) => this.interpretErrors(err));
+      .catch((err) => {
+        return this.interpretErrors(err)
+      });
 
     return { url };
   }
