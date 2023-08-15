@@ -77,7 +77,7 @@ export class RelaunchOTPService extends DefaultService<IErrors> {
       ? await this.isLoging(email)
       : await this.isSigining(email);
 
-    const otp = await this.otpHandler.getOTP(email);
+    const otp = await this.otpHandler.getOTP(email, isLoging);
     if (!otp) throw this.previsibileErrors.indisponible;
 
     // Validate OTP time
