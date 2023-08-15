@@ -22,13 +22,19 @@ export async function createDefaultSituationOnRelaunch({
     createdAt: new Date(time),
   });
 
-  await dependencies.userHandler.sendOTPForUser(
-    new UserInCache(user),
-    10000,
-    otp,
-    cancelKey,
-  );
-  if (isLoging) await dependencies.userRepo.create(user);
+  if(!isLoging)
+    await dependencies.userHandler.sendOTPForUser(
+      new UserInCache(user),
+      10000,
+      otp,
+      cancelKey,
+    );
+
+  if (isLoging) {
+    await dependencies.userRepo.create(user);
+    await dependencies.userHandler.sendUser(new UserInCache(user), 1000 * 60 * 60 * 24)
+    await dependencies.otpHandler.sendOTP(otp, user.email.value, true);
+  }
 
   const exec = () => relaunchOTP.exec({ email: user.email.value, isLoging });
   return { exec };
