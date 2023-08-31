@@ -12,6 +12,7 @@ import { DatabaseModule } from '@infra/storages/db/database.module';
 import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { GenTokensService } from '../../genTokens.service';
 import { AuthService } from '../auth.service';
+import { UsersRepositories } from '@root/src/app/repositories/users';
 
 export const getAuthModule = async () => {
   const moduleRef = await Test.createTestingModule({
@@ -24,6 +25,7 @@ export const getAuthModule = async () => {
     crypt: moduleRef.get(CryptAdapter),
     tokenHandler: moduleRef.get(TokenHandlerContract),
     searchForUser: moduleRef.get(SearchUserManager),
+    userRepo: moduleRef.get(UsersRepositories),
     userHandler: moduleRef.get(UserHandlerContract),
     otpHandler: moduleRef.get(OTPHandlerContract),
     miscHandler: moduleRef.get(MiscellaneousHandlerContract),
