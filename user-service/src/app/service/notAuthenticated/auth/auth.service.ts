@@ -12,6 +12,7 @@ import { UserHandlerContract } from '@infra/storages/cache/contract/userHandler'
 import { OTPHandlerContract } from '@infra/storages/cache/contract/OTPHandler';
 import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
 import { EmailAdapter } from '@app/adapters/email';
+import { UsersRepositories } from '@app/repositories/users';
 
 interface IErrors {
   unauthorized: Error;
@@ -34,6 +35,7 @@ export class AuthService extends DefaultService<IErrors> {
     private readonly genTokens: GenTokensService,
     private readonly crypt: CryptAdapter,
     private readonly tokenHandler: TokenHandlerContract,
+    private readonly userRepo: UsersRepositories,
     private readonly searchForUser: SearchUserManager,
     private readonly userHandler: UserHandlerContract,
     private readonly otpHandler: OTPHandlerContract,
@@ -51,7 +53,8 @@ export class AuthService extends DefaultService<IErrors> {
     email,
     password,
   }: IAuthValidateUser): Promise<'OK' | null> {
-    const user = await this.searchForUser.exec({ email });
+    const user = await this.userRepo.find({ email })
+    if(!user) return null;
 
     const result = await this.crypt.compare(password, user.password.value);
     if (result) {

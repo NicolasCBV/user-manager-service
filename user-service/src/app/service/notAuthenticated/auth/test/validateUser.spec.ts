@@ -1,8 +1,6 @@
 import { redisClient } from '@infra/storages/cache/redis/redisClient';
-import { SearchUserManager } from '@infra/storages/search/searchUserManager.service';
 import { userFactory } from '@test/fatories/user';
 import { BcryptAdapter } from '@app/adapters/bcrypt/bcryptAdapter';
-import { UserInCache } from '@app/entities/userInCache/userInCache';
 import { getAuthModule } from './getModule';
 
 jest.mock('@src/app/adapters/nodemailer/nodemailerAdapter');
@@ -22,12 +20,10 @@ describe('Auth validate user method tests', () => {
 
   it('should authenticate user', async () => {
     const user = userFactory();
-    SearchUserManager.prototype.exec = jest.fn(
-      async () => new UserInCache(user),
-    );
     BcryptAdapter.prototype.compare = jest.fn(async () => true);
 
-    const { authService } = await getAuthModule();
+    const { authService, userRepo } = await getAuthModule();
+    await userRepo.create(user);
 
     const validateResult = await authService.validateUser({
       email: user.email.value,
@@ -37,11 +33,23 @@ describe('Auth validate user method tests', () => {
     expect(validateResult).toEqual('OK');
   });
 
-  it('should return null', async () => {
+  it('should return null because the wrong password', async () => {
     const user = userFactory();
-    SearchUserManager.prototype.exec = jest.fn(
-      async () => new UserInCache(userFactory()),
-    );
+    BcryptAdapter.prototype.compare = jest.fn(async () => false);
+
+    const { authService, userRepo } = await getAuthModule();
+    await userRepo.create(user);
+
+    expect(
+      await authService.validateUser({
+        email: user.email.value,
+        password: user.password.value,
+      }),
+    ).toBeNull;
+  });
+
+  it('should return null because user does not exist', async () => {
+    const user = userFactory();
     BcryptAdapter.prototype.compare = jest.fn(async () => false);
 
     const { authService } = await getAuthModule();
@@ -53,4 +61,5 @@ describe('Auth validate user method tests', () => {
       }),
     ).toBeNull;
   });
+
 });

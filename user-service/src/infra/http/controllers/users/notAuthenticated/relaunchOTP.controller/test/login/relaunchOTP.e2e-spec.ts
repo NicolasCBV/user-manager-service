@@ -26,6 +26,13 @@ describe('Relaunch OTP E2E login test', () => {
     expect(res.status).toBe(201);
   });
 
+  it('throw one error: user does not exist', async () => {
+    const res = await createRelaunchOTPE2E({ ...deps });
+    expect(res.status).toBe(401);
+    expect(expectedResponseErr.parse(res.body)).toBeTruthy();
+    expect(res?.body?.message).toEqual('Unauthorized');
+  });
+
   it('throw one error: OTP not launched', async () => {
     const res = await createRelaunchOTPE2E({ ...deps });
     expect(res.status).toBe(401);

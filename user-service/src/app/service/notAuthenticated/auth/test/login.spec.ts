@@ -14,6 +14,10 @@ jest.mock('@app/adapters/bcrypt/bcryptAdapter');
 
 describe('Auth validate user method tests', () => {
   beforeEach(() => {
+    SearchUserManager.prototype.exec = jest.fn(
+      async () => new UserInCache(userFactory()),
+    );
+
     GenTokensService.prototype.exec = jest.fn(() => ({
       access_token: 'access_token',
       refresh_token: 'refresh_token',
@@ -35,13 +39,11 @@ describe('Auth validate user method tests', () => {
     const otp = OTPFactory({
       userIdentificator: user.id,
     });
-    SearchUserManager.prototype.exec = jest.fn(
-      async () => new UserInCache(user),
-    );
     BcryptAdapter.prototype.compare = jest.fn(async () => true);
 
     const { authService, ...dependencies } = await getAuthModule();
 
+    await dependencies.userRepo.create(user);
     await dependencies.otpHandler.sendOTP(otp, user.email.value, true);
 
     const validateResult = await authService.login({
@@ -55,10 +57,6 @@ describe('Auth validate user method tests', () => {
 
   it('should throw one error: OTP does not exist', async () => {
     const user = userFactory();
-    SearchUserManager.prototype.exec = jest.fn(
-      async () => new UserInCache(user),
-    );
-
     const { authService } = await getAuthModule();
 
     expect(
@@ -74,9 +72,6 @@ describe('Auth validate user method tests', () => {
     const otp = OTPFactory({
       userIdentificator: user.id,
     });
-    SearchUserManager.prototype.exec = jest.fn(
-      async () => new UserInCache(user),
-    );
     BcryptAdapter.prototype.compare = jest.fn(async () => false);
 
     const { authService, ...dependencies } = await getAuthModule();
