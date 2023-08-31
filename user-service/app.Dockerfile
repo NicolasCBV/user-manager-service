@@ -17,6 +17,6 @@ COPY ./user-service/package.json .
 RUN yarn install
 
 COPY ./user-service .
-RUN yarn prisma migrate
+RUN yarn prisma generate 
 
 EXPOSE 3030

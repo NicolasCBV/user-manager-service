@@ -1,3 +1,5 @@
+/* Handlers will be refactored soon */
+
 import { OTP } from '@src/app/entities/OTP/_OTP';
 import { User } from '@src/app/entities/user/_user';
 import { UserInCache } from '@src/app/entities/userInCache/userInCache';
@@ -120,10 +122,11 @@ export class UserHandler
     TTL: number,
     newOTP: OTP,
     cancelKeyOTP?: OTP,
+    isLoging?: boolean
   ): Promise<void> {
     const userKey = `${this.userKW}:${email}`;
     const reservedNameKey = `${this.userKW}:reservedName[${name}]`;
-    const OTPKey = `${this.otpKW}:${email}`;
+    const OTPKey = `${isLoging ? "auth:" : ""}${this.otpKW}:${email}`;
 
     const otpTTL = process.env.OTP_TIME as unknown as number;
 

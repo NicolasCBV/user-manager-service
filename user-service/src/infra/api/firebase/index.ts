@@ -21,7 +21,8 @@ export class FirebaseAPI extends ImageContract {
     });
 
     stream.on('error', (err) => {
-      logger.error('An error was generated on upload image route: ', err.name);
+      if(process.env.NODE_ENV !== "production")
+        logger.error('An error was generated on upload image route: ', err.name);
     });
 
     stream.on('finish', async () => {
