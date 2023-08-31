@@ -7,10 +7,10 @@
   "scripts": {
     "up": "docker compose run --rm -p 3030:3030 app sh ./init.sh",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
-    "migration:gen": "yarn typeorm migration:generate -d ./dist/src/infra/storages/db/typeorm/database.provider.js",
+    "migration:gen": "yarn build && yarn typeorm migration:generate -d ./dist/src/infra/storages/db/typeorm/database.provider.js",
     "migration:create": "yarn typeorm migration:create",
-    "migration:run": "yarn typeorm migration:run -d ./dist/src/infra/storages/db/typeorm/database.provider.js",
-    "migration:revert": "yarn typeorm migration:revert -d ./dist/src/infra/storages/db/typeorm/database.provider.js",
+    "migration:run": "yarn build && yarn typeorm migration:run -d ./dist/src/infra/storages/db/typeorm/database.provider.js",
+    "migration:revert": "yarn build && yarn typeorm migration:revert -d ./dist/src/infra/storages/db/typeorm/database.provider.js",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
