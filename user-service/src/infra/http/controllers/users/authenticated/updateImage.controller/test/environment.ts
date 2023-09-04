@@ -45,6 +45,7 @@ export const createDefaultEnvOnUpdateImageE2E = async ({
         name: user.name.value,
         description: user?.description?.value,
         imageUrl: user.imageUrl,
+        level: user.level,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },

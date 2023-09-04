@@ -15,11 +15,13 @@ model User {
   password    String   @db.VarChar(256)
   description String?  @db.VarChar(256)
   imageUrl    String?
+  level       Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
 
   @@map("users")
   @@unique([name])
   @@unique([email])
+  @@index([level])
 }
 

@@ -65,7 +65,7 @@ export class CreateUserService extends DefaultService<IErrors> {
     if (userOnDatabase) throw this.previsibileErrors.userAlreadyExist;
 
     const password = await this.crypt.hash(data.password);
-    const user = UserOnObjects.toClass({ ...data, password });
+    const user = UserOnObjects.toClass({ ...data, password, level: 0 });
 
     const code = generateRandomCharacters();
     const hashedCode = await this.crypt.hash(code);

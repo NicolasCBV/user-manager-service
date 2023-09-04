@@ -14,6 +14,7 @@ export class PrismaUser {
       description: user.description?.value ?? null,
       imageUrl: user.imageUrl ?? null,
       id: user.id,
+      level: user.level,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
@@ -30,6 +31,7 @@ export class PrismaUser {
             ? new Description(user.description)
             : null,
         imageUrl: user.imageUrl,
+        level: user.level,
         updatedAt: user.updatedAt,
         createdAt: user.createdAt,
       },

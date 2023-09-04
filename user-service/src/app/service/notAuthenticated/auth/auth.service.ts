@@ -53,7 +53,7 @@ export class AuthService extends DefaultService<IErrors> {
     email,
     password,
   }: IAuthValidateUser): Promise<'OK' | null> {
-    const user = await this.userRepo.find({ email })
+    const user = await this.userRepo.find({ email });
     if(!user) return null;
 
     const result = await this.crypt.compare(password, user.password.value);

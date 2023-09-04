@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 @Entity('users')
-@Index(['name', 'email'])
+@Index(['level'])
 @Unique(['name'])
 @Unique(['email'])
 export class TypeORMUser {
@@ -30,6 +30,9 @@ export class TypeORMUser {
 
   @Column({ length: 256, nullable: true })
   imageUrl?: string;
+
+  @Column()
+  level: number;
 
   @CreateDateColumn()
   createdAt: Date;

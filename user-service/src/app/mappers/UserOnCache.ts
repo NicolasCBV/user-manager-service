@@ -12,6 +12,7 @@ interface IUserInCacheObjt {
   imageUrl?: string | null;
   description?: string | null;
   password: string;
+  level: number;
   createdAt: Date;
   updatedAt: Date;
   cachedAt: Date;
@@ -24,6 +25,7 @@ interface IUserInJson {
   description?: string | null;
   password: string;
   imageUrl?: string | null;
+  level: number;
   createdAt: string;
   updatedAt: string;
   cachedAt: string;
@@ -38,6 +40,7 @@ export class UserOnCache {
       description: user.description ? user.description.value : user.description,
       password: user.password.value,
       imageUrl: user.imageUrl,
+      level: user.level,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
       cachedAt: user.cachedAt,
@@ -55,6 +58,7 @@ export class UserOnCache {
           : user.description,
       password: new Password(user.password),
       imageUrl: user.imageUrl,
+      level: user.level,
       createdAt: new Date(user.createdAt),
       updatedAt: new Date(user.updatedAt),
       cachedAt: new Date(user.cachedAt),
@@ -69,6 +73,7 @@ export class UserOnCache {
         password: user.password,
         description: user.description,
         imageUrl: user.imageUrl,
+        level: user.level,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },

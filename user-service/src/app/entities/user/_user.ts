@@ -11,14 +11,18 @@ export interface IUser {
   imageUrl?: string | null;
   description?: Description | null;
   password: Password;
+  level: number;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export type ICreateUserProcess = Replace<
-  Replace<IUser, { createdAt?: Date }>,
-  { updatedAt?: Date }
->;
+  Replace<
+    Replace<IUser, { createdAt?: Date }>,
+    { updatedAt?: Date }
+  >,
+  { level?: number }
+>
 
 export class User {
   private props: IUser;
@@ -28,6 +32,7 @@ export class User {
     this._id = id ?? randomUUID();
     this.props = {
       ...props,
+      level: props.level ?? 0,
       createdAt: props.createdAt ?? new Date(),
       updatedAt: props.updatedAt ?? new Date(),
     };
@@ -35,6 +40,7 @@ export class User {
 
   public isEqual(user: User): boolean {
     return (
+      user.level === this.props.level &&
       user.id === this._id &&
       user.name.value === this.props.name.value &&
       user.email.value === this.props.email.value &&
@@ -59,6 +65,16 @@ export class User {
   set name(name: Name) {
     this.props.name = name;
   }
+
+  // level property
+  get level(): number {
+    return this.props.level;
+  }
+
+  set level(level: number) {
+    this.props.level = level;
+  }
+
 
   // email property
   get email(): Email {
