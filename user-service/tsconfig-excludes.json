@@ -2,7 +2,6 @@
   "exclude": [
     "node_modules",
     "dist",
-    "**/*typeorm*",
-    "ormconfig.ts"
+    "**/*prisma*"
   ]
 }

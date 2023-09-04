@@ -1,3 +1,2 @@
 **/*.js
-**/*typeorm*
-ormconfig.ts
+**/*prisma*
