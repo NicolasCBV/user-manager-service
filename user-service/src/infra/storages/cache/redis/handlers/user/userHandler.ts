@@ -122,11 +122,11 @@ export class UserHandler
     TTL: number,
     newOTP: OTP,
     cancelKeyOTP?: OTP,
-    isLoging?: boolean
+    isLoging?: boolean,
   ): Promise<void> {
     const userKey = `${this.userKW}:${email}`;
     const reservedNameKey = `${this.userKW}:reservedName[${name}]`;
-    const OTPKey = `${isLoging ? "auth:" : ""}${this.otpKW}:${email}`;
+    const OTPKey = `${isLoging ? 'auth:' : ''}${this.otpKW}:${email}`;
 
     const otpTTL = process.env.OTP_TIME as unknown as number;
 

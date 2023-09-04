@@ -12,6 +12,7 @@ export class UserInCache extends User {
       description: data.description,
       imageUrl: data.imageUrl,
       password: data.password,
+      level: data.level,
       createdAt: data.createdAt,
       updatedAt: data.updatedAt,
     };

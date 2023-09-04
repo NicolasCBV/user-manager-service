@@ -53,8 +53,8 @@ export class AuthService extends DefaultService<IErrors> {
     email,
     password,
   }: IAuthValidateUser): Promise<'OK' | null> {
-    const user = await this.userRepo.find({ email })
-    if(!user) return null;
+    const user = await this.userRepo.find({ email });
+    if (!user) return null;
 
     const result = await this.crypt.compare(password, user.password.value);
     if (result) {
@@ -111,7 +111,9 @@ export class AuthService extends DefaultService<IErrors> {
       userData: rest,
     });
 
-    await this.miscHandler.del(`auth:${this.otpHandler.otpKW}:${user.email.value}`);
+    await this.miscHandler.del(
+      `auth:${this.otpHandler.otpKW}:${user.email.value}`,
+    );
 
     await this.tokenHandler.throwMainAuthTokens(
       id,

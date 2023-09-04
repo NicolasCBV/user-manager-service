@@ -15,7 +15,6 @@ type TProps = {
 export const createRelaunchOTPE2E = async ({
   shouldCreateContent,
   app,
-  miscHandler,
   ...dependencies
 }: TProps) => {
   const password = '1234Df';
@@ -34,7 +33,10 @@ export const createRelaunchOTPE2E = async ({
 
   if (shouldCreateContent) {
     await dependencies.userRepo.create(user);
-    await dependencies.userHandler.sendUser(new UserInCache(user), 1000 * 60 * 60 * 24)
+    await dependencies.userHandler.sendUser(
+      new UserInCache(user),
+      1000 * 60 * 60 * 24,
+    );
     await dependencies.otpHandler.sendOTP(otp, user.email.value, true);
   }
 

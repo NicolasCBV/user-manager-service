@@ -110,7 +110,7 @@ export class RelaunchOTPService extends DefaultService<IErrors> {
       TTL,
       newOTP,
       genKey?.cancelKey,
-      isLoging
+      isLoging,
     );
 
     // Send email
