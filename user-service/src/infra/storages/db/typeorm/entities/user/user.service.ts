@@ -39,7 +39,7 @@ export class UserService implements UsersRepositories {
         { id: searchQuery.id },
         { name: searchQuery.name },
         { email: searchQuery.email },
-        { level: searchQuery.level } 
+        { level: searchQuery.level },
       ],
     });
 

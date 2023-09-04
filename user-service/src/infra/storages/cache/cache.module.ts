@@ -31,7 +31,7 @@ import { redisClient } from './redis/redisClient';
     {
       provide: MiscellaneousHandlerContract,
       useClass: MiscellaneousHandler,
-    }
+    },
   ],
   exports: [
     TokenHandlerContract,

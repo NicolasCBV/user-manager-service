@@ -17,12 +17,9 @@ export interface IUser {
 }
 
 export type ICreateUserProcess = Replace<
-  Replace<
-    Replace<IUser, { createdAt?: Date }>,
-    { updatedAt?: Date }
-  >,
+  Replace<Replace<IUser, { createdAt?: Date }>, { updatedAt?: Date }>,
   { level?: number }
->
+>;
 
 export class User {
   private props: IUser;
@@ -74,7 +71,6 @@ export class User {
   set level(level: number) {
     this.props.level = level;
   }
-
 
   // email property
   get email(): Email {
