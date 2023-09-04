@@ -61,5 +61,4 @@ describe('Auth validate user method tests', () => {
       }),
     ).toBeNull;
   });
-
 });

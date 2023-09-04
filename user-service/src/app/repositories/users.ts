@@ -4,6 +4,7 @@ export interface ISearchQuery {
   id?: string;
   name?: string;
   email?: string;
+  level?: number;
 }
 
 export interface IUserDataToUpdate {

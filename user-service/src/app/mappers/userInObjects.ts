@@ -13,6 +13,7 @@ export interface UserJSONObject {
     description?: { description: string } | null;
     password: { password: string };
     imageUrl?: string | null;
+    level: number;
     createdAt: string;
     updatedAt: string;
   };
@@ -25,6 +26,7 @@ export interface UserObject {
   description?: string | null;
   password: string;
   imageUrl?: string | null;
+  level: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -40,6 +42,7 @@ export class UserOnObjects {
       description: user.description ? user.description.value : user.description,
       password: user.password.value,
       imageUrl: user.imageUrl,
+      level: user.level,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
@@ -56,6 +59,7 @@ export class UserOnObjects {
             : user.description,
         password: new Password(user.password),
         imageUrl: user.imageUrl,
+        level: user.level,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },
@@ -74,6 +78,7 @@ export class UserOnObjects {
             : user.props.description,
         password: new Password(user.props.password.password),
         imageUrl: user.props.imageUrl,
+        level: user.props.level,
         createdAt: new Date(user.props.createdAt),
         updatedAt: new Date(user.props.updatedAt),
       },

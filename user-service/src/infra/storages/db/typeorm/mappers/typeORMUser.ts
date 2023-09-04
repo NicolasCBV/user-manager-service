@@ -14,6 +14,7 @@ export class TypeORMUserMapper {
       password: user.password.value,
       imageUrl: user.imageUrl ?? undefined,
       description: user?.description?.value ?? undefined,
+      level: user.level,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
@@ -30,6 +31,7 @@ export class TypeORMUserMapper {
             : null,
         password: new Password(user.password),
         imageUrl: user.imageUrl,
+        level: user.level,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },

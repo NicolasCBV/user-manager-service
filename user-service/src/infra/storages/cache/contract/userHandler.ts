@@ -31,7 +31,7 @@ export abstract class UserHandlerContract extends DefaultHandlerParams {
     TTL: number,
     newOTP: OTP,
     cancelKeyOTP?: OTP,
-    isLoging?: boolean
+    isLoging?: boolean,
   ): Promise<void>;
   abstract existUser(email: string, name: string): Promise<boolean>;
   abstract updateTTL(user: UserOnCache, TTL: string | number): Promise<void>;
