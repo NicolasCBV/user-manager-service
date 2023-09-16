@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-const url = `redis://:${process.env.CACHE_PASSWORD}@${process.env.CACHE_HOSTNAME}:6379`;
+const url = `${process.env.CACHE_URL}`;
 
 function getRedisClient(): Redis {
   if (process.env.NODE_ENV === 'test') {
