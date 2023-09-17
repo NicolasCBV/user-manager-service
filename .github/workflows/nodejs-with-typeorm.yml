@@ -15,8 +15,7 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
     - name: Unit test & E2E test
       env: 
-        CACHE_HOSTNAME: ${{secrets.CACHE_HOSTNAME}}
-        CACHE_PASSWORD: ${{secrets.CACHE_PASSWORD}}
+        CACHE_URL: ${{secrets.CACHE_URL}}
         CLIENT_URL: ${{secrets.CLIENT_URL}}
         COOKIE_SECRET: ${{secrets.COOKIE_SECRET}}
         DATABASE_URL: ${{secrets.DATABASE_URL}}
