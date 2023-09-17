@@ -37,8 +37,7 @@ services:
       - internal_network
       - external_network
     environment:
-      - CACHE_HOSTNAME=${CACHE_HOSTNAME}
-      - CACHE_PASSWORD=${CACHE_PASSWORD}
+      - CACHE_URL=${CACHE_URL}
       - CLIENT_URL=${CLIENT_URL}
       - COOKIE_SECRET=${COOKIE_SECRET}
       - DATABASE_URL=${DATABASE_URL}
