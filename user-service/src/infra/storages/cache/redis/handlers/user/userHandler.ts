@@ -146,8 +146,8 @@ export class UserHandler
     cancelKeyOTP
       ? await redisClient
           .multi()
-          .expire(userKey, TTL, 'XX')
-          .expire(reservedNameKey, TTL, 'XX')
+          .expire(userKey, TTL)
+          .expire(reservedNameKey, TTL)
           .set(OTPKey, JSON.stringify(newOTP), 'PX', otpTTL, 'XX')
           .set(
             `${this.otpKW}:${email}.cancelKey`,
@@ -159,8 +159,8 @@ export class UserHandler
           .exec()
       : await redisClient
           .multi()
-          .expire(userKey, TTL, 'XX')
-          .expire(reservedNameKey, TTL, 'XX')
+          .expire(userKey, TTL)
+          .expire(reservedNameKey, TTL)
           .set(OTPKey, JSON.stringify(newOTP), 'PX', otpTTL, 'XX')
           .exec();
   }
