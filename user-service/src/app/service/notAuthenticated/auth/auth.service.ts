@@ -72,6 +72,7 @@ export class AuthService extends DefaultService<IErrors> {
     password,
   }: IAuthValidateUser): Promise<'OK' | null> {
     const user = await this.getUser(email);
+
     if (!user) return null;
 
     const result = await this.crypt.compare(password, user.password.value);
