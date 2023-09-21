@@ -13,6 +13,7 @@ import { OTPHandlerContract } from '@infra/storages/cache/contract/OTPHandler';
 import { MiscellaneousHandlerContract } from '@infra/storages/cache/contract/miscellaneousHandler';
 import { EmailAdapter } from '@app/adapters/email';
 import { UsersRepositories } from '@app/repositories/users';
+import { UserInCache } from '@root/src/app/entities/userInCache/userInCache';
 
 interface IErrors {
   unauthorized: Error;
@@ -49,11 +50,28 @@ export class AuthService extends DefaultService<IErrors> {
     });
   }
 
+  private async getUser(input: string) {
+    const user = await this.userRepo.find({ email: input });
+    if(!user) return null;
+
+    const checkExistenceOfUser = await this.userHandler.existUser(
+      user.name.value, 
+      user.email.value
+    );
+    if(!checkExistenceOfUser) {
+      const TTL = 1000 * 60 * 60 * 24;
+      const userForCache = new UserInCache(user);
+      await this.userHandler.sendUser(userForCache, TTL);
+    }
+
+    return user;
+  } 
+
   async validateUser({
     email,
     password,
   }: IAuthValidateUser): Promise<'OK' | null> {
-    const user = await this.userRepo.find({ email });
+    const user = await this.getUser(email);
     if (!user) return null;
 
     const result = await this.crypt.compare(password, user.password.value);
