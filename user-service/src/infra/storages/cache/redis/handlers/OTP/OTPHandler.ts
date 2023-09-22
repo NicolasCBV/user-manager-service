@@ -13,8 +13,7 @@ export class OTPHandler extends DefaultHandlerParams implements OTPHandler {
       `${login ? 'auth:' : ''}${this.otpKW}:${email}`,
       JSON.stringify(otp),
       'PX',
-      ttl,
-      'NX',
+      ttl
     );
   }
   async getOTP(email: string, login?: boolean): Promise<OTP | null> {
