@@ -30,7 +30,7 @@
     "seed": "ts-node --transpile-only ./src/infra/storages/db/prisma/seed.ts"
   },
   "dependencies": {
-    "@nestjs/common": "^9.3.9",
+    "@nestjs/common": "^11.0.16",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^9.3.9",
     "@nestjs/jwt": "^10.0.2",
